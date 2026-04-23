@@ -68,13 +68,13 @@
 - [x] Vitest tests for tracking router
 
 ## Neon Glow Redesign
-- [ ] Global CSS: neon palette (cyan, violet, pink, green), glow box-shadows, glassmorphism cards
-- [ ] AppLayout: neon sidebar with glowing active states, gradient logo
-- [ ] Home page: neon step cards with glow on hover, gradient hero text
-- [ ] Attract page: neon form inputs, glowing generate button, neon table
-- [ ] Convert page: neon tabs, glowing email cards, tracking stats with neon badges
-- [ ] Deliver page: neon research form, glowing report sections
-- [ ] Automate + HumanElement + SavedProjects: consistent neon style
+- [x] Global CSS: neon palette (cyan, violet, pink, green), glow box-shadows, glassmorphism cards
+- [x] AppLayout: neon sidebar with glowing active states, gradient logo
+- [x] Home page: neon step cards with glow on hover, gradient hero text
+- [x] Attract page: neon form inputs, glowing generate button, neon table
+- [x] Convert page: neon tabs, glowing email cards, tracking stats with neon badges
+- [x] Deliver page: neon research form, glowing report sections
+- [x] Automate + HumanElement + SavedProjects: consistent neon style
 
 ## AI Assistant Widget
 - [x] Upload assistant avatar image to static storage
@@ -84,3 +84,7 @@
 - [x] Integrate into AppLayout (visible on all pages)
 - [x] Context awareness — assistant knows current page and can guide user
 - [x] Vitest tests for assistant router
+
+## Hero Diagram & Remaining Polish
+- [x] Landing page hero: add visual services diagram showing the 5-step workflow with neon connections
+- [x] SavedProjects: complete neon glow redesign (cards, tabs, empty states)

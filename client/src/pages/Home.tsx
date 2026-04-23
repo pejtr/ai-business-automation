@@ -3,6 +3,161 @@ import { Magnet, Mail, FileText, Zap, Heart, ArrowRight, Sparkles, Activity } fr
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 
+// ── Workflow Diagram ─────────────────────────────────────────────────────────
+
+const DIAGRAM_STEPS = [
+  { id: "01", label: "Attract", sub: "Lead Generation", color: "oklch(0.78 0.22 195)", x: 60 },
+  { id: "02", label: "Convert", sub: "Outreach Emails", color: "oklch(0.68 0.26 295)", x: 220 },
+  { id: "03", label: "Deliver", sub: "Research & Decks", color: "oklch(0.72 0.24 340)", x: 380 },
+  { id: "04", label: "Automate", sub: "Workflows", color: "oklch(0.78 0.22 145)", x: 540 },
+  { id: "05", label: "Human", sub: "Vision & Taste", color: "oklch(0.82 0.18 75)", x: 700 },
+];
+
+function WorkflowDiagram() {
+  const W = 800;
+  const H = 140;
+  const CY = 62;
+  const R = 28;
+
+  return (
+    <div
+      className="w-full rounded-2xl overflow-hidden relative"
+      style={{ background: "oklch(0.09 0.014 260)", border: "1px solid oklch(0.18 0.02 260)", boxShadow: "0 0 40px oklch(0 0 0 / 0.3)" }}
+    >
+      {/* subtle dot grid */}
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, oklch(0.30 0.02 260) 1px, transparent 0)", backgroundSize: "24px 24px" }} />
+
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full relative z-10"
+        style={{ height: "auto", maxHeight: "160px" }}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          {DIAGRAM_STEPS.map((s) => (
+            <radialGradient key={s.id} id={`glow-${s.id}`} cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={s.color} stopOpacity="0.35" />
+              <stop offset="100%" stopColor={s.color} stopOpacity="0" />
+            </radialGradient>
+          ))}
+          {DIAGRAM_STEPS.map((s) => (
+            <filter key={`f-${s.id}`} id={`blur-${s.id}`} x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="8" />
+            </filter>
+          ))}
+          <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="oklch(0.30 0.02 260)" />
+          </marker>
+        </defs>
+
+        {/* Connecting lines between nodes */}
+        {DIAGRAM_STEPS.slice(0, -1).map((s, i) => {
+          const next = DIAGRAM_STEPS[i + 1];
+          const x1 = s.x + R;
+          const x2 = next.x - R;
+          const midX = (x1 + x2) / 2;
+          return (
+            <g key={`line-${i}`}>
+              {/* Glow line */}
+              <line
+                x1={x1} y1={CY} x2={x2} y2={CY}
+                stroke={s.color}
+                strokeWidth="1.5"
+                strokeOpacity="0.15"
+                filter={`url(#blur-${s.id})`}
+              />
+              {/* Solid line */}
+              <line
+                x1={x1} y1={CY} x2={x2} y2={CY}
+                stroke="oklch(0.22 0.022 260)"
+                strokeWidth="1"
+                strokeDasharray="4 3"
+              />
+              {/* Animated dot */}
+              <circle r="3" fill={s.color} opacity="0.7">
+                <animateMotion
+                  dur={`${1.8 + i * 0.3}s`}
+                  repeatCount="indefinite"
+                  path={`M${x1},${CY} L${x2},${CY}`}
+                />
+              </circle>
+              {/* Arrow label */}
+              <text x={midX} y={CY - 8} textAnchor="middle" fontSize="7" fill="oklch(0.35 0.02 260)" fontFamily="monospace">
+                →
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Node circles */}
+        {DIAGRAM_STEPS.map((s) => (
+          <g key={s.id}>
+            {/* Outer glow */}
+            <circle cx={s.x} cy={CY} r={R + 10} fill={`url(#glow-${s.id})`} filter={`url(#blur-${s.id})`} />
+            {/* Ring */}
+            <circle
+              cx={s.x} cy={CY} r={R}
+              fill="oklch(0.11 0.016 260)"
+              stroke={s.color}
+              strokeWidth="1.5"
+              strokeOpacity="0.6"
+            />
+            {/* Inner fill */}
+            <circle cx={s.x} cy={CY} r={R - 6} fill={s.color} fillOpacity="0.08" />
+            {/* Step number */}
+            <text
+              x={s.x} y={CY - 8}
+              textAnchor="middle"
+              fontSize="8"
+              fontFamily="monospace"
+              fontWeight="600"
+              fill={s.color}
+              fillOpacity="0.7"
+            >
+              {s.id}
+            </text>
+            {/* Label */}
+            <text
+              x={s.x} y={CY + 5}
+              textAnchor="middle"
+              fontSize="10"
+              fontFamily="system-ui, sans-serif"
+              fontWeight="700"
+              fill="oklch(0.90 0.01 260)"
+            >
+              {s.label}
+            </text>
+            {/* Sub label below circle */}
+            <text
+              x={s.x} y={CY + R + 14}
+              textAnchor="middle"
+              fontSize="7.5"
+              fontFamily="monospace"
+              fill={s.color}
+              fillOpacity="0.65"
+            >
+              {s.sub}
+            </text>
+          </g>
+        ))}
+
+        {/* Client Result badge at the end */}
+        <g>
+          <rect x={W - 95} y={CY - 14} width={88} height={28} rx="8" fill="oklch(0.78 0.22 195 / 0.06)" stroke="oklch(0.78 0.22 195 / 0.2)" strokeWidth="1" />
+          <text x={W - 51} y={CY + 5} textAnchor="middle" fontSize="9" fontFamily="system-ui, sans-serif" fontWeight="600" fill="oklch(0.78 0.22 195 / 0.8)">
+            Client Result
+          </text>
+        </g>
+      </svg>
+
+      {/* Bottom label */}
+      <div className="flex items-center justify-center pb-3 pt-0">
+        <p className="text-[9px] font-mono tracking-widest" style={{ color: "oklch(0.30 0.02 260)" }}>AGENCY AI · 5-STEP AUTOMATED WORKFLOW</p>
+      </div>
+    </div>
+  );
+}
+
 const STEPS = [
   {
     step: "01",
@@ -130,6 +285,11 @@ export default function Home() {
               </span>
             </div>
           )}
+        </div>
+
+        {/* ── Workflow Diagram ── */}
+        <div className="mb-10 mt-2">
+          <WorkflowDiagram />
         </div>
 
         {/* Step cards grid */}
