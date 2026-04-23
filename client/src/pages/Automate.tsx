@@ -41,6 +41,7 @@ export default function Automate() {
         <div className="px-8 py-10 max-w-3xl">
           {/* Coming soon hero */}
           <div
+            data-onboarding="automate-hero"
             className="rounded-2xl p-10 text-center mb-8 relative overflow-hidden"
             style={{ background: "oklch(0.10 0.016 260)", border: "1px solid oklch(0.78 0.22 145 / 0.25)", boxShadow: "0 0 40px oklch(0.78 0.22 145 / 0.08)" }}
           >

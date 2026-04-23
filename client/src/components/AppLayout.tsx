@@ -11,6 +11,8 @@ import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import OnboardingOverlay from "@/components/OnboardingOverlay";
+import { useOnboarding } from "@/contexts/OnboardingContext";
 
 /* Each step gets its own neon color */
 const NAV_ITEMS = [
@@ -31,6 +33,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { user, isAuthenticated, loading } = useAuth();
   const [location] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const { restartOnboarding, isCompleted } = useOnboarding();
   const logout = trpc.auth.logout.useMutation({
     onSuccess: () => { window.location.href = "/"; },
     onError: () => toast.error("Logout failed"),
@@ -245,6 +248,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <p className="text-[10px] truncate" style={{ color: "oklch(0.40 0.02 260)" }}>{user?.email ?? ""}</p>
               </div>
               <button
+                onClick={() => restartOnboarding()}
+                className="transition-colors p-1 rounded-lg hover:bg-white/5"
+                style={{ color: "oklch(0.78 0.22 195 / 0.5)" }}
+                title="Restart onboarding tour"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+              </button>
+              <button
                 onClick={() => logout.mutate()}
                 className="transition-colors p-1 rounded-lg hover:bg-white/5"
                 style={{ color: "oklch(0.40 0.02 260)" }}
@@ -273,6 +284,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
       {/* AI Assistant Widget */}
       <AssistantWidget />
+
+      {/* Onboarding Overlay */}
+      <OnboardingOverlay />
     </div>
   );
 }

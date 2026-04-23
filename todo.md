@@ -88,3 +88,15 @@
 ## Hero Diagram & Remaining Polish
 - [x] Landing page hero: add visual services diagram showing the 5-step workflow with neon connections
 - [x] SavedProjects: complete neon glow redesign (cards, tabs, empty states)
+
+## Interactive Onboarding with Aria
+- [x] OnboardingContext + useOnboarding hook (state: step, active, completed, skip, next, prev)
+- [x] Onboarding data: 8 steps covering Attract, Convert, Deliver, Automate, Human Element
+- [x] OnboardingOverlay component: Aria avatar, animated speech bubble, step progress bar, Next/Skip/Back buttons
+- [x] Spotlight highlight: semi-transparent overlay with cutout over targeted UI element
+- [x] Tooltip pointer: directional arrow pointing to highlighted element
+- [x] Auto-trigger for first-time users (localStorage flag), manual restart from sidebar
+- [x] Route-aware: onboarding navigates user to correct page for each step
+- [x] Aria typing animation for speech bubble text
+- [x] Completion screen: congratulations card with Aria avatar and CTA to start first lead list
+- [x] Vitest tests for onboarding context logic

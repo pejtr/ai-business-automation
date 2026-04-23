@@ -299,6 +299,7 @@ export default function Home() {
             return (
               <Link key={step.path} href={step.path}>
                 <div
+                  data-onboarding={step.label === "Attract" ? "attract-card" : undefined}
                   className="group relative rounded-2xl p-5 cursor-pointer transition-all duration-300 h-full"
                   style={{
                     background: `linear-gradient(135deg, ${step.glowSoft}, oklch(0.10 0.016 260))`,

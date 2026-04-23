@@ -80,7 +80,7 @@ export default function HumanElement() {
 
           {/* Three pillars */}
           <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>The Three Pillars</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div data-onboarding="human-pillars" className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {PILLARS.map((pillar) => {
               const Icon = pillar.icon;
               return (
