@@ -1,0 +1,56 @@
+# AI Business Automation Platform — TODO
+
+## Phase 2: Foundation
+- [x] Database schema: lead_lists, outreach_campaigns, research_reports
+- [x] tRPC routers: attract, convert, deliver, projects
+- [x] Global design system: CSS variables, fonts, color palette (dark elegant theme)
+
+## Phase 3: Dashboard & Layout
+- [x] AppLayout with sidebar (Attract, Convert, Deliver, Automate, Human Element, Saved Projects)
+- [x] Dashboard Home Page with 5-step framework overview cards
+- [x] Responsive sidebar with active state indicators and collapse
+- [x] Top header with user profile and branding
+- [x] Landing page for unauthenticated users
+
+## Phase 4: Attract Module
+- [x] Lead generation form (niche, platform, count inputs)
+- [x] AI-powered lead generation via LLM (structured JSON output)
+- [x] Lead list results table (company, website, social handles, recent topics)
+- [x] Save lead list to database
+- [x] Export lead list as CSV
+
+## Phase 5: Convert Module
+- [x] Load saved lead lists for selection
+- [x] AI-powered personalized email generation per lead
+- [x] Email drafts display (subject + body per lead, expandable)
+- [x] Save outreach campaign to database
+- [x] Copy individual emails to clipboard
+- [x] Export all emails as text file
+
+## Phase 6: Deliver Module
+- [x] Brand research form (company name or URL input)
+- [x] AI-powered brand analysis report generation (structured markdown)
+- [x] Research report display with Streamdown markdown rendering
+- [x] Presentation generator from research report
+- [x] Brand color/typography extraction via AI
+- [x] Color picker for manual override
+- [x] Multi-slide presentation HTML output in iframe
+- [x] Save research reports to database with share token
+- [x] Export report as Markdown download
+- [x] Export presentation as HTML download
+- [x] Open presentation full screen
+- [x] Shareable link generation
+
+## Phase 7: Saved Projects / History
+- [x] Saved Projects page listing all lead lists, campaigns, reports
+- [x] View/reload any saved project
+- [x] Delete saved projects
+- [x] Shareable links for reports
+- [x] SharedReport public page for shared links
+
+## Phase 8: Polish & Testing
+- [x] Automate module placeholder page
+- [x] Human Element module page with philosophy and reflection prompts
+- [x] Vitest tests for all routers (9 tests passing)
+- [x] TypeScript: 0 errors
+- [x] Final checkpoint and delivery

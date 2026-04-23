@@ -1,17 +1,15 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import {
+  int,
+  mysqlEnum,
+  mysqlTable,
+  text,
+  timestamp,
+  varchar,
+  json,
+} from "drizzle-orm/mysql-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
@@ -25,4 +23,50 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+// Lead Lists (Attract module)
+export const leadLists = mysqlTable("lead_lists", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  niche: varchar("niche", { length: 255 }).notNull(),
+  platform: varchar("platform", { length: 128 }).notNull(),
+  count: int("count").notNull().default(10),
+  leads: json("leads").notNull(), // Lead[]
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type LeadList = typeof leadLists.$inferSelect;
+export type InsertLeadList = typeof leadLists.$inferInsert;
+
+// Outreach Campaigns (Convert module)
+export const outreachCampaigns = mysqlTable("outreach_campaigns", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  leadListId: int("leadListId"),
+  emails: json("emails").notNull(), // OutreachEmail[]
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type OutreachCampaign = typeof outreachCampaigns.$inferSelect;
+export type InsertOutreachCampaign = typeof outreachCampaigns.$inferInsert;
+
+// Research Reports (Deliver module)
+export const researchReports = mysqlTable("research_reports", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  companyName: varchar("companyName", { length: 255 }).notNull(),
+  companyUrl: varchar("companyUrl", { length: 512 }),
+  reportContent: text("reportContent").notNull(),
+  presentationHtml: text("presentationHtml"),
+  brandColors: json("brandColors"), // string[]
+  brandFonts: json("brandFonts"), // string[]
+  shareToken: varchar("shareToken", { length: 64 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ResearchReport = typeof researchReports.$inferSelect;
+export type InsertResearchReport = typeof researchReports.$inferInsert;
