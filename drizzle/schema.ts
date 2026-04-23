@@ -70,3 +70,38 @@ export const researchReports = mysqlTable("research_reports", {
 
 export type ResearchReport = typeof researchReports.$inferSelect;
 export type InsertResearchReport = typeof researchReports.$inferInsert;
+
+// Tracked Emails (Convert module — tracking)
+export const trackedEmails = mysqlTable("tracked_emails", {
+  id: int("id").autoincrement().primaryKey(),
+  campaignId: int("campaignId").notNull(),
+  userId: int("userId").notNull(),
+  emailIndex: int("emailIndex").notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
+  trackingToken: varchar("trackingToken", { length: 64 }).notNull().unique(),
+  subject: varchar("subject", { length: 512 }).notNull(),
+  bodyHtml: text("bodyHtml").notNull(), // HTML with tracking pixel + tracked links
+  bodyText: text("bodyText").notNull(), // Plain text version
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type TrackedEmail = typeof trackedEmails.$inferSelect;
+export type InsertTrackedEmail = typeof trackedEmails.$inferInsert;
+
+// Email Tracking Events
+export const emailTrackingEvents = mysqlTable("email_tracking_events", {
+  id: int("id").autoincrement().primaryKey(),
+  trackingToken: varchar("trackingToken", { length: 64 }).notNull(),
+  campaignId: int("campaignId").notNull(),
+  userId: int("userId").notNull(),
+  emailIndex: int("emailIndex").notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
+  eventType: mysqlEnum("eventType", ["open", "click"]).notNull(),
+  linkUrl: varchar("linkUrl", { length: 2048 }), // populated for click events
+  ip: varchar("ip", { length: 64 }),
+  userAgent: varchar("userAgent", { length: 512 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type EmailTrackingEvent = typeof emailTrackingEvents.$inferSelect;
+export type InsertEmailTrackingEvent = typeof emailTrackingEvents.$inferInsert;

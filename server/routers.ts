@@ -20,6 +20,10 @@ import {
   getResearchReportByShareToken,
   updateResearchReport,
   deleteResearchReport,
+  createTrackedEmail,
+  getTrackedEmailsByCampaign,
+  getTrackingStatsByCampaign,
+  getTrackingEventsByCampaign,
 } from "./db";
 
 // ── Shared Types ──────────────────────────────────────────────────────────
@@ -241,13 +245,14 @@ Return ONLY valid JSON:
       emails: z.array(OutreachEmailSchema),
     }))
     .mutation(async ({ ctx, input }) => {
-      await createOutreachCampaign({
+      const result = await createOutreachCampaign({
         userId: ctx.user.id,
         title: input.title,
         leadListId: input.leadListId,
         emails: input.emails,
       });
-      return { success: true };
+      const insertId = (result as unknown as [{ insertId: number }])[0]?.insertId ?? null;
+      return { success: true, id: insertId };
     }),
 
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -492,6 +497,110 @@ Return ONLY valid JSON:
     }),
 });
 
+// ── Tracking Router ────────────────────────────────────────────────────────
+
+const trackingRouter = router({
+  // Generate tracked versions of emails (with pixel + wrapped links) and store them
+  createTracked: protectedProcedure
+    .input(z.object({
+      campaignId: z.number().int(),
+      emails: z.array(z.object({
+        company: z.string(),
+        subject: z.string(),
+        body: z.string(),
+      })),
+      baseUrl: z.string().url(), // frontend origin for building tracking URLs
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const results: Array<{
+        emailIndex: number;
+        company: string;
+        trackingToken: string;
+        subject: string;
+        bodyHtml: string;
+        bodyText: string;
+      }> = [];
+
+      for (let i = 0; i < input.emails.length; i++) {
+        const email = input.emails[i]!;
+        const token = nanoid(24);
+        const pixelUrl = `${input.baseUrl}/api/track/open/${token}`;
+
+        // Wrap any URLs in the body with click-tracking redirects
+        const trackedBody = email.body.replace(
+          /(https?:\/\/[^\s<>"']+)/g,
+          (url) => {
+            const encoded = encodeURIComponent(url);
+            return `${input.baseUrl}/api/track/click/${token}?url=${encoded}`;
+          }
+        );
+
+        // Build HTML version with tracking pixel
+        const bodyHtml = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+${trackedBody
+  .split("\n\n")
+  .map(p => p.trim() ? `<p>${p.replace(/\n/g, "<br>")}</p>` : "")
+  .join("\n")}
+<img src="${pixelUrl}" width="1" height="1" alt="" style="display:block;width:1px;height:1px;border:0;">
+</body>
+</html>`;
+
+        await createTrackedEmail({
+          campaignId: input.campaignId,
+          userId: ctx.user.id,
+          emailIndex: i,
+          company: email.company,
+          trackingToken: token,
+          subject: email.subject,
+          bodyHtml,
+          bodyText: trackedBody,
+        });
+
+        results.push({
+          emailIndex: i,
+          company: email.company,
+          trackingToken: token,
+          subject: email.subject,
+          bodyHtml,
+          bodyText: trackedBody,
+        });
+      }
+
+      return { success: true, tracked: results };
+    }),
+
+  // Get tracked emails for a campaign
+  getTracked: protectedProcedure
+    .input(z.object({ campaignId: z.number().int() }))
+    .query(async ({ ctx, input }) => {
+      // Verify ownership
+      const campaign = await getOutreachCampaignById(input.campaignId);
+      if (!campaign || campaign.userId !== ctx.user.id) return [];
+      return getTrackedEmailsByCampaign(input.campaignId);
+    }),
+
+  // Get per-email open/click stats for a campaign
+  getStats: protectedProcedure
+    .input(z.object({ campaignId: z.number().int() }))
+    .query(async ({ ctx, input }) => {
+      const campaign = await getOutreachCampaignById(input.campaignId);
+      if (!campaign || campaign.userId !== ctx.user.id) return [];
+      return getTrackingStatsByCampaign(input.campaignId);
+    }),
+
+  // Get raw event log for a campaign
+  getEvents: protectedProcedure
+    .input(z.object({ campaignId: z.number().int() }))
+    .query(async ({ ctx, input }) => {
+      const campaign = await getOutreachCampaignById(input.campaignId);
+      if (!campaign || campaign.userId !== ctx.user.id) return [];
+      return getTrackingEventsByCampaign(input.campaignId);
+    }),
+});
+
 // ── App Router ─────────────────────────────────────────────────────────────
 
 export const appRouter = router({
@@ -507,6 +616,7 @@ export const appRouter = router({
   attract: attractRouter,
   convert: convertRouter,
   deliver: deliverRouter,
+  tracking: trackingRouter,
 });
 
 export type AppRouter = typeof appRouter;

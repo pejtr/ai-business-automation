@@ -8,16 +8,22 @@ vi.mock("./db", () => ({
   getLeadListsByUser: vi.fn().mockResolvedValue([]),
   getLeadListById: vi.fn().mockResolvedValue(null),
   deleteLeadList: vi.fn().mockResolvedValue({}),
-  createOutreachCampaign: vi.fn().mockResolvedValue({}),
+  createOutreachCampaign: vi.fn().mockResolvedValue([{ insertId: 42 }]),
   getOutreachCampaignsByUser: vi.fn().mockResolvedValue([]),
-  getOutreachCampaignById: vi.fn().mockResolvedValue(null),
+  getOutreachCampaignById: vi.fn().mockImplementation((id: number) =>
+    id === 42 ? Promise.resolve({ id: 42, userId: 1, title: "Test", emails: [] }) : Promise.resolve(null)
+  ),
   deleteOutreachCampaign: vi.fn().mockResolvedValue({}),
-  createResearchReport: vi.fn().mockResolvedValue({}),
+  createResearchReport: vi.fn().mockResolvedValue(1),
   getResearchReportsByUser: vi.fn().mockResolvedValue([]),
   getResearchReportById: vi.fn().mockResolvedValue(null),
   getResearchReportByShareToken: vi.fn().mockResolvedValue(null),
   updateResearchReport: vi.fn().mockResolvedValue({}),
   deleteResearchReport: vi.fn().mockResolvedValue({}),
+  createTrackedEmail: vi.fn().mockResolvedValue(1),
+  getTrackedEmailsByCampaign: vi.fn().mockResolvedValue([]),
+  getTrackingStatsByCampaign: vi.fn().mockResolvedValue([]),
+  getTrackingEventsByCampaign: vi.fn().mockResolvedValue([]),
 }));
 
 // Mock LLM
@@ -141,5 +147,54 @@ describe("deliver.getByShareToken", () => {
     const caller = appRouter.createCaller(ctx);
     const result = await caller.deliver.getByShareToken({ token: "invalid-token" });
     expect(result).toBeNull();
+  });
+});
+
+describe("convert.save", () => {
+  it("saves a campaign and returns an id", async () => {
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.convert.save({
+      title: "Test Campaign",
+      emails: [{ company: "Acme", subject: "Hello Acme", body: "Hi there..." }],
+    });
+    expect(result.success).toBe(true);
+    expect(result.id).toBe(42);
+  });
+});
+
+describe("tracking.getStats", () => {
+  it("returns empty stats for a campaign owned by the user", async () => {
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.tracking.getStats({ campaignId: 42 });
+    expect(Array.isArray(result)).toBe(true);
+  });
+
+  it("returns empty array for a campaign not owned by the user", async () => {
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    // campaignId 999 → getOutreachCampaignById returns null
+    const result = await caller.tracking.getStats({ campaignId: 999 });
+    expect(result).toEqual([]);
+  });
+});
+
+describe("tracking.getTracked", () => {
+  it("returns empty array when no tracked emails exist", async () => {
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.tracking.getTracked({ campaignId: 42 });
+    expect(Array.isArray(result)).toBe(true);
+    expect(result).toHaveLength(0);
+  });
+});
+
+describe("tracking.getEvents", () => {
+  it("returns empty array when no events exist", async () => {
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.tracking.getEvents({ campaignId: 42 });
+    expect(Array.isArray(result)).toBe(true);
   });
 });

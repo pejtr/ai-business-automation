@@ -54,3 +54,15 @@
 - [x] Vitest tests for all routers (9 tests passing)
 - [x] TypeScript: 0 errors
 - [x] Final checkpoint and delivery
+
+## Email Tracking Feature (Convert Module Enhancement)
+- [x] DB schema: email_tracking_events table (id, campaignId, emailIndex, company, eventType: open|click, linkUrl, ip, userAgent, createdAt)
+- [x] DB schema: tracked_emails table (id, campaignId, emailIndex, company, trackingToken, subject, body, createdAt)
+- [x] Server: GET /api/track/open/:token — serve 1x1 transparent pixel, record open event
+- [x] Server: GET /api/track/click/:token?url=... — record click event, redirect to destination URL
+- [x] tRPC: convert.getTrackingStats — return open/click counts per campaign and per email
+- [x] tRPC: convert.generateTracked — generate emails with tracking pixel and tracked links injected
+- [x] Convert UI: "Tracking" tab in campaign view showing open rate, click rate per email
+- [x] Convert UI: Copy tracked email (HTML with pixel + tracked links) button
+- [x] Convert UI: Real-time stats refresh button
+- [x] Vitest tests for tracking router

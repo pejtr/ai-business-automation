@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   InsertUser,
@@ -9,6 +9,10 @@ import {
   InsertOutreachCampaign,
   researchReports,
   InsertResearchReport,
+  trackedEmails,
+  InsertTrackedEmail,
+  emailTrackingEvents,
+  InsertEmailTrackingEvent,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
@@ -156,4 +160,67 @@ export async function deleteResearchReport(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   return db.delete(researchReports).where(eq(researchReports.id, id));
+}
+
+// ── Tracked Emails ─────────────────────────────────────────────────────────
+
+export async function createTrackedEmail(data: InsertTrackedEmail): Promise<number | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(trackedEmails).values(data);
+  const insertId = (result as unknown as [{ insertId: number }])[0]?.insertId;
+  return insertId ?? null;
+}
+
+export async function getTrackedEmailsByToken(token: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(trackedEmails).where(eq(trackedEmails.trackingToken, token)).limit(1);
+  return result[0];
+}
+
+export async function getTrackedEmailsByCampaign(campaignId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(trackedEmails).where(eq(trackedEmails.campaignId, campaignId)).orderBy(trackedEmails.emailIndex);
+}
+
+// ── Email Tracking Events ──────────────────────────────────────────────────
+
+export async function createTrackingEvent(data: InsertEmailTrackingEvent) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(emailTrackingEvents).values(data);
+}
+
+export async function getTrackingEventsByCampaign(campaignId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(emailTrackingEvents).where(eq(emailTrackingEvents.campaignId, campaignId)).orderBy(desc(emailTrackingEvents.createdAt));
+}
+
+export async function getTrackingStatsByCampaign(campaignId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  // Return per-email stats: opens and clicks
+  const events = await db
+    .select()
+    .from(emailTrackingEvents)
+    .where(eq(emailTrackingEvents.campaignId, campaignId));
+
+  // Group by emailIndex + eventType
+  const statsMap = new Map<number, { opens: number; clicks: number; lastOpenAt: Date | null; lastClickAt: Date | null }>();
+  for (const event of events) {
+    const existing = statsMap.get(event.emailIndex) ?? { opens: 0, clicks: 0, lastOpenAt: null, lastClickAt: null };
+    if (event.eventType === "open") {
+      existing.opens++;
+      if (!existing.lastOpenAt || event.createdAt > existing.lastOpenAt) existing.lastOpenAt = event.createdAt;
+    } else {
+      existing.clicks++;
+      if (!existing.lastClickAt || event.createdAt > existing.lastClickAt) existing.lastClickAt = event.createdAt;
+    }
+    statsMap.set(event.emailIndex, existing);
+  }
+
+  return Array.from(statsMap.entries()).map(([emailIndex, stats]) => ({ emailIndex, ...stats }));
 }
