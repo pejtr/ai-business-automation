@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Magnet, Download, Save, Loader2, ExternalLink, RefreshCw, ChevronRight } from "lucide-react";
+import { Magnet, Download, Save, Loader2, ExternalLink, RefreshCw, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const stepColor = "oklch(0.78 0.22 195)";
 
 interface Lead {
   company: string;

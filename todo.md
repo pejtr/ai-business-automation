@@ -66,3 +66,21 @@
 - [x] Convert UI: Copy tracked email (HTML with pixel + tracked links) button
 - [x] Convert UI: Real-time stats refresh button
 - [x] Vitest tests for tracking router
+
+## Neon Glow Redesign
+- [ ] Global CSS: neon palette (cyan, violet, pink, green), glow box-shadows, glassmorphism cards
+- [ ] AppLayout: neon sidebar with glowing active states, gradient logo
+- [ ] Home page: neon step cards with glow on hover, gradient hero text
+- [ ] Attract page: neon form inputs, glowing generate button, neon table
+- [ ] Convert page: neon tabs, glowing email cards, tracking stats with neon badges
+- [ ] Deliver page: neon research form, glowing report sections
+- [ ] Automate + HumanElement + SavedProjects: consistent neon style
+
+## AI Assistant Widget
+- [x] Upload assistant avatar image to static storage
+- [x] tRPC: assistant.chat mutation — context-aware AI responses about the platform
+- [x] AssistantWidget component — floating button with avatar, slide-up chat panel
+- [x] Neon glow styling consistent with platform design
+- [x] Integrate into AppLayout (visible on all pages)
+- [x] Context awareness — assistant knows current page and can guide user
+- [x] Vitest tests for assistant router

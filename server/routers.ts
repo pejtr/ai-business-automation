@@ -601,6 +601,58 @@ ${trackedBody
     }),
 });
 
+// ── Assistant Router ──────────────────────────────────────────────────────
+
+const MessageSchema = z.object({
+  role: z.enum(["user", "assistant"]),
+  content: z.string(),
+});
+
+const assistantRouter = router({
+  chat: protectedProcedure
+    .input(z.object({
+      message: z.string().min(1).max(2000),
+      history: z.array(MessageSchema).max(20).default([]),
+      currentPage: z.string().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const systemPrompt = `You are Aria, a friendly and highly knowledgeable AI assistant for the Agency AI platform — a 5-step business automation framework for modern agencies.
+
+You help users navigate and get the most out of the platform. Here is what each module does:
+
+1. ATTRACT — AI-powered lead generation. Users input a niche, platform, and count to generate structured lead lists (company, website, social handles, recent topics). Leads can be exported as CSV.
+
+2. CONVERT — Personalized outreach email generator. Takes a saved lead list and generates individual email drafts (subject + body) referencing each brand's recent activity. Includes email open tracking and click tracking.
+
+3. DELIVER — Two-part module:
+   a) Brand Research: AI analyzes a company and generates a detailed structured report (online presence, engagement, messaging effectiveness).
+   b) Presentation: Converts the research report into a multi-slide branded presentation, extracting the brand's colors and typography automatically.
+
+4. AUTOMATE — Coming soon. Will connect all modules into automated pipelines.
+
+5. HUMAN ELEMENT — Philosophy page about the irreplaceable human qualities: Taste, Vision, and Care.
+
+SAVED PROJECTS — Users can save and revisit all lead lists, campaigns, and research reports.
+
+The user is currently on: ${input.currentPage ?? "the platform"}.
+
+Be concise, helpful, and friendly. Use short paragraphs. Guide users step by step when they ask how to do something. If they ask about a feature not yet built, acknowledge it's coming soon. Always respond in the same language the user writes in.`;
+
+      const messages = [
+        { role: "system" as const, content: systemPrompt },
+        ...input.history.map(m => ({ role: m.role as "user" | "assistant", content: m.content })),
+        { role: "user" as const, content: input.message },
+      ];
+
+      const response = await invokeLLM({ messages });
+      const content = typeof response.choices[0].message.content === "string"
+        ? response.choices[0].message.content
+        : "I'm here to help! What would you like to know about the platform?";
+
+      return { reply: content };
+    }),
+});
+
 // ── App Router ─────────────────────────────────────────────────────────────
 
 export const appRouter = router({
@@ -617,6 +669,7 @@ export const appRouter = router({
   convert: convertRouter,
   deliver: deliverRouter,
   tracking: trackingRouter,
+  assistant: assistantRouter,
 });
 
 export type AppRouter = typeof appRouter;

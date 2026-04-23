@@ -198,3 +198,53 @@ describe("tracking.getEvents", () => {
     expect(Array.isArray(result)).toBe(true);
   });
 });
+
+describe("assistant.chat", () => {
+  it("returns a reply from the LLM for a simple message", async () => {
+    const { invokeLLM } = await import("./_core/llm");
+    (invokeLLM as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      choices: [{ message: { content: "Hello! I'm Aria, your Agency AI assistant." } }],
+    });
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.assistant.chat({
+      message: "Hello",
+      history: [],
+      currentPage: "Dashboard",
+    });
+    expect(result.reply).toBe("Hello! I'm Aria, your Agency AI assistant.");
+  });
+
+  it("includes conversation history in the LLM call", async () => {
+    const { invokeLLM } = await import("./_core/llm");
+    (invokeLLM as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      choices: [{ message: { content: "The Attract module generates leads using AI." } }],
+    });
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.assistant.chat({
+      message: "What does Attract do?",
+      history: [
+        { role: "user", content: "Hi" },
+        { role: "assistant", content: "Hello! How can I help?" },
+      ],
+      currentPage: "Attract — Lead Generation",
+    });
+    expect(result.reply).toContain("Attract");
+  });
+
+  it("falls back gracefully when LLM returns non-string content", async () => {
+    const { invokeLLM } = await import("./_core/llm");
+    (invokeLLM as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      choices: [{ message: { content: null } }],
+    });
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+    const result = await caller.assistant.chat({
+      message: "Test",
+      history: [],
+    });
+    expect(typeof result.reply).toBe("string");
+    expect(result.reply.length).toBeGreaterThan(0);
+  });
+});
