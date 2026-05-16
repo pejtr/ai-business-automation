@@ -51,9 +51,9 @@ export default function Deliver() {
   const generateResearch = trpc.deliver.generateResearch.useMutation({
     onSuccess: (data) => {
       setReportContent(data.reportContent);
-      toast.success("Brand analysis report generated");
+      toast.success("Analýza značky byla vygenerována");
     },
-    onError: (err) => toast.error(`Research failed: ${err.message}`),
+    onError: (err) => toast.error(`Výzkum selhal: ${err.message}`),
   });
 
   const extractColors = trpc.deliver.extractBrandColors.useMutation({
@@ -62,41 +62,41 @@ export default function Deliver() {
       setPrimaryColor(data.primaryColor);
       setSecondaryColor(data.secondaryColor);
       setFontFamily(data.fontFamily);
-      toast.success("Brand colors extracted");
+      toast.success("Barvy značky byly extrahovány");
     },
-    onError: (err) => toast.error(`Color extraction failed: ${err.message}`),
+    onError: (err) => toast.error(`Extrakce barev selhala: ${err.message}`),
   });
 
   const generatePresentation = trpc.deliver.generatePresentation.useMutation({
     onSuccess: (data) => {
       setPresentationHtml(data.presentationHtml);
-      toast.success("Presentation generated");
+      toast.success("Prezentace byla vygenerována");
     },
-    onError: (err) => toast.error(`Presentation failed: ${err.message}`),
+    onError: (err) => toast.error(`Generování prezentace selhalo: ${err.message}`),
   });
 
   const saveReport = trpc.deliver.saveReport.useMutation({
     onSuccess: (data) => {
       setShareToken(data.shareToken);
       if (data.id != null) setSavedReportId(data.id);
-      toast.success("Report saved to projects");
+      toast.success("Report uložen do projektů");
       setShowSaveForm(false);
     },
-    onError: (err) => toast.error(`Save failed: ${err.message}`),
+    onError: (err) => toast.error(`Uložení selhalo: ${err.message}`),
   });
 
   const handleGenerateResearch = () => {
-    if (!companyName.trim()) { toast.error("Please enter a company name"); return; }
+    if (!companyName.trim()) { toast.error("Zadejte název společnosti"); return; }
     generateResearch.mutate({ companyName, companyUrl: companyUrl || undefined, focus: focus || undefined });
   };
 
   const handleExtractColors = () => {
-    if (!companyName.trim()) { toast.error("Please enter a company name first"); return; }
+    if (!companyName.trim()) { toast.error("Nejprve zadejte název společnosti"); return; }
     extractColors.mutate({ companyName, companyUrl: companyUrl || undefined });
   };
 
   const handleGeneratePresentation = () => {
-    if (!reportContent) { toast.error("Please generate a research report first"); return; }
+    if (!reportContent) { toast.error("Nejprve vygenerujte výzkumný report"); return; }
     // Use savedReportId if available, otherwise 0 (presentation stored locally only)
     generatePresentation.mutate({
       reportId: savedReportId ?? 0,
@@ -129,7 +129,7 @@ export default function Deliver() {
     a.download = `${companyName.toLowerCase().replace(/\s+/g, "-")}-analysis.md`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Report downloaded");
+    toast.success("Report stažen");
   };
 
   const downloadPresentation = () => {
@@ -141,7 +141,7 @@ export default function Deliver() {
     a.download = `${companyName.toLowerCase().replace(/\s+/g, "-")}-presentation.html`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Presentation downloaded as HTML");
+    toast.success("Prezentace stažena jako HTML");
   };
 
   const openPresentation = () => {
@@ -174,7 +174,7 @@ export default function Deliver() {
               </span>
             </div>
             <p className="text-muted-foreground text-sm ml-12">
-              Deep brand research and professional presentations — automatically generated with brand-matched styling.
+              Hloubkový výzkum značky a profesionální prezentace — automaticky generované s přizpůsobeným stylingem.
             </p>
           </div>
           {(reportContent || presentationHtml) && (
@@ -182,18 +182,18 @@ export default function Deliver() {
               {reportContent && (
                 <Button variant="outline" size="sm" onClick={downloadReport} className="border-border text-foreground hover:bg-white/5 gap-2">
                   <Download className="w-3.5 h-3.5" />
-                  Report
+                  Stáhnout report
                 </Button>
               )}
               {presentationHtml && (
                 <Button variant="outline" size="sm" onClick={downloadPresentation} className="border-border text-foreground hover:bg-white/5 gap-2">
                   <Download className="w-3.5 h-3.5" />
-                  Presentation
+                  Stáhnout prezentaci
                 </Button>
               )}
               <Button size="sm" onClick={() => setShowSaveForm(!showSaveForm)} className="gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
                 <Save className="w-3.5 h-3.5" />
-                Save Report
+                Uložit report
               </Button>
             </div>
           )}
@@ -213,7 +213,7 @@ export default function Deliver() {
               )}
               style={activeTab === tab ? { background: `${stepColor.replace(")", " / 0.12)")}`, color: stepColor } : {}}
             >
-              {tab === "research" ? "Research Report" : "Presentation"}
+              {tab === "research" ? "Výzkumný report" : "Prezentace"}
             </button>
           ))}
         </div>
@@ -226,20 +226,20 @@ export default function Deliver() {
             <div data-onboarding="deliver-form" className="rounded-xl border border-border bg-card p-6">
               <h2 className="text-base font-semibold text-foreground mb-5 flex items-center gap-2">
                 <span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-mono" style={{ background: `${stepColor.replace(")", " / 0.15)")}`, color: stepColor }}>1</span>
-                Target Brand
+                Cílová značka
               </h2>
               <div className="space-y-3">
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Company Name</Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Název společnosti</Label>
                   <Input
                     value={companyName}
                     onChange={e => setCompanyName(e.target.value)}
-                    placeholder="e.g. AG1 by Athletic Greens"
+                    placeholder="např. AG1 by Athletic Greens"
                     className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 h-9 text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Website URL <span className="text-muted-foreground/40">(optional)</span></Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">URL webu <span className="text-muted-foreground/40">(volitelné)</span></Label>
                   <Input
                     value={companyUrl}
                     onChange={e => setCompanyUrl(e.target.value)}
@@ -248,11 +248,11 @@ export default function Deliver() {
                   />
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Focus Area <span className="text-muted-foreground/40">(optional)</span></Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Oblast zaměření <span className="text-muted-foreground/40">(volitelné)</span></Label>
                   <Textarea
                     value={focus}
                     onChange={e => setFocus(e.target.value)}
-                    placeholder="e.g. Social media strategy, last 6 months"
+                    placeholder="např. Strategie sociálních médií, posledních 6 měsíců"
                     className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 resize-none text-sm"
                     rows={2}
                   />
@@ -264,9 +264,9 @@ export default function Deliver() {
                   style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}
                 >
                   {generateResearch.isPending ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" />Researching...</>
+                    <><Loader2 className="w-4 h-4 animate-spin" />Analyzuji...</>
                   ) : (
-                    <><FileText className="w-4 h-4" />Generate Research Report</>
+                    <><FileText className="w-4 h-4" />Generovat výzkumný report</>
                   )}
                 </Button>
               </div>
@@ -276,7 +276,7 @@ export default function Deliver() {
             <div className="rounded-xl border border-border bg-card p-6">
               <h2 className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
                 <span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-mono" style={{ background: `${stepColor.replace(")", " / 0.15)")}`, color: stepColor }}>2</span>
-                Brand Styling
+                Styling značky
               </h2>
               <div className="space-y-3">
                 <Button
@@ -287,9 +287,9 @@ export default function Deliver() {
                   className="w-full border-border text-foreground hover:bg-white/5 gap-2 text-xs"
                 >
                   {extractColors.isPending ? (
-                    <><Loader2 className="w-3.5 h-3.5 animate-spin" />Extracting...</>
+                    <><Loader2 className="w-3.5 h-3.5 animate-spin" />Extrahuji...</>
                   ) : (
-                    <><Palette className="w-3.5 h-3.5" />Extract Brand Colors</>
+                    <><Palette className="w-3.5 h-3.5" />Extrahovat barvy značky</>
                   )}
                 </Button>
 
@@ -315,14 +315,14 @@ export default function Deliver() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Primary Color</Label>
+                    <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Primární barva</Label>
                     <div className="flex items-center gap-2">
                       <input type="color" value={primaryColor} onChange={e => setPrimaryColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" />
                       <Input value={primaryColor} onChange={e => setPrimaryColor(e.target.value)} className="bg-input border-border text-foreground h-8 text-xs font-mono flex-1" />
                     </div>
                   </div>
                   <div>
-                    <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Secondary</Label>
+                    <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Sekundární</Label>
                     <div className="flex items-center gap-2">
                       <input type="color" value={secondaryColor} onChange={e => setSecondaryColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" />
                       <Input value={secondaryColor} onChange={e => setSecondaryColor(e.target.value)} className="bg-input border-border text-foreground h-8 text-xs font-mono flex-1" />
@@ -330,7 +330,7 @@ export default function Deliver() {
                   </div>
                 </div>
                 <div>
-                  <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Font Family</Label>
+                  <Label className="text-[10px] text-muted-foreground font-mono mb-1 block">Rodina písma</Label>
                   <Input value={fontFamily} onChange={e => setFontFamily(e.target.value)} className="bg-input border-border text-foreground h-8 text-sm" placeholder="Inter" />
                 </div>
 
@@ -342,9 +342,9 @@ export default function Deliver() {
                   style={{ borderColor: `${stepColor.replace(")", " / 0.3)")}`, color: stepColor }}
                 >
                   {generatePresentation.isPending ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" />Building slides...</>
+                    <><Loader2 className="w-4 h-4 animate-spin" />Sestavuji snímky...</>
                   ) : (
-                    <><Sparkles className="w-4 h-4" />Generate Presentation</>
+                    <><Sparkles className="w-4 h-4" />Generovat prezentaci</>
                   )}
                 </Button>
               </div>
@@ -361,8 +361,8 @@ export default function Deliver() {
                       <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: `${stepColor.replace(")", " / 0.1)")}`, border: `1px solid ${stepColor.replace(")", " / 0.2)")}` }}>
                         <FileText className="w-6 h-6" style={{ color: `${stepColor.replace(")", " / 0.6)")}` }} />
                       </div>
-                      <p className="text-muted-foreground text-sm">Brand analysis report will appear here</p>
-                      <p className="text-muted-foreground/50 text-xs">Enter a company name and click Generate</p>
+                      <p className="text-muted-foreground text-sm">Analýza značky se zobrazí zde</p>
+                      <p className="text-muted-foreground/50 text-xs">Zadejte název společnosti a klikněte na Generovat</p>
                     </div>
                   </div>
                 ) : generateResearch.isPending ? (
@@ -370,8 +370,8 @@ export default function Deliver() {
                     <div className="text-center space-y-4">
                       <div className="w-12 h-12 rounded-full border-2 animate-spin mx-auto" style={{ borderColor: `${stepColor.replace(")", " / 0.3)")}`, borderTopColor: stepColor }} />
                       <div>
-                        <p className="text-foreground text-sm font-medium">Researching {companyName}...</p>
-                        <p className="text-muted-foreground text-xs mt-1">Analyzing online presence, content strategy, and performance</p>
+                        <p className="text-foreground text-sm font-medium">Analyzuji {companyName}...</p>
+                        <p className="text-muted-foreground text-xs mt-1">Analyzuji online přítomnost, obsahovou strategii a výkon</p>
                       </div>
                     </div>
                   </div>
@@ -380,16 +380,16 @@ export default function Deliver() {
                     <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                       <div>
                         <h3 className="text-sm font-semibold text-foreground">Brand Analysis: {companyName}</h3>
-                        <p className="text-xs text-muted-foreground">AI-generated research report</p>
+                        <p className="text-xs text-muted-foreground">AI-generovaný výzkumný report</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="ghost" size="sm" onClick={handleGenerateResearch} className="text-muted-foreground hover:text-foreground gap-1.5 text-xs">
                           <RefreshCw className="w-3 h-3" />
-                          Regenerate
+                          Znovu generovat
                         </Button>
                         <Button variant="ghost" size="sm" onClick={() => setActiveTab("presentation")} className="gap-1.5 text-xs" style={{ color: stepColor }}>
                           <Sparkles className="w-3 h-3" />
-                          Make Presentation
+                          Vytvořit prezentaci
                         </Button>
                       </div>
                     </div>
@@ -407,9 +407,9 @@ export default function Deliver() {
                       <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: `${stepColor.replace(")", " / 0.1)")}`, border: `1px solid ${stepColor.replace(")", " / 0.2)")}` }}>
                         <Sparkles className="w-6 h-6" style={{ color: `${stepColor.replace(")", " / 0.6)")}` }} />
                       </div>
-                      <p className="text-muted-foreground text-sm">Presentation will appear here</p>
+                      <p className="text-muted-foreground text-sm">Prezentace se zobrazí zde</p>
                       <p className="text-muted-foreground/50 text-xs">
-                        {reportContent ? "Set brand colors and click Generate Presentation" : "Generate a research report first"}
+                        {reportContent ? "Nastavte barvy značky a klikněte na Generovat prezentaci" : "Nejprve vygenerujte výzkumný report"}
                       </p>
                     </div>
                   </div>
@@ -418,8 +418,8 @@ export default function Deliver() {
                     <div className="text-center space-y-4">
                       <div className="w-12 h-12 rounded-full border-2 animate-spin mx-auto" style={{ borderColor: `${stepColor.replace(")", " / 0.3)")}`, borderTopColor: stepColor }} />
                       <div>
-                        <p className="text-foreground text-sm font-medium">Building presentation...</p>
-                        <p className="text-muted-foreground text-xs mt-1">Applying {companyName}'s brand colors and typography</p>
+                        <p className="text-foreground text-sm font-medium">Sestavuji prezentaci...</p>
+                        <p className="text-muted-foreground text-xs mt-1">Aplikuji barvy a typografii značky {companyName}</p>
                       </div>
                     </div>
                   </div>
@@ -428,16 +428,16 @@ export default function Deliver() {
                     <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                       <div>
                         <h3 className="text-sm font-semibold text-foreground">{companyName} — Brand Presentation</h3>
-                        <p className="text-xs text-muted-foreground">Multi-slide presentation with brand styling</p>
+                        <p className="text-xs text-muted-foreground">Vícesnímková prezentace s brandingem</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="outline" size="sm" onClick={openPresentation} className="border-border text-foreground hover:bg-white/5 gap-2 text-xs">
                           <ExternalLink className="w-3 h-3" />
-                          Open Full Screen
+                          Otevřít celou obrazovku
                         </Button>
                         <Button variant="outline" size="sm" onClick={downloadPresentation} className="border-border text-foreground hover:bg-white/5 gap-2 text-xs">
                           <Download className="w-3 h-3" />
-                          Download HTML
+                          Stáhnout HTML
                         </Button>
                       </div>
                     </div>
@@ -445,7 +445,7 @@ export default function Deliver() {
                       <iframe
                         srcDoc={presentationHtml}
                         className="w-full h-full border-0"
-                        title="Brand Presentation"
+                        title="Prezentace značky"
                         sandbox="allow-scripts allow-same-origin"
                       />
                     </div>
@@ -461,7 +461,7 @@ export default function Deliver() {
           <div className="mt-6 rounded-xl border border-border bg-card p-4 flex items-center gap-4">
             <Share2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <div className="flex-1">
-              <p className="text-xs text-muted-foreground mb-1">Shareable link</p>
+              <p className="text-xs text-muted-foreground mb-1">Sdílitelný odkaz</p>
               <p className="text-sm font-mono text-foreground">{window.location.origin}/share/{shareToken}</p>
             </div>
             <Button
@@ -469,11 +469,11 @@ export default function Deliver() {
               variant="outline"
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/share/${shareToken}`);
-                toast.success("Link copied");
+                toast.success("Odkaz zkopírován");
               }}
               className="border-border text-foreground hover:bg-white/5 text-xs"
             >
-              Copy Link
+              Kopírovat odkaz
             </Button>
           </div>
         )}
@@ -483,7 +483,7 @@ export default function Deliver() {
           <div className="mt-4 rounded-xl border p-5 flex items-center gap-4" style={{ borderColor: `${stepColor.replace(")", " / 0.3)")}`, background: `${stepColor.replace(")", " / 0.05)")}` }}>
             <Save className="w-4 h-4 flex-shrink-0" style={{ color: stepColor }} />
             <div className="flex-1">
-              <Label className="text-xs text-muted-foreground mb-1 block">Save report as</Label>
+              <Label className="text-xs text-muted-foreground mb-1 block">Uložit report jako</Label>
               <Input
                 value={saveTitle}
                 onChange={e => setSaveTitle(e.target.value)}
@@ -497,9 +497,9 @@ export default function Deliver() {
               size="sm"
               style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}
             >
-              {saveReport.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+              {saveReport.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Uložit"}
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => setShowSaveForm(false)} className="text-muted-foreground">Cancel</Button>
+            <Button variant="ghost" size="sm" onClick={() => setShowSaveForm(false)} className="text-muted-foreground">Zrušit</Button>
           </div>
         )}
       </div>

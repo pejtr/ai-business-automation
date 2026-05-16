@@ -14,17 +14,17 @@ import { Button } from "@/components/ui/button";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 
-/* Each step gets its own neon color */
+/* Každý krok má vlastní neonovou barvu */
 const NAV_ITEMS = [
-  { path: "/attract",       label: "Attract",       icon: Magnet,   step: "01", description: "Lead Generation", color: "oklch(0.78 0.22 195)",  glow: "0 0 18px oklch(0.78 0.22 195 / 0.55)" },
-  { path: "/convert",       label: "Convert",       icon: Mail,     step: "02", description: "Outreach Emails", color: "oklch(0.68 0.26 295)",  glow: "0 0 18px oklch(0.68 0.26 295 / 0.55)" },
-  { path: "/deliver",       label: "Deliver",       icon: FileText, step: "03", description: "Brand Research",  color: "oklch(0.72 0.24 340)",  glow: "0 0 18px oklch(0.72 0.24 340 / 0.55)" },
-  { path: "/automate",      label: "Automate",      icon: Zap,      step: "04", description: "Workflows",       color: "oklch(0.78 0.22 145)",  glow: "0 0 18px oklch(0.78 0.22 145 / 0.55)" },
-  { path: "/human-element", label: "Human Element", icon: Heart,    step: "05", description: "Vision & Taste",  color: "oklch(0.82 0.18 75)",   glow: "0 0 18px oklch(0.82 0.18 75 / 0.55)" },
+  { path: "/attract",       label: "Attract",       icon: Magnet,   step: "01", description: "Generování leadů",   color: "oklch(0.78 0.22 195)",  glow: "0 0 18px oklch(0.78 0.22 195 / 0.55)" },
+  { path: "/convert",       label: "Convert",       icon: Mail,     step: "02", description: "Outreach e-maily",   color: "oklch(0.68 0.26 295)",  glow: "0 0 18px oklch(0.68 0.26 295 / 0.55)" },
+  { path: "/deliver",       label: "Deliver",       icon: FileText, step: "03", description: "Brand výzkum",       color: "oklch(0.72 0.24 340)",  glow: "0 0 18px oklch(0.72 0.24 340 / 0.55)" },
+  { path: "/automate",      label: "Automate",      icon: Zap,      step: "04", description: "Automatizace",       color: "oklch(0.78 0.22 145)",  glow: "0 0 18px oklch(0.78 0.22 145 / 0.55)" },
+  { path: "/human-element", label: "Human Element", icon: Heart,    step: "05", description: "Vize & Vkus",        color: "oklch(0.82 0.18 75)",   glow: "0 0 18px oklch(0.82 0.18 75 / 0.55)" },
 ];
 
 const SECONDARY_ITEMS = [
-  { path: "/saved", label: "Saved Projects", icon: FolderOpen },
+  { path: "/saved", label: "Uložené projekty", icon: FolderOpen },
 ];
 
 interface AppLayoutProps { children: ReactNode; }
@@ -33,13 +33,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { user, isAuthenticated, loading } = useAuth();
   const [location] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const { restartOnboarding, isCompleted } = useOnboarding();
+  const { restartOnboarding } = useOnboarding();
   const logout = trpc.auth.logout.useMutation({
     onSuccess: () => { window.location.href = "/"; },
-    onError: () => toast.error("Logout failed"),
+    onError: () => toast.error("Odhlášení se nezdařilo"),
   });
 
-  /* ── Loading ── */
+  /* ── Načítání ── */
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center dot-grid">
@@ -49,18 +49,17 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <div className="absolute inset-2 rounded-full border border-[oklch(0.68_0.26_295/0.4)]" />
           </div>
           <p className="text-muted-foreground text-xs font-mono tracking-[0.2em] uppercase glow-cyan" style={{ color: "oklch(0.78 0.22 195)" }}>
-            Initializing
+            Inicializace
           </p>
         </div>
       </div>
     );
   }
 
-  /* ── Unauthenticated ── */
+  /* ── Nepřihlášen ── */
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center dot-grid relative overflow-hidden">
-        {/* Ambient glow blobs */}
         <div className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full blur-[120px] pointer-events-none" style={{ background: "oklch(0.78 0.22 195 / 0.06)" }} />
         <div className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{ background: "oklch(0.68 0.26 295 / 0.06)" }} />
 
@@ -72,15 +71,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
             </div>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">Agency AI Platform</h2>
-            <p className="text-muted-foreground text-sm">Sign in to access your AI-powered workflow</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">Agency AI Platforma</h2>
+            <p className="text-muted-foreground text-sm">Přihlaste se a získejte přístup k vašemu AI workflow</p>
           </div>
           <Button
             onClick={() => window.location.href = getLoginUrl()}
             className="w-full font-semibold h-11"
             style={{ background: "linear-gradient(135deg, oklch(0.78 0.22 195), oklch(0.68 0.26 295))", color: "oklch(0.07 0.012 260)", boxShadow: "0 0 24px oklch(0.78 0.22 195 / 0.4)" }}
           >
-            Sign In
+            Přihlásit se
           </Button>
         </div>
       </div>
@@ -113,7 +112,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             {!collapsed && (
               <div className="min-w-0">
                 <p className="text-sm font-bold text-foreground truncate leading-tight tracking-tight">Agency AI</p>
-                <p className="text-[9px] font-mono tracking-[0.15em] uppercase" style={{ color: "oklch(0.78 0.22 195 / 0.6)" }}>Platform</p>
+                <p className="text-[9px] font-mono tracking-[0.15em] uppercase" style={{ color: "oklch(0.78 0.22 195 / 0.6)" }}>Platforma</p>
               </div>
             )}
           </Link>
@@ -126,14 +125,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </button>
         </div>
 
-        {/* Section label */}
+        {/* Sekce label */}
         {!collapsed && (
           <div className="px-3 pt-4 pb-1.5">
             <p className="text-[9px] font-mono tracking-[0.18em] uppercase" style={{ color: "oklch(0.38 0.02 260)" }}>Framework</p>
           </div>
         )}
 
-        {/* Main nav */}
+        {/* Hlavní navigace */}
         <nav className="flex-1 px-2 py-1.5 space-y-0.5 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -153,19 +152,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
                     border: "1px solid transparent",
                   }}
                 >
-                  {/* Hover bg */}
                   {!active && (
                     <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "oklch(0.15 0.02 260)" }} />
                   )}
-
-                  {/* Icon */}
                   <div className="relative flex-shrink-0">
                     <Icon
                       className="w-4 h-4 relative z-10 transition-all duration-200"
                       style={active ? { color: item.color, filter: `drop-shadow(0 0 6px ${item.color.replace(")", " / 0.9)")})` } : {}}
                     />
                   </div>
-
                   {!collapsed && (
                     <div className="flex-1 min-w-0 relative z-10">
                       <div className="flex items-center gap-1.5">
@@ -187,8 +182,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
                       </p>
                     </div>
                   )}
-
-                  {/* Active left accent bar */}
                   {active && (
                     <div
                       className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
@@ -200,7 +193,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             );
           })}
 
-          {/* Divider */}
+          {/* Oddělovač */}
           <div className="my-2 mx-1 neon-divider" />
 
           {SECONDARY_ITEMS.map((item) => {
@@ -233,7 +226,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           })}
         </nav>
 
-        {/* User section */}
+        {/* Uživatelská sekce */}
         <div className="p-2" style={{ borderTop: "1px solid oklch(0.18 0.02 260)" }}>
           {!collapsed ? (
             <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl" style={{ background: "oklch(0.11 0.016 260)" }}>
@@ -244,14 +237,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 {user?.name?.charAt(0)?.toUpperCase() ?? "U"}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-foreground truncate leading-tight">{user?.name ?? "User"}</p>
+                <p className="text-xs font-semibold text-foreground truncate leading-tight">{user?.name ?? "Uživatel"}</p>
                 <p className="text-[10px] truncate" style={{ color: "oklch(0.40 0.02 260)" }}>{user?.email ?? ""}</p>
               </div>
               <button
                 onClick={() => restartOnboarding()}
                 className="transition-colors p-1 rounded-lg hover:bg-white/5"
                 style={{ color: "oklch(0.78 0.22 195 / 0.5)" }}
-                title="Restart onboarding tour"
+                title="Restartovat průvodce"
               >
                 <Sparkles className="w-3.5 h-3.5" />
               </button>
@@ -259,7 +252,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 onClick={() => logout.mutate()}
                 className="transition-colors p-1 rounded-lg hover:bg-white/5"
                 style={{ color: "oklch(0.40 0.02 260)" }}
-                title="Sign out"
+                title="Odhlásit se"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
@@ -269,7 +262,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
               onClick={() => logout.mutate()}
               className="w-full flex items-center justify-center py-2 rounded-xl transition-colors hover:bg-white/5"
               style={{ color: "oklch(0.40 0.02 260)" }}
-              title="Sign out"
+              title="Odhlásit se"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -277,12 +270,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
         </div>
       </aside>
 
-      {/* Main content */}
+      {/* Hlavní obsah */}
       <main className="flex-1 min-w-0 overflow-auto">
         {children}
       </main>
 
-      {/* AI Assistant Widget */}
+      {/* AI Asistentka Widget */}
       <AssistantWidget />
 
       {/* Onboarding Overlay */}

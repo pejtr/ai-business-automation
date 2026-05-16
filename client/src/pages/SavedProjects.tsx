@@ -22,13 +22,13 @@ export default function SavedProjects() {
   const campaigns  = trpc.convert.list.useQuery();
   const reports    = trpc.deliver.list.useQuery();
 
-  const deleteLeadList  = trpc.attract.delete.useMutation({ onSuccess: () => { leadLists.refetch();  toast.success("Lead list deleted"); }, onError: () => toast.error("Delete failed") });
-  const deleteCampaign  = trpc.convert.delete.useMutation({ onSuccess: () => { campaigns.refetch();  toast.success("Campaign deleted"); }, onError: () => toast.error("Delete failed") });
-  const deleteReport    = trpc.deliver.delete.useMutation({ onSuccess: () => { reports.refetch();    toast.success("Report deleted"); },   onError: () => toast.error("Delete failed") });
+  const deleteLeadList  = trpc.attract.delete.useMutation({ onSuccess: () => { leadLists.refetch();  toast.success("Seznam leadů smazán"); }, onError: () => toast.error("Smazání selhalo") });
+  const deleteCampaign  = trpc.convert.delete.useMutation({ onSuccess: () => { campaigns.refetch();  toast.success("Kampaň smazána"); }, onError: () => toast.error("Smazání selhalo") });
+  const deleteReport    = trpc.deliver.delete.useMutation({ onSuccess: () => { reports.refetch();    toast.success("Report smazán"); },   onError: () => toast.error("Smazání selhalo") });
 
   const downloadLeadCSV = (list: NonNullable<typeof leadLists.data>[0]) => {
     const leads = list.leads as Array<{ company: string; website: string; instagram?: string; facebook?: string; twitter?: string; recentTopics: string }>;
-    const headers = ["Company", "Website", "Instagram", "Facebook", "Twitter", "Recent Topics"];
+    const headers = ["Společnost", "Web", "Instagram", "Facebook", "Twitter", "Aktuální témata"];
     const rows = leads.map(l => [`"${l.company}"`, `"${l.website}"`, `"${l.instagram ?? ""}"`, `"${l.facebook ?? ""}"`, `"${l.twitter ?? ""}"`, `"${l.recentTopics.replace(/"/g, '""')}"`]);
     const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
@@ -36,7 +36,7 @@ export default function SavedProjects() {
     const a = document.createElement("a");
     a.href = url; a.download = `${list.title.toLowerCase().replace(/\s+/g, "-")}.csv`; a.click();
     URL.revokeObjectURL(url);
-    toast.success("CSV downloaded");
+    toast.success("CSV staženo");
   };
 
   const downloadReport = (report: NonNullable<typeof reports.data>[0]) => {
@@ -45,7 +45,7 @@ export default function SavedProjects() {
     const a = document.createElement("a");
     a.href = url; a.download = `${report.companyName.toLowerCase().replace(/\s+/g, "-")}-analysis.md`; a.click();
     URL.revokeObjectURL(url);
-    toast.success("Report downloaded");
+    toast.success("Report stažen");
   };
 
   const openPresentation = (html: string) => {
@@ -54,9 +54,9 @@ export default function SavedProjects() {
   };
 
   const tabs: { id: Tab; label: string; icon: typeof Magnet; count: number }[] = [
-    { id: "leads",     label: "Lead Lists",       icon: Magnet,   count: leadLists.data?.length  ?? 0 },
-    { id: "campaigns", label: "Campaigns",         icon: Mail,     count: campaigns.data?.length  ?? 0 },
-    { id: "reports",   label: "Research Reports",  icon: FileText, count: reports.data?.length    ?? 0 },
+    { id: "leads",     label: "Seznamy leadů",   icon: Magnet,   count: leadLists.data?.length  ?? 0 },
+    { id: "campaigns", label: "Kampaňe",          icon: Mail,     count: campaigns.data?.length  ?? 0 },
+    { id: "reports",   label: "Výzkumné reporty", icon: FileText, count: reports.data?.length    ?? 0 },
   ];
 
   const isLoading = leadLists.isLoading || campaigns.isLoading || reports.isLoading;
@@ -71,17 +71,17 @@ export default function SavedProjects() {
         {/* Header */}
         <div className="px-8 py-6" style={{ borderBottom: "1px solid oklch(0.18 0.02 260)" }}>
           <div className="flex items-center gap-2 text-xs font-mono mb-3" style={{ color: "oklch(0.40 0.02 260)" }}>
-            <span>Platform</span>
+            <span>Platforma</span>
             <ChevronRight className="w-3 h-3" />
-            <span className="text-foreground">Saved Projects</span>
+            <span className="text-foreground">Uložené projekty</span>
           </div>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "oklch(0.78 0.22 195 / 0.1)", border: "1px solid oklch(0.78 0.22 195 / 0.25)", boxShadow: "0 0 14px oklch(0.78 0.22 195 / 0.15)" }}>
               <FolderOpen className="w-4 h-4" style={{ color: "oklch(0.78 0.22 195)", filter: "drop-shadow(0 0 5px oklch(0.78 0.22 195))" }} />
             </div>
-            <h1 className="text-3xl font-bold text-foreground tracking-tight">Saved Projects</h1>
+            <h1 className="text-3xl font-bold text-foreground tracking-tight">Uložené projekty</h1>
           </div>
-          <p className="text-muted-foreground text-sm ml-12">All your lead lists, outreach campaigns, and research reports in one place.</p>
+          <p className="text-muted-foreground text-sm ml-12">Všechny vaše seznamy leadů, outreach kampaňe a výzkumné reporty na jednom místě.</p>
 
           {/* Tabs */}
           <div className="flex items-center gap-1 mt-5 ml-12">
@@ -138,7 +138,7 @@ export default function SavedProjects() {
               {activeTab === "leads" && (
                 <div>
                   {!leadLists.data?.length ? (
-                    <NeonEmptyState icon={Magnet} color={TAB_COLORS.leads} title="No lead lists yet" description="Generate your first lead list in the Attract module" href="/attract" cta="Go to Attract" />
+                    <NeonEmptyState icon={Magnet} color={TAB_COLORS.leads} title="Zatím žádné seznamy leadů" description="Vygenerujte svůj první seznam leadů v modulu Attract" href="/attract" cta="Přejít na Attract" />
                   ) : (
                     <div className="space-y-3">
                       {leadLists.data.map(list => {
@@ -150,7 +150,7 @@ export default function SavedProjects() {
                               <div className="min-w-0">
                                 <p className="text-sm font-semibold text-foreground">{list.title}</p>
                                 <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                  <NeonMeta color={TAB_COLORS.leads}>{leads.length} leads</NeonMeta>
+                                  <NeonMeta color={TAB_COLORS.leads}>{leads.length} leadů</NeonMeta>
                                   <Dot /><NeonMeta>{list.niche}</NeonMeta>
                                   <Dot /><NeonMeta>{list.platform}</NeonMeta>
                                   <Dot /><NeonMeta>{new Date(list.createdAt).toLocaleDateString()}</NeonMeta>
@@ -175,7 +175,7 @@ export default function SavedProjects() {
               {activeTab === "campaigns" && (
                 <div>
                   {!campaigns.data?.length ? (
-                    <NeonEmptyState icon={Mail} color={TAB_COLORS.campaigns} title="No campaigns yet" description="Generate personalized outreach emails in the Convert module" href="/convert" cta="Go to Convert" />
+                    <NeonEmptyState icon={Mail} color={TAB_COLORS.campaigns} title="Zatím žádné kampaňe" description="Generujte personalizované outreach emaily v modulu Convert" href="/convert" cta="Přejít na Convert" />
                   ) : (
                     <div className="space-y-3">
                       {campaigns.data.map(campaign => {
@@ -194,7 +194,7 @@ export default function SavedProjects() {
                                 <div>
                                   <p className="text-sm font-semibold text-foreground">{campaign.title}</p>
                                   <div className="flex items-center gap-2 mt-0.5">
-                                    <NeonMeta color={TAB_COLORS.campaigns}>{emails.length} emails</NeonMeta>
+                                    <NeonMeta color={TAB_COLORS.campaigns}>{emails.length} emailů</NeonMeta>
                                     <Dot /><NeonMeta>{new Date(campaign.createdAt).toLocaleDateString()}</NeonMeta>
                                   </div>
                                 </div>
@@ -212,7 +212,7 @@ export default function SavedProjects() {
                                 </div>
                               ))}
                               {emails.length > 3 && (
-                                <p className="text-xs ml-7" style={{ color: "oklch(0.68 0.26 295 / 0.4)" }}>+{emails.length - 3} more</p>
+                                <p className="text-xs ml-7" style={{ color: "oklch(0.68 0.26 295 / 0.4)" }}>+{emails.length - 3} dalších</p>
                               )}
                             </div>
                           </div>
@@ -227,7 +227,7 @@ export default function SavedProjects() {
               {activeTab === "reports" && (
                 <div>
                   {!reports.data?.length ? (
-                    <NeonEmptyState icon={FileText} color={TAB_COLORS.reports} title="No research reports yet" description="Analyze a brand and generate a research report in the Deliver module" href="/deliver" cta="Go to Deliver" />
+                    <NeonEmptyState icon={FileText} color={TAB_COLORS.reports} title="Zatím žádné reporty" description="Analyzujte značku a vygenerujte výzkumný report v modulu Deliver" href="/deliver" cta="Přejít na Deliver" />
                   ) : (
                     <div className="space-y-3">
                       {reports.data.map(report => (
@@ -239,7 +239,7 @@ export default function SavedProjects() {
                               <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                 {report.companyUrl && (<><NeonMeta>{report.companyUrl}</NeonMeta><Dot /></>)}
                                 <NeonMeta>{new Date(report.createdAt).toLocaleDateString()}</NeonMeta>
-                                {report.presentationHtml && (<><Dot /><NeonMeta color={TAB_COLORS.reports}>+ Slides</NeonMeta></>)}
+                                {report.presentationHtml && (<><Dot /><NeonMeta color={TAB_COLORS.reports}>+ Snímky</NeonMeta></>)}
                               </div>
                               <p className="text-xs mt-1.5 leading-relaxed line-clamp-1" style={{ color: "oklch(0.40 0.02 260)" }}>
                                 {report.reportContent.replace(/[#*`]/g, "").substring(0, 160)}…
@@ -252,12 +252,12 @@ export default function SavedProjects() {
                             </NeonActionBtn>
                             {report.presentationHtml && (
                               <NeonActionBtn color={TAB_COLORS.reports} onClick={() => openPresentation(report.presentationHtml!)}>
-                                <ExternalLink className="w-3 h-3" /> Slides
+                                <ExternalLink className="w-3 h-3" /> Snímky
                               </NeonActionBtn>
                             )}
                             {report.shareToken && (
                               <button
-                                onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/share/${report.shareToken}`); toast.success("Share link copied"); }}
+                                onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/share/${report.shareToken}`); toast.success("Odkaz zkopírován"); }}
                                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
                                 style={{ color: "oklch(0.45 0.02 260)", border: "1px solid oklch(0.20 0.022 260)" }}
                                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = TAB_COLORS.reports; (e.currentTarget as HTMLButtonElement).style.borderColor = TAB_COLORS.reports.replace(")", " / 0.4)"); }}

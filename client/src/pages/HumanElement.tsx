@@ -6,29 +6,29 @@ const stepColor = "oklch(0.82 0.18 75)";
 const PILLARS = [
   {
     icon: Eye,
-    label: "Taste",
+    label: "Vkus",
     color: "oklch(0.82 0.18 75)",
-    description: "The ability to recognize quality, beauty, and resonance. AI can generate — only you can discern what truly connects with an audience.",
+    description: "Schopnost rozpoznat kvalitu, krásu a rezonanci. AI může generovat — jen vy dokážete rozeznat, co skutečně oslovuje publikum.",
   },
   {
     icon: Lightbulb,
-    label: "Vision",
+    label: "Vize",
     color: "oklch(0.78 0.22 195)",
-    description: "The strategic direction that no algorithm can define. Where do you want to take your clients? What future are you building toward?",
+    description: "Strategický směr, který žádný algoritmus nedá definovat. Kam chcete vzvést své klienty? Jakou budoucnost budujete?",
   },
   {
     icon: Users,
-    label: "Care",
+    label: "Péče",
     color: "oklch(0.72 0.24 340)",
-    description: "Genuine investment in your clients' success. The relationship, the trust, the follow-through — these are irreplaceable human qualities.",
+    description: "Skutečný zájem o úspěch vašich klientů. Vztah, důvěra, důslednost — to jsou nenahraditelné lidské vlastnosti.",
   },
 ];
 
 const PROMPTS = [
-  "What does your ideal client relationship look like?",
-  "What creative direction sets your agency apart?",
-  "How do you want clients to feel after working with you?",
-  "What's the vision you're building toward this year?",
+  "Jak vypadá váš ideální klientský vztah?",
+  "Jaký kreativní směr odlišuje vaši agenturu?",
+  "Jak chcete, aby se klienti cítili po spolupráci s vámi?",
+  "Jakou vizi budujete v tomto roce?",
 ];
 
 export default function HumanElement() {
@@ -56,7 +56,7 @@ export default function HumanElement() {
             </span>
           </div>
           <p className="text-muted-foreground text-sm ml-12">
-            The irreplaceable layer that transforms automated output into genuine client relationships.
+            Nenahraditelná vrstva, která proměňuje automatizovaný výstup ve skutečné klientské vztahy.
           </p>
         </div>
 
@@ -69,17 +69,17 @@ export default function HumanElement() {
             <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, oklch(0.82 0.18 75 / 0.5), transparent)" }} />
             <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, oklch(0.82 0.18 75 / 0.2) 1px, transparent 0)", backgroundSize: "28px 28px" }} />
             <blockquote className="relative text-lg font-medium text-foreground leading-relaxed italic text-center">
-              "AI handles the volume. You provide the{" "}
-              <span style={{ color: stepColor, filter: "drop-shadow(0 0 8px oklch(0.82 0.18 75 / 0.6))" }}>vision</span>,{" "}
-              the{" "}
-              <span style={{ color: "oklch(0.78 0.22 195)", filter: "drop-shadow(0 0 8px oklch(0.78 0.22 195 / 0.6))" }}>taste</span>,{" "}
-              and the{" "}
-              <span style={{ color: "oklch(0.72 0.24 340)", filter: "drop-shadow(0 0 8px oklch(0.72 0.24 340 / 0.6))" }}>care</span>."
+              "„AI zvládá objem. Vy přinášíte{" "}
+              <span style={{ color: stepColor, filter: "drop-shadow(0 0 8px oklch(0.82 0.18 75 / 0.6))" }}>vizi</span>,{" "}
+              {" "}
+              <span style={{ color: "oklch(0.78 0.22 195)", filter: "drop-shadow(0 0 8px oklch(0.78 0.22 195 / 0.6))" }}>vkus</span>{" "}
+              a{" "}
+              <span style={{ color: "oklch(0.72 0.24 340)", filter: "drop-shadow(0 0 8px oklch(0.72 0.24 340 / 0.6))" }}>péči</span>.“
             </blockquote>
           </div>
 
           {/* Three pillars */}
-          <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>The Three Pillars</p>
+          <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>Tři pilíře</p>
           <div data-onboarding="human-pillars" className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {PILLARS.map((pillar) => {
               const Icon = pillar.icon;
@@ -115,7 +115,7 @@ export default function HumanElement() {
             className="rounded-2xl p-6 mb-8"
             style={{ background: "oklch(0.10 0.016 260)", border: "1px solid oklch(0.20 0.022 260)" }}
           >
-            <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>Reflection Prompts</p>
+            <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>Reflexní otázky</p>
             <div className="space-y-3">
               {PROMPTS.map((prompt, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -143,8 +143,8 @@ export default function HumanElement() {
               }}
             >
               <div>
-                <p className="text-sm font-semibold text-foreground">Back to Dashboard</p>
-                <p className="text-xs text-muted-foreground">Return to the full 5-step framework overview</p>
+                <p className="text-sm font-semibold text-foreground">Zpět na dashboard</p>
+                <p className="text-xs text-muted-foreground">Vrátit se na přehled celého 5-krokového frameworku</p>
               </div>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: stepColor }} />
             </div>

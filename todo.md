@@ -100,3 +100,17 @@
 - [x] Aria typing animation for speech bubble text
 - [x] Completion screen: congratulations card with Aria avatar and CTA to start first lead list
 - [x] Vitest tests for onboarding context logic
+
+## Překlad do češtiny
+- [x] AppLayout: sidebar navigace, uživatelská sekce, tlačítka
+- [x] AssistantWidget: uvítání, placeholder, hlavička, systémový prompt
+- [x] Home: hero text, popis kroků, CTA tlačítka, workflow diagram
+- [x] OnboardingContext: texty všech 8 kroků průvodce
+- [x] OnboardingOverlay: tlačítka, progress, závěrečná obrazovka
+- [x] Attract: formulář, labely, nápovědy, tabulka výsledků, export
+- [x] Convert: formulář, emaily, tracking dashboard, statistiky
+- [x] Deliver: formulář, report, prezentace, sdílení
+- [x] Automate: hero text, plánované funkce
+- [x] HumanElement: citát, pilíře, popis
+- [x] SavedProjects: záložky, karty, prázdné stavy, akce
+- [x] Server: AI prompty pro attract, convert, deliver, assistant router

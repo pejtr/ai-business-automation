@@ -1,0 +1,43 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://Ex3VpA477nfrimG.c7a160e5def6:3Os2yAkjKx9MuUM7F7v5@gateway05.us-east-1.prod.aws.tidbcloud.com:4000/jYpB2aMGtpnd8YLL53NHhi?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663586946788/jYpB2aMGtpnd8YLL53NHhi",
+    "access_key_id": "ASIAZV3A2ECZHD5ID5UF",
+    "secret_access_key": "mfna/aGlI6V3Jb2LelzfMSGlWaBJUcbmYLTJ6AoB",
+    "session_token": "IQoJb3JpZ2luX2VjEL///////////wEaCXVzLWVhc3QtMSJHMEUCIGmfgxGRoXH0sx6zpcIUjdfNqYwmuV4exJ/L0sowspgFAiEA1Tn0dAdEy3MWdKMioyQcwJQNchIFZOluleRdmZsSY28q/wMIh///////////ARAEGgw2NjUzODYwOTg4NjYiDOIwgG0vgwTMdjnciCrTA/UkI6rwOBYYiEBJuWxZJVuM7q1GpvBHJhP0Hzg0JcqB83l6/UgR7fVTnBivPsT+gc9QFvdpqk316JWWsy+baDz69Ha1FjPd0SC8bew2ozOXqOz0yzsMuRdbNVE2/Wcc8YdZY39zGUEXnKwS8T4Znqx1TMtpgnp8OcApTIPwxjwMpwSa+6QRXCUCOo9TRteN9pbzOBx+olU/RoCeYFsKsUE2mZ6Of/kqsgUp4lNtmfrLRagj3RaNDw0q/SiHZvM7XkcQGAm7S7NiyrU7HBbjibR1Rcyl+ImXU0UKz5HWf7fzJd3gGZi3DAki9Z0RGLjlMAYR7nc+t2LlhBdeks6MqeRftXs3hgsMggeifRJLJ5/u4X57pKSAkBLwuQyKkahdqYGpfYtXuniFco+NAtbWycjK+dh6X7LrKvoUSyQlar/LSUb6AH0Hd0i3Sh4rZQbv7PH6ciy5LjDUVz8ezbwUXJqAjqy3AmW0EjxjwmcD4sgKBOy4Nnd4fXhE2tgktvo/2P2QVTVhGgauW7elVuP4kQ+ty7BjtnHhOeE/vQzLHMdkxLQ65bqCr1rS+UG3HfnFRaF6tF/sKLmXNShsM/pkqnTk5uW9fRc+/5w+WvJ1SHyE6kxrMLGToNAGOp0BkKBduSLYmg43uN/X5mmoOneq75KbYSpxAfZ9Ig2WAKnVUhE0LzZ4D+iI5CQU9C/hzMIdIm6oVEPou2TN5NgjiMRWcjq1QL8fPFu8gO50Sm+Ff4dQJSMauFn1mj0mSbAo1sMQArthA+m1Ny2WsKPW38VAPyP0fk4NUjkAMjKqSl0Z0uz/Z8fAtkD9+8JJnM1uBpNQj89WgnRvh1pZtQ==",
+    "expiration": "2026-05-16T18:07:45.000Z"
+  },
+  "name": "ai-business-automation",
+  "path": "/home/ubuntu/ai-business-automation",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "99BoCEsaLZ9tpSMEahkQBZ",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "VTnZNqM8SqNzDRM6xjJAnW",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Petr Matěj",
+    "OWNER_OPEN_ID": "f2SJDr5GUnmjEnjrCWXRmk",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "fb67a8ff-758b-4f5b-913a-a08f84921c35",
+    "VITE_APP_ID": "jYpB2aMGtpnd8YLL53NHhi",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310519663586946788/iKixSWakyUzCwoJl.png",
+    "VITE_APP_TITLE": "AI Business Automation Platform",
+    "VITE_FRONTEND_FORGE_API_KEY": "SGir45FiWu8zN6iefYz8XL",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}

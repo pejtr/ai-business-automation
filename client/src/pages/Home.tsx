@@ -6,11 +6,11 @@ import { trpc } from "@/lib/trpc";
 // ── Workflow Diagram ─────────────────────────────────────────────────────────
 
 const DIAGRAM_STEPS = [
-  { id: "01", label: "Attract", sub: "Lead Generation", color: "oklch(0.78 0.22 195)", x: 60 },
-  { id: "02", label: "Convert", sub: "Outreach Emails", color: "oklch(0.68 0.26 295)", x: 220 },
-  { id: "03", label: "Deliver", sub: "Research & Decks", color: "oklch(0.72 0.24 340)", x: 380 },
-  { id: "04", label: "Automate", sub: "Workflows", color: "oklch(0.78 0.22 145)", x: 540 },
-  { id: "05", label: "Human", sub: "Vision & Taste", color: "oklch(0.82 0.18 75)", x: 700 },
+  { id: "01", label: "Attract", sub: "Generování leadů", color: "oklch(0.78 0.22 195)", x: 60 },
+  { id: "02", label: "Convert", sub: "Outreach e-maily", color: "oklch(0.68 0.26 295)", x: 220 },
+  { id: "03", label: "Deliver", sub: "Výzkum & Prezentace", color: "oklch(0.72 0.24 340)", x: 380 },
+  { id: "04", label: "Automate", sub: "Automatizace", color: "oklch(0.78 0.22 145)", x: 540 },
+  { id: "05", label: "Human", sub: "Vize & Vkus", color: "oklch(0.82 0.18 75)", x: 700 },
 ];
 
 function WorkflowDiagram() {
@@ -145,14 +145,14 @@ function WorkflowDiagram() {
         <g>
           <rect x={W - 95} y={CY - 14} width={88} height={28} rx="8" fill="oklch(0.78 0.22 195 / 0.06)" stroke="oklch(0.78 0.22 195 / 0.2)" strokeWidth="1" />
           <text x={W - 51} y={CY + 5} textAnchor="middle" fontSize="9" fontFamily="system-ui, sans-serif" fontWeight="600" fill="oklch(0.78 0.22 195 / 0.8)">
-            Client Result
+            Výsledek pro klienta
           </text>
         </g>
       </svg>
 
       {/* Bottom label */}
       <div className="flex items-center justify-center pb-3 pt-0">
-        <p className="text-[9px] font-mono tracking-widest" style={{ color: "oklch(0.30 0.02 260)" }}>AGENCY AI · 5-STEP AUTOMATED WORKFLOW</p>
+        <p className="text-[9px] font-mono tracking-widest" style={{ color: "oklch(0.30 0.02 260)" }}>AGENCY AI · 5-KROKÝ AUTOMATIZOVANÝ WORKFLOW</p>
       </div>
     </div>
   );
@@ -164,19 +164,19 @@ const STEPS = [
     label: "Attract",
     path: "/attract",
     icon: Magnet,
-    description: "Generate targeted lead lists with AI. Define your niche, platform, and criteria — get a structured table of qualified prospects.",
+    description: "Generujte cílené seznamy leadů pomocí AI. Definujte své odvětví, platformu a kritéria — získáte strukturovanou tabulku kvalifikovaných zájemců.",
     color: "oklch(0.78 0.22 195)",
     glow: "oklch(0.78 0.22 195 / 0.35)",
     glowSoft: "oklch(0.78 0.22 195 / 0.08)",
     border: "oklch(0.78 0.22 195 / 0.3)",
-    tag: "Lead Generation",
+    tag: "Generování leadů",
   },
   {
     step: "02",
     label: "Convert",
     path: "/convert",
     icon: Mail,
-    description: "Turn your lead list into personalized outreach emails. Each draft references the brand's recent activity for maximum relevance.",
+    description: "Proměňte seznam leadů v personalizované outreach e-maily. Každý návrh odkazuje na nedávnou aktivitu značky pro maximální relevanci.",
     color: "oklch(0.68 0.26 295)",
     glow: "oklch(0.68 0.26 295 / 0.35)",
     glowSoft: "oklch(0.68 0.26 295 / 0.08)",
@@ -188,36 +188,36 @@ const STEPS = [
     label: "Deliver",
     path: "/deliver",
     icon: FileText,
-    description: "Conduct deep brand research and generate professional analysis reports and branded presentations — automatically.",
+    description: "Provedeťe hloubkový brand výzkum a automaticky vygenerujte profesionální analytické zprávy a brandované prezentace.",
     color: "oklch(0.72 0.24 340)",
     glow: "oklch(0.72 0.24 340 / 0.35)",
     glowSoft: "oklch(0.72 0.24 340 / 0.08)",
     border: "oklch(0.72 0.24 340 / 0.3)",
-    tag: "Research & Decks",
+    tag: "Výzkum & Prezentace",
   },
   {
     step: "04",
     label: "Automate",
     path: "/automate",
     icon: Zap,
-    description: "Set up recurring workflows that run your agency processes on autopilot — from lead refresh to report delivery.",
+    description: "Nastavte opakující se workflow, které pověde procesy vaší agentury na autopilotu — od obnovy leadů až po dodání reportů.",
     color: "oklch(0.78 0.22 145)",
     glow: "oklch(0.78 0.22 145 / 0.35)",
     glowSoft: "oklch(0.78 0.22 145 / 0.08)",
     border: "oklch(0.78 0.22 145 / 0.3)",
-    tag: "Workflows",
+    tag: "Automatizace",
   },
   {
     step: "05",
     label: "Human Element",
     path: "/human-element",
     icon: Heart,
-    description: "The irreplaceable layer — your vision, taste, and care that transforms automated output into genuine client relationships.",
+    description: "Nenahraditelná vrstva — vaše vize, vkus a péče, které proměňují automatizovaný výstup v autentické klientské vztahy.",
     color: "oklch(0.82 0.18 75)",
     glow: "oklch(0.82 0.18 75 / 0.35)",
     glowSoft: "oklch(0.82 0.18 75 / 0.08)",
     border: "oklch(0.82 0.18 75 / 0.3)",
-    tag: "Vision & Taste",
+    tag: "Vize & Vkus",
   },
 ];
 
@@ -253,20 +253,20 @@ export default function Home() {
           </div>
 
           <h1 className="text-5xl font-bold text-foreground leading-[1.1] tracking-tight mb-4">
-            From Prospect to{" "}
+            Od prospectu k{" "}
             <span
               className="gradient-text-cyan"
               style={{ display: "inline-block" }}
             >
-              Presentation,
+              Prezentaci,
             </span>
             <br />
-            <span className="text-foreground/90">Automated.</span>
+            <span className="text-foreground/90">Automatizovaně.</span>
           </h1>
 
           <p className="text-muted-foreground text-base max-w-xl leading-relaxed">
-            A complete 5-step framework for modern agencies. Generate leads, craft outreach,
-            research brands, and deliver polished presentations — all powered by AI.
+            Kompletní 5-krokový framework pro moderní agentury. Generujte leady, tvořte outreach,
+            zkoumejte značky a dodávejte profesionální prezentace — vše popohaněno AI.
           </p>
 
           {/* Quick stats */}
@@ -278,10 +278,10 @@ export default function Home() {
               >
                 <Activity className="w-3.5 h-3.5" style={{ color: "oklch(0.78 0.22 195)" }} />
                 <span className="text-foreground font-semibold">{totalProjects}</span>
-                <span className="text-muted-foreground">saved projects</span>
+                <span className="text-muted-foreground">uložených projektů</span>
               </div>
               <span className="text-muted-foreground text-sm">
-                Welcome back, <span className="text-foreground font-medium">{user?.name?.split(" ")[0] ?? "there"}</span>
+                Vítejte zpět, <span className="text-foreground font-medium">{user?.name?.split(" ")[0] ?? ""}</span>
               </span>
             </div>
           )}
@@ -424,7 +424,7 @@ export default function Home() {
         {/* Footer note */}
         <div className="mt-10 flex items-center gap-3">
           <div className="neon-divider flex-1" />
-          <p className="text-xs font-mono text-muted-foreground/50 tracking-wider px-3">AGENCY AI · 5-STEP FRAMEWORK</p>
+          <p className="text-xs font-mono text-muted-foreground/50 tracking-wider px-3">AGENCY AI · 5-KROKOVÝ FRAMEWORK</p>
           <div className="neon-divider flex-1" />
         </div>
       </div>

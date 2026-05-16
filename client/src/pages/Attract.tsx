@@ -25,16 +25,16 @@ const PLATFORM_OPTIONS = [
   "TikTok",
   "YouTube",
   "Twitter / X",
-  "All Platforms",
+  "Všechny platformy",
 ];
 
 const NICHE_SUGGESTIONS = [
-  "Health & Wellness",
-  "E-commerce Fashion",
+  "Zdravověčí & Wellness",
+  "E-commerce Móda",
   "SaaS B2B",
-  "Real Estate",
-  "Fitness & Nutrition",
-  "Beauty & Skincare",
+  "Realitní trh",
+  "Fitness & Výživa",
+  "Krása & Kosmetika",
 ];
 
 export default function Attract() {
@@ -49,33 +49,33 @@ export default function Attract() {
   const generate = trpc.attract.generate.useMutation({
     onSuccess: (data) => {
       setLeads(data.leads);
-      setSaveTitle(`${niche} — ${platform} (${data.leads.length} leads)`);
-      toast.success(`Generated ${data.leads.length} leads successfully`);
+      setSaveTitle(`${niche} — ${platform} (${data.leads.length} leadů)`);
+      toast.success(`Úspěšně vygenerováno ${data.leads.length} leadů`);
     },
-    onError: (err) => toast.error(`Generation failed: ${err.message}`),
+    onError: (err) => toast.error(`Generování selhalo: ${err.message}`),
   });
 
   const save = trpc.attract.save.useMutation({
     onSuccess: () => {
-      toast.success("Lead list saved to projects");
+      toast.success("Seznam leadů uložen do projektů");
       setShowSaveForm(false);
     },
-    onError: (err) => toast.error(`Save failed: ${err.message}`),
+    onError: (err) => toast.error(`Uložení selhalo: ${err.message}`),
   });
 
   const handleGenerate = () => {
-    if (!niche.trim()) { toast.error("Please enter a niche"); return; }
+    if (!niche.trim()) { toast.error("Zadejte prosím odvětví"); return; }
     generate.mutate({ niche, platform, count, additionalCriteria: additionalCriteria || undefined });
   };
 
   const handleSave = () => {
-    if (!saveTitle.trim()) { toast.error("Please enter a title"); return; }
+    if (!saveTitle.trim()) { toast.error("Zadejte prosím název"); return; }
     save.mutate({ title: saveTitle, niche, platform, count: leads.length, leads });
   };
 
   const downloadCSV = () => {
     if (!leads.length) return;
-    const headers = ["Company", "Website", "Instagram", "Facebook", "Twitter", "Recent Topics"];
+    const headers = ["Společnost", "Web", "Instagram", "Facebook", "Twitter", "Aktuální témata"];
     const rows = leads.map(l => [
       `"${l.company}"`,
       `"${l.website}"`,
@@ -92,7 +92,7 @@ export default function Attract() {
     a.download = `leads-${niche.toLowerCase().replace(/\s+/g, "-")}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("CSV downloaded");
+    toast.success("CSV staženo");
   };
 
   return (
@@ -116,7 +116,7 @@ export default function Attract() {
               </span>
             </div>
             <p className="text-muted-foreground text-sm ml-12">
-              Generate targeted lead lists with AI. Define your criteria and get a structured table of qualified prospects.
+              Generujte cílené seznamy leadů pomocí AI. Definujte kritéria a získáte strukturovanou tabulku kvalifikovaných zájemců.
             </p>
           </div>
           {leads.length > 0 && (
@@ -136,7 +136,7 @@ export default function Attract() {
                 className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
               >
                 <Save className="w-3.5 h-3.5" />
-                Save List
+                Uložit seznam
               </Button>
             </div>
           )}
@@ -150,18 +150,18 @@ export default function Attract() {
             <div data-onboarding="attract-form" className="rounded-xl border border-border bg-card p-6">
               <h2 className="text-base font-semibold text-foreground mb-5 flex items-center gap-2">
                 <span className="w-5 h-5 rounded bg-primary/10 flex items-center justify-center text-[10px] font-mono text-primary">1</span>
-                Define Your Criteria
+                Definujte kritéria
               </h2>
 
               <div className="space-y-4">
                 <div>
                   <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
-                    Niche / Industry
+                    Odvětví / Obor
                   </Label>
                   <Input
                     value={niche}
                     onChange={e => setNiche(e.target.value)}
-                    placeholder="e.g. Health & Wellness"
+                    placeholder="např. Zdravověčí & Wellness"
                     className="bg-input border-border text-foreground placeholder:text-muted-foreground/50"
                   />
                   <div className="flex flex-wrap gap-1.5 mt-2">
@@ -184,7 +184,7 @@ export default function Attract() {
 
                 <div>
                   <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
-                    Platform
+                    Platforma
                   </Label>
                   <div className="grid grid-cols-2 gap-1.5">
                     {PLATFORM_OPTIONS.map(p => (
@@ -206,7 +206,7 @@ export default function Attract() {
 
                 <div>
                   <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
-                    Number of Leads
+                    Počet leadů
                   </Label>
                   <div className="flex items-center gap-3">
                     <input
@@ -224,12 +224,12 @@ export default function Attract() {
 
                 <div>
                   <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
-                    Additional Criteria <span className="text-muted-foreground/40">(optional)</span>
+                    Další kritéria <span className="text-muted-foreground/40">(volitelné)</span>
                   </Label>
                   <Textarea
                     value={additionalCriteria}
                     onChange={e => setAdditionalCriteria(e.target.value)}
-                    placeholder="e.g. Active in last 30 days, 10k–500k followers, selling physical products..."
+                    placeholder="např. Aktivní v posledních 30 dnech, 10k–500k sledujících, prodává fyzické produkty..."
                     className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 resize-none text-sm"
                     rows={3}
                   />
@@ -241,9 +241,9 @@ export default function Attract() {
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
                 >
                   {generate.isPending ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" />Generating leads...</>
+                    <><Loader2 className="w-4 h-4 animate-spin" />Generuji leady...</>
                   ) : (
-                    <><Magnet className="w-4 h-4" />Generate Lead List</>
+                    <><Magnet className="w-4 h-4" />Generovat seznam leadů</>
                   )}
                 </Button>
               </div>
@@ -258,8 +258,8 @@ export default function Attract() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
                     <Magnet className="w-6 h-6 text-primary/60" />
                   </div>
-                  <p className="text-muted-foreground text-sm">Your lead list will appear here</p>
-                  <p className="text-muted-foreground/50 text-xs">Define your criteria and click Generate</p>
+                  <p className="text-muted-foreground text-sm">Váš seznam leadů se zobrazí zde</p>
+                  <p className="text-muted-foreground/50 text-xs">Definujte kritéria a klikněte na Generovat</p>
                 </div>
               </div>
             ) : generate.isPending ? (
@@ -267,8 +267,8 @@ export default function Attract() {
                 <div className="text-center space-y-4">
                   <div className="w-12 h-12 rounded-full border-2 border-primary/30 border-t-primary animate-spin mx-auto" />
                   <div>
-                    <p className="text-foreground text-sm font-medium">Researching leads...</p>
-                    <p className="text-muted-foreground text-xs mt-1">AI is scanning for {count} {niche} brands on {platform}</p>
+                    <p className="text-foreground text-sm font-medium">Vyhledávám leady...</p>
+                    <p className="text-muted-foreground text-xs mt-1">AI prohledává {count} {niche} značek na {platform}</p>
                   </div>
                 </div>
               </div>
@@ -276,7 +276,7 @@ export default function Attract() {
               <div className="rounded-xl border border-border bg-card overflow-hidden">
                 <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold text-foreground">{leads.length} Leads Generated</h3>
+                    <h3 className="text-sm font-semibold text-foreground">{leads.length} vygenerovaných leadů</h3>
                     <p className="text-xs text-muted-foreground">{niche} · {platform}</p>
                   </div>
                   <Button
@@ -286,7 +286,7 @@ export default function Attract() {
                     className="text-muted-foreground hover:text-foreground gap-1.5 text-xs"
                   >
                     <RefreshCw className="w-3 h-3" />
-                    Regenerate
+                    Znovu generovat
                   </Button>
                 </div>
 
@@ -295,10 +295,10 @@ export default function Attract() {
                     <thead>
                       <tr className="border-b border-border">
                         <th className="text-left px-5 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider w-8">#</th>
-                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Company</th>
-                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Website</th>
-                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Social</th>
-                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Recent Topics</th>
+                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Společnost</th>
+                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Web</th>
+                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Sociální sítě</th>
+                        <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Aktuální témata</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -346,12 +346,12 @@ export default function Attract() {
           <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 flex items-center gap-4">
             <Save className="w-4 h-4 text-primary flex-shrink-0" />
             <div className="flex-1">
-              <Label className="text-xs text-muted-foreground mb-1 block">Save as</Label>
+              <Label className="text-xs text-muted-foreground mb-1 block">Uložit jako</Label>
               <Input
                 value={saveTitle}
                 onChange={e => setSaveTitle(e.target.value)}
                 className="bg-input border-border text-foreground h-8 text-sm"
-                placeholder="Lead list title..."
+                placeholder="Název seznamu leadů..."
               />
             </div>
             <Button
@@ -360,7 +360,7 @@ export default function Attract() {
               size="sm"
               className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+              {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Uložit"}
             </Button>
             <Button
               variant="ghost"
@@ -368,7 +368,7 @@ export default function Attract() {
               onClick={() => setShowSaveForm(false)}
               className="text-muted-foreground"
             >
-              Cancel
+              Zrušit
             </Button>
           </div>
         )}

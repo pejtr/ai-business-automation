@@ -10,20 +10,20 @@ const AVATAR_URL = "/manus-storage/assistant-avatar_4d9e8bf4.jpg";
 type Message = { role: "user" | "assistant"; content: string };
 
 const QUICK_PROMPTS = [
-  "How do I generate leads?",
-  "How does email tracking work?",
-  "What is the Deliver module?",
-  "How do I export my data?",
+  "Jak generovat leady?",
+  "Jak funguje sledování e-mailů?",
+  "Co je modul Deliver?",
+  "Jak exportovat data?",
 ];
 
 const PAGE_LABELS: Record<string, string> = {
   "/": "Dashboard",
-  "/attract": "Attract — Lead Generation",
-  "/convert": "Convert — Outreach Emails",
-  "/deliver": "Deliver — Brand Research",
-  "/automate": "Automate — Workflows",
+  "/attract": "Attract — Generování leadů",
+  "/convert": "Convert — Outreach e-maily",
+  "/deliver": "Deliver — Brand výzkum",
+  "/automate": "Automate — Automatizace",
   "/human-element": "Human Element",
-  "/saved": "Saved Projects",
+  "/saved": "Uložené projekty",
 };
 
 export default function AssistantWidget() {
@@ -43,7 +43,7 @@ export default function AssistantWidget() {
     onError: () => {
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "Sorry, I ran into an issue. Please try again.",
+        content: "Omlouvám se, nastala chyba. Zkuste to prosím znovu.",
       }]);
     },
   });
@@ -60,7 +60,7 @@ export default function AssistantWidget() {
       const pageName = PAGE_LABELS[location] ?? "the platform";
       setMessages([{
         role: "assistant",
-        content: `Hi! I'm **Aria**, your Agency AI assistant. 👋\n\nI see you're on **${pageName}**. How can I help you today?`,
+        content: `Ahoj! Jsem **Aria**, vaše Agency AI asistentka. 👋\n\nVidím, že jste na stránce **${pageName}**. Jak vám mohu dnes pomoci?`,
       }]);
     }
   }, [open, hasGreeted, location]);
@@ -98,7 +98,7 @@ export default function AssistantWidget() {
         <button
           onClick={() => setOpen(true)}
           className="fixed bottom-6 right-6 z-50 group"
-          aria-label="Open AI Assistant"
+          aria-label="Otevřít AI asistentku"
         >
           {/* Glow ring */}
           <div
@@ -166,7 +166,7 @@ export default function AssistantWidget() {
                 onClick={reset}
                 className="p-1.5 rounded-lg transition-colors hover:bg-white/5"
                 style={{ color: "oklch(0.40 0.02 260)" }}
-                title="Clear chat"
+                  title="Vymazat chat"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
@@ -174,7 +174,7 @@ export default function AssistantWidget() {
                 onClick={() => setMinimized(!minimized)}
                 className="p-1.5 rounded-lg transition-colors hover:bg-white/5"
                 style={{ color: "oklch(0.40 0.02 260)" }}
-                title={minimized ? "Expand" : "Minimize"}
+                title={minimized ? "Rozbalit" : "Minimalizovat"}
               >
                 <Minimize2 className="w-3.5 h-3.5" />
               </button>
@@ -182,7 +182,7 @@ export default function AssistantWidget() {
                 onClick={() => { setOpen(false); setMinimized(false); }}
                 className="p-1.5 rounded-lg transition-colors hover:bg-white/5"
                 style={{ color: "oklch(0.40 0.02 260)" }}
-                title="Close"
+                title="Zavřít"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -202,8 +202,8 @@ export default function AssistantWidget() {
                     >
                       <img src={AVATAR_URL} alt="Aria" className="w-full h-full object-cover object-top" />
                     </div>
-                    <p className="text-sm font-semibold text-foreground">Ask Aria anything</p>
-                    <p className="text-xs text-muted-foreground mt-1">Your Agency AI guide</p>
+                    <p className="text-sm font-semibold text-foreground">Zeptejte se Arie na cokoliv</p>
+                    <p className="text-xs text-muted-foreground mt-1">Váš průvodce Agency AI</p>
                   </div>
                 )}
 
@@ -307,7 +307,7 @@ export default function AssistantWidget() {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask Aria anything..."
+                    placeholder="Zeptejte se Arie na cokoliv..."
                     rows={1}
                     className="flex-1 bg-transparent resize-none text-sm text-foreground placeholder:text-muted-foreground/40 outline-none leading-relaxed max-h-24 overflow-y-auto"
                     style={{ minHeight: "24px" }}
@@ -327,7 +327,7 @@ export default function AssistantWidget() {
                   </button>
                 </div>
                 <p className="text-center text-[9px] font-mono mt-1.5" style={{ color: "oklch(0.30 0.02 260)" }}>
-                  ARIA · AGENCY AI ASSISTANT
+                  ARIA · AGENCY AI ASISTENTKA
                 </p>
               </div>
             </>

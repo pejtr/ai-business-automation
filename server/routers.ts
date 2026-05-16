@@ -54,27 +54,27 @@ const attractRouter = router({
       additionalCriteria: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
-      const prompt = `You are an expert lead researcher for a marketing agency. Generate a list of ${input.count} real or realistic ${input.niche} brands that are active on ${input.platform}.${input.additionalCriteria ? ` Additional criteria: ${input.additionalCriteria}.` : ""}
+      const prompt = `Jsi expert na vyhledávání leadů pro marketingovou agenturu. Vygeneruj seznam ${input.count} reálných nebo realistických značek z oblasti ${input.niche}, které jsou aktivní na platformě ${input.platform}.${input.additionalCriteria ? ` Další kritéria: ${input.additionalCriteria}.` : ""}
 
-Return ONLY a valid JSON object with this exact structure:
+Vrať POUZE platný JSON objekt s touto přesnou strukturou:
 {
   "leads": [
     {
-      "company": "Brand Name",
+      "company": "Název značky",
       "website": "https://example.com",
       "instagram": "@handle",
       "facebook": "page-name",
       "twitter": "@handle",
-      "recentTopics": "Brief description of their recent content themes and campaigns"
+      "recentTopics": "Stručný popis jejich nedávných témat a kampaní"
     }
   ]
 }
 
-Make each lead realistic and specific. The recentTopics should be 1-2 sentences describing what they've been posting about recently.`;
+Každý lead udělej realistický a konkrétní. Pole recentTopics by mělo obsahovat 1-2 věty popisující, o čem nedávno přispívali.`;
 
       const response = await invokeLLM({
         messages: [
-          { role: "system", content: "You are a precise lead generation assistant. Always return valid JSON only, no markdown, no explanation." },
+          { role: "system", content: "Jsi přesný asistent pro generování leadů. Vždy vrácí pouze platný JSON, bez markdownu, bez vysvětlení." },
           { role: "user", content: prompt },
         ],
         response_format: {
@@ -169,38 +169,38 @@ const convertRouter = router({
     }))
     .mutation(async ({ input }) => {
       const leadsText = input.leads.map((l, i) =>
-        `${i + 1}. ${l.company} | Website: ${l.website} | Recent topics: ${l.recentTopics}`
+        `${i + 1}. ${l.company} | Web: ${l.website} | Nedávná témata: ${l.recentTopics}`
       ).join("\n");
 
-      const prompt = `You are an expert sales copywriter for a marketing agency. Write highly personalized outreach emails for each of the following brands.
+      const prompt = `Jsi expert na prodejní copywriting pro marketingovou agenturu. Napiš vysoce personalizované outreach emaily pro každou z následujících značek.
 
-Sender: ${input.senderName ?? "Alex"} — ${input.senderRole ?? "Marketing Strategist"}
-Pitch goal: ${input.pitch ?? "Schedule a 15-minute discovery call to discuss how we can help grow their brand"}
+Odesílatel: ${input.senderName ?? "Alex"} — ${input.senderRole ?? "Marketingový stratég"}
+Cíl pitche: ${input.pitch ?? "Domluvit 15minutový discovery call o tom, jak můžeme pomoci růstu jejich značky"}
 
-Leads:
+Leady:
 ${leadsText}
 
-For each lead, write a personalized email that:
-- References their specific recent content/campaigns naturally
-- Has a compelling, specific subject line
-- Keeps the body concise (3-4 short paragraphs max)
-- Ends with a clear, low-friction CTA
-- Feels human and genuine, not templated
+Pro každý lead napiš personalizovaný email, který:
+- Přirozeně odkazuje na jejich konkrétní nedávný obsah/kampaně
+- Má přesvědčivý, konkrétní předmět
+- Je stručný (max. 3-4 krátké odstavce)
+- Končí jasnou, nízko-frikční výzvou k akci
+- Působí lidsky a autenticky, ne jako šablona
 
-Return ONLY valid JSON:
+Vrať POUZE platný JSON:
 {
   "emails": [
     {
-      "company": "Brand Name",
-      "subject": "Subject line here",
-      "body": "Full email body here"
+      "company": "Název značky",
+      "subject": "Předmět emailu",
+      "body": "Celé tělo emailu"
     }
   ]
 }`;
 
       const response = await invokeLLM({
         messages: [
-          { role: "system", content: "You are a world-class sales copywriter. Return valid JSON only." },
+          { role: "system", content: "Jsi světová třída prodejní copywriter. Vrácí pouze platný JSON." },
           { role: "user", content: prompt },
         ],
         response_format: {
@@ -287,44 +287,44 @@ const deliverRouter = router({
       focus: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
-      const prompt = `You are a senior brand strategist and market researcher. Conduct a comprehensive analysis of ${input.companyName}${input.companyUrl ? ` (${input.companyUrl})` : ""}.${input.focus ? ` Focus area: ${input.focus}.` : ""}
+      const prompt = `Jsi senior brand stratég a marketingový výzkumník. Proveď komplexní analýzu společnosti ${input.companyName}${input.companyUrl ? ` (${input.companyUrl})` : ""}.${input.focus ? ` Oblast zaměření: ${input.focus}.` : ""}
 
-Write a detailed, professional brand analysis report in Markdown format covering:
+Napiš podrobný, profesionální report analýzy značky ve formátu Markdown pokrývající:
 
-# Brand Analysis: ${input.companyName}
+# Analýza značky: ${input.companyName}
 
-## Executive Summary
-(2-3 sentence overview of the brand's positioning and market presence)
+## Shrnutí
+(2-3 věty o pozici značky a přítomnosti na trhu)
 
-## Online Presence Overview
-(Website quality, UX, content strategy, SEO signals)
+## Přehled online přítomnosti
+(Kvalita webu, UX, obsahová strategie, SEO signály)
 
-## Social Media Performance
-(Platform presence, posting frequency, content types, engagement patterns)
+## Výkon na sociálních sítích
+(Přítomnost na platformách, frekvence příspěvků, typy obsahu, vzorce zapojení)
 
-## Content Strategy & Messaging
-(Core messages, tone of voice, storytelling approach, recurring themes)
+## Obsahová strategie a messaging
+(Klíčové zprávy, tone of voice, vyprávěčský přístup, opakující se témata)
 
-## Audience & Community
-(Target demographic, community engagement, user-generated content)
+## Publikum a komunita
+(Cílová demografika, zapojení komunity, uživatelsky generovaný obsah)
 
-## Campaign Highlights
-(Notable recent campaigns, what worked and why)
+## Highlight kampaní
+(Pozoruhodné nedávné kampaně, co fungovalo a proč)
 
-## Brand Strengths
-(3-5 key competitive advantages)
+## Silné stránky značky
+(3-5 klíčových konkurenčních výhod)
 
-## Growth Opportunities
-(3-5 specific, actionable opportunities for improvement)
+## Příležitosti růstu
+(3-5 konkrétních, akcionálních příležitostí ke zlepšení)
 
-## Strategic Recommendations
-(3-5 concrete recommendations for a marketing agency to pitch)
+## Strategická doporučení
+(3-5 konkrétních doporučení pro marketingovou agenturu k nabídce)
 
-Be specific, insightful, and data-driven in your analysis. Reference realistic metrics and observations.`;
+Buď konkrétní, pronikavý a datově podložený ve své analýze. Odkazuj na realistické metriky a pozorování.`;
 
       const response = await invokeLLM({
         messages: [
-          { role: "system", content: "You are a world-class brand strategist. Write comprehensive, insightful analysis reports in Markdown." },
+          { role: "system", content: "Jsi světová třída brand stratég. Piš komplexní, pronikavé analýzy značek v Markdownu." },
           { role: "user", content: prompt },
         ],
       });
@@ -348,33 +348,33 @@ Be specific, insightful, and data-driven in your analysis. Reference realistic m
       const secondary = input.secondaryColor ?? "#1a1a2e";
       const font = input.fontFamily ?? "Inter";
 
-      const prompt = `You are a professional presentation designer. Create a beautiful, multi-slide HTML presentation for ${input.companyName} based on this brand analysis report.
+      const prompt = `Jsi profesionální návrhář prezentací. Vytvoř krásnou, víceSnímkovou HTML prezentaci pro ${input.companyName} na základě tohoto reportu analýzy značky.
 
-Brand colors: Primary: ${primary}, Secondary: ${secondary}
-Font: ${font}
+Barvy značky: Primární: ${primary}, Sekundární: ${secondary}
+Písmo: ${font}
 
-Report content:
+Obsah reportu:
 ${input.reportContent.substring(0, 3000)}
 
-Create a complete, self-contained HTML presentation with 6-8 slides. Each slide should be a full-page div. Use the brand colors throughout. Make it visually stunning and professional.
+Vytvoř kompletní, samostatnou HTML prezentaci s 6-8 snímky. Každý snímek by měl být div na celou stránku. Použij barvy značky v celé prezentaci. Udělej ji vizuálně ohromující a profesionální.
 
-Requirements:
-- Use inline CSS only (no external stylesheets)
-- Each slide: <div class="slide" id="slide-N">
-- Include a navigation bar at the bottom
-- Slide types: Title, Executive Summary, Online Presence, Content Strategy, Strengths, Opportunities, Recommendations, Contact CTA
-- Use the primary color (${primary}) for headings and accents
-- Dark background (${secondary}) for the title slide
-- Clean white/light background for content slides
-- Professional typography using ${font} from Google Fonts
-- Include slide numbers
-- Make it print-friendly
+Požadavky:
+- Použij pouze inline CSS (bez externích stylů)
+- Každý snímek: <div class="slide" id="slide-N">
+- Zahrn navigaci na spodní části
+- Typy snímků: Titulní, Shrnutí, Online přítomnost, Obsahová strategie, Silné stránky, Příležitosti, Doporučení, Kontaktní CTA
+- Použij primární barvu (${primary}) pro nadpisy a akcenty
+- Tmavé pozadí (${secondary}) pro titulní snímek
+- Čisté bílé/světlé pozadí pro obsahové snímky
+- Profesionální typografie s použitím ${font} z Google Fonts
+- Zahrn čísla snímků
+- Udělej ji vhodnou pro tisk
 
-Return ONLY the complete HTML document, nothing else.`;
+Vrať POUZE kompletní HTML dokument, nic jiného.`;
 
       const response = await invokeLLM({
         messages: [
-          { role: "system", content: "You are an expert HTML/CSS presentation designer. Return only complete, valid HTML." },
+          { role: "system", content: "Jsi expert na návrh HTML/CSS prezentací. Vrať pouze kompletní, platné HTML." },
           { role: "user", content: prompt },
         ],
       });
@@ -394,21 +394,21 @@ Return ONLY the complete HTML document, nothing else.`;
       companyUrl: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
-      const prompt = `Based on your knowledge of ${input.companyName}${input.companyUrl ? ` (${input.companyUrl})` : ""}, provide their likely brand colors and typography.
+      const prompt = `Na základě svých znalostí o ${input.companyName}${input.companyUrl ? ` (${input.companyUrl})` : ""}, urči pravděpodobné barvy značky a typografii.
 
-Return ONLY valid JSON:
+Vrať POUZE platný JSON:
 {
   "primaryColor": "#hexcode",
   "secondaryColor": "#hexcode",
   "accentColor": "#hexcode",
-  "fontFamily": "Font Name",
+  "fontFamily": "Název písma",
   "confidence": "high|medium|low",
-  "notes": "Brief note about the brand's visual identity"
+  "notes": "Stručná poznámka o vizuální identitě značky"
 }`;
 
       const response = await invokeLLM({
         messages: [
-          { role: "system", content: "You are a brand identity expert. Return valid JSON only." },
+          { role: "system", content: "Jsi expert na brand identitu. Vrať pouze platný JSON." },
           { role: "user", content: prompt },
         ],
         response_format: {
@@ -616,27 +616,27 @@ const assistantRouter = router({
       currentPage: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
-      const systemPrompt = `You are Aria, a friendly and highly knowledgeable AI assistant for the Agency AI platform — a 5-step business automation framework for modern agencies.
+      const systemPrompt = `Jsi Aria, přátelská a vysoce znalostní AI asistentka platformy Agency AI — 5-krokového frameworku pro automatizaci obchodních procesů moderních agentur.
 
-You help users navigate and get the most out of the platform. Here is what each module does:
+Pomáháš uživatelům navigovat a vytěžit maximum z platformy. Zde je popis každého modulu:
 
-1. ATTRACT — AI-powered lead generation. Users input a niche, platform, and count to generate structured lead lists (company, website, social handles, recent topics). Leads can be exported as CSV.
+1. ATTRACT — AI generování leadů. Uživatel zadá niši, platformu a počet a vygeneruje strukturované seznamy leadů (společnost, web, sociální sítě, nedávná témata). Leady lze exportovat jako CSV.
 
-2. CONVERT — Personalized outreach email generator. Takes a saved lead list and generates individual email drafts (subject + body) referencing each brand's recent activity. Includes email open tracking and click tracking.
+2. CONVERT — Generátor personalizovaných outreach emailů. Vezme uložený seznam leadů a vygeneruje individuální koncepty emailů (předmět + tělo) odkazující na nedávnou aktivitu každé značky. Zahrnuje sledování otevření emailů a kliknutí na odkazy.
 
-3. DELIVER — Two-part module:
-   a) Brand Research: AI analyzes a company and generates a detailed structured report (online presence, engagement, messaging effectiveness).
-   b) Presentation: Converts the research report into a multi-slide branded presentation, extracting the brand's colors and typography automatically.
+3. DELIVER — Dvoudílný modul:
+   a) Výzkum značky: AI analyzuje společnost a generuje podrobný strukturovaný report (online přítomnost, zapojení, efektivita messagingu).
+   b) Prezentace: Převádí výzkumný report na víceSnímkovou brandovanou prezentaci, automaticky extrahuje barvy a typografii značky.
 
-4. AUTOMATE — Coming soon. Will connect all modules into automated pipelines.
+4. AUTOMATE — Brzy k dispozici. Propojí všechny moduly do automatizovaných pipeline.
 
-5. HUMAN ELEMENT — Philosophy page about the irreplaceable human qualities: Taste, Vision, and Care.
+5. HUMAN ELEMENT — Filozofická stránka o nenahraditelných lidských kvalitách: Vkus, Vize a Péče.
 
-SAVED PROJECTS — Users can save and revisit all lead lists, campaigns, and research reports.
+ULOŽENÉ PROJEKTY — Uživatelé mohou ukládat a prohlížet všechny seznamy leadů, kampaně a výzkumné reporty.
 
-The user is currently on: ${input.currentPage ?? "the platform"}.
+Uživatel se aktuálně nachází na: ${input.currentPage ?? "platformě"}.
 
-Be concise, helpful, and friendly. Use short paragraphs. Guide users step by step when they ask how to do something. If they ask about a feature not yet built, acknowledge it's coming soon. Always respond in the same language the user writes in.`;
+Buď stručná, nápomocná a přátelská. Používej krátké odstavce. Proveď uživatele krok za krokem, když se ptá jak něco udělat. Pokud se ptá na funkci, která ještě není hotová, potvrď, že brzy přijde. Vždy odpovídej v jazyce, ve kterém uživatel píše.`;
 
       const messages = [
         { role: "system" as const, content: systemPrompt },
@@ -647,7 +647,7 @@ Be concise, helpful, and friendly. Use short paragraphs. Guide users step by ste
       const response = await invokeLLM({ messages });
       const content = typeof response.choices[0].message.content === "string"
         ? response.choices[0].message.content
-        : "I'm here to help! What would you like to know about the platform?";
+        : "Jsem tu, abych pomohla! Na co se chcete zeptat ohledně platformy?";
 
       return { reply: content };
     }),

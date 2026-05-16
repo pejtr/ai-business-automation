@@ -74,29 +74,29 @@ export default function Convert() {
     onSuccess: (data) => {
       setEmails(data.emails);
       setExpandedIndex(0);
-      setSaveTitle(`Outreach Campaign — ${new Date().toLocaleDateString()}`);
-      toast.success(`Generated ${data.emails.length} personalized emails`);
+      setSaveTitle(`Outreach Kampaň — ${new Date().toLocaleDateString()}`);    
+      toast.success(`Vygenerováno ${data.emails.length} personalizovaných emailů`);    
     },
-    onError: (err) => toast.error(`Generation failed: ${err.message}`),
+    onError: (err) => toast.error(`Generování selhalo: ${err.message}`),
   });
 
   const save = trpc.convert.save.useMutation({
     onSuccess: (data) => {
       if (data.id != null) setSavedCampaignId(data.id);
-      toast.success("Campaign saved to projects");
+      toast.success("Kampaň uložena do projektů");
       setShowSaveForm(false);
     },
-    onError: (err) => toast.error(`Save failed: ${err.message}`),
+    onError: (err) => toast.error(`Uložení selhalo: ${err.message}`),
   });
 
   const createTracked = trpc.tracking.createTracked.useMutation({
     onSuccess: (data) => {
       setTrackingEnabled(true);
-      toast.success(`Tracking enabled for ${data.tracked.length} emails`);
+      toast.success(`Sledování aktivováno pro ${data.tracked.length} emailů`);
       utils.tracking.getTracked.invalidate();
       utils.tracking.getStats.invalidate();
     },
-    onError: (err) => toast.error(`Tracking setup failed: ${err.message}`),
+    onError: (err) => toast.error(`Nastavení sledování selhalo: ${err.message}`),
   });
 
   const trackedEmails = trpc.tracking.getTracked.useQuery(
@@ -134,23 +134,23 @@ export default function Convert() {
     const list = savedLists.data?.find(l => l.id === id);
     if (!list) return;
     setLeadsJson(JSON.stringify(list.leads, null, 2));
-    toast.success(`Loaded "${list.title}"`);
+    toast.success(`Načteno: "${list.title}"`);
   };
 
   const handleGenerate = () => {
     const leads = parseLeads();
-    if (!leads.length) { toast.error("Please provide a valid lead list (JSON format)"); return; }
+    if (!leads.length) { toast.error("Zadejte platný seznam leadů (formát JSON)"); return; }
     generate.mutate({ leads, senderName: senderName || undefined, senderRole: senderRole || undefined, pitch: pitch || undefined });
   };
 
   const handleSave = () => {
-    if (!saveTitle.trim()) { toast.error("Please enter a title"); return; }
+    if (!saveTitle.trim()) { toast.error("Zadejte prosím název"); return; }
     save.mutate({ title: saveTitle, emails });
   };
 
   const handleEnableTracking = () => {
-    if (!savedCampaignId) { toast.error("Save the campaign first to enable tracking"); return; }
-    if (!emails.length) { toast.error("No emails to track"); return; }
+    if (!savedCampaignId) { toast.error("Nejprve uložte kampaň pro aktivaci sledování"); return; }
+    if (!emails.length) { toast.error("Nejsou žádné emaily ke sledování"); return; }
     createTracked.mutate({
       campaignId: savedCampaignId,
       emails,
@@ -163,16 +163,16 @@ export default function Convert() {
     await navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
-    toast.success("Email copied to clipboard");
+    toast.success("Email zkopírován do schránky");
   };
 
   const copyTrackedHtml = async (index: number) => {
     const tracked = trackedEmails.data?.[index];
-    if (!tracked) { toast.error("Tracked version not available"); return; }
+    if (!tracked) { toast.error("Sledovaná verze není k dispozici"); return; }
     await navigator.clipboard.writeText(tracked.bodyHtml);
     setCopiedHtmlIndex(index);
     setTimeout(() => setCopiedHtmlIndex(null), 2000);
-    toast.success("Tracked HTML email copied");
+    toast.success("Sledovaný HTML email zkopírován");
   };
 
   const exportAllEmails = () => {
@@ -185,7 +185,7 @@ export default function Convert() {
     a.download = `outreach-campaign-${Date.now()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Emails exported");
+    toast.success("Emaily exportovány");
   };
 
   // Compute aggregate stats
@@ -222,17 +222,17 @@ export default function Convert() {
               </span>
             </div>
             <p className="text-muted-foreground text-sm ml-12">
-              Generate personalized outreach emails and track opens &amp; clicks in real time.
+              Generujte personalizované outreach emaily a sledujte otevření a kliknutí v reálném čase.
             </p>
           </div>
           {emails.length > 0 && (
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={exportAllEmails} className="border-border text-foreground hover:bg-white/5 gap-2">
-                Export All
+                Exportovat vše
               </Button>
               <Button size="sm" onClick={() => setShowSaveForm(!showSaveForm)} className="gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
                 <Save className="w-3.5 h-3.5" />
-                Save Campaign
+                Uložit kampaň
               </Button>
             </div>
           )}
@@ -241,8 +241,8 @@ export default function Convert() {
         {/* Tabs */}
         <div className="flex items-center gap-1 mt-5 ml-12">
           {([
-            { id: "compose" as MainTab, label: "Compose", icon: Mail },
-            { id: "tracking" as MainTab, label: "Tracking", icon: BarChart2, badge: savedCampaignId ? (totalOpens + totalClicks) : null },
+            { id: "compose" as MainTab, label: "Sestavit", icon: Mail },
+            { id: "tracking" as MainTab, label: "Sledování", icon: BarChart2, badge: savedCampaignId ? (totalOpens + totalClicks) : null },
           ]).map(tab => {
             const Icon = tab.icon;
             return (
@@ -279,20 +279,20 @@ export default function Convert() {
               <div data-onboarding="convert-form" className="rounded-xl border border-border bg-card p-6">
                 <h2 className="text-base font-semibold text-foreground mb-5 flex items-center gap-2">
                   <span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-mono" style={{ background: "oklch(0.65 0.12 200 / 0.15)", color: stepColor }}>1</span>
-                  Sender Details
+                  Údaje odesílatele
                 </h2>
                 <div className="space-y-3">
                   <div>
-                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Your Name</Label>
-                    <Input value={senderName} onChange={e => setSenderName(e.target.value)} placeholder="e.g. Alex Johnson" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 h-9 text-sm" />
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Vaše jméno</Label>
+                    <Input value={senderName} onChange={e => setSenderName(e.target.value)} placeholder="např. Jan Novák" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 h-9 text-sm" />
                   </div>
                   <div>
-                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Your Role</Label>
-                    <Input value={senderRole} onChange={e => setSenderRole(e.target.value)} placeholder="e.g. Marketing Strategist" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 h-9 text-sm" />
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Vaše pozice</Label>
+                    <Input value={senderRole} onChange={e => setSenderRole(e.target.value)} placeholder="např. Marketingový strateg" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 h-9 text-sm" />
                   </div>
                   <div>
-                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Pitch Goal</Label>
-                    <Textarea value={pitch} onChange={e => setPitch(e.target.value)} placeholder="e.g. Book a 15-minute discovery call" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 resize-none text-sm" rows={2} />
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Cíl oslovení</Label>
+                    <Textarea value={pitch} onChange={e => setPitch(e.target.value)} placeholder="např. Domluvit 15minutový discovery call" className="bg-input border-border text-foreground placeholder:text-muted-foreground/50 resize-none text-sm" rows={2} />
                   </div>
                 </div>
               </div>
@@ -300,23 +300,23 @@ export default function Convert() {
               <div className="rounded-xl border border-border bg-card p-6">
                 <h2 className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
                   <span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-mono" style={{ background: "oklch(0.65 0.12 200 / 0.15)", color: stepColor }}>2</span>
-                  Lead List
+                  Seznam leadů
                 </h2>
                 {savedLists.data && savedLists.data.length > 0 && (
                   <div className="mb-3">
-                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Load Saved List</Label>
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Načíst uložený seznam</Label>
                     <select onChange={e => e.target.value && loadFromSaved(Number(e.target.value))} className="w-full bg-input border border-border text-foreground text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary">
-                      <option value="">Select a saved list...</option>
+                      <option value="">Vyberte uložený seznam...</option>
                       {savedLists.data.map(list => <option key={list.id} value={list.id}>{list.title}</option>)}
                     </select>
                   </div>
                 )}
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Lead Data (JSON)</Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-1.5 block">Data leadů (JSON)</Label>
                   <Textarea value={leadsJson} onChange={e => setLeadsJson(e.target.value)} placeholder={`[\n  {\n    "company": "Brand Name",\n    "website": "https://...",\n    "recentTopics": "..."\n  }\n]`} className="bg-input border-border text-foreground placeholder:text-muted-foreground/30 resize-none text-xs font-mono" rows={8} />
                 </div>
                 <Button onClick={handleGenerate} disabled={generate.isPending || !leadsJson.trim()} className="w-full mt-4 gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
-                  {generate.isPending ? <><Loader2 className="w-4 h-4 animate-spin" />Writing emails...</> : <><Mail className="w-4 h-4" />Generate Outreach Emails</>}
+                  {generate.isPending ? <><Loader2 className="w-4 h-4 animate-spin" />Píšu emaily...</> : <><Mail className="w-4 h-4" />Generovat outreach emaily</>}
                 </Button>
               </div>
 
@@ -325,7 +325,7 @@ export default function Convert() {
                 <div className="rounded-xl border border-border bg-card p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <Activity className="w-4 h-4 text-green-400" />
-                    <h3 className="text-sm font-semibold text-foreground">Email Tracking</h3>
+                    <h3 className="text-sm font-semibold text-foreground">Sledování emailů</h3>
                     {trackingEnabled && (
                       <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 border border-green-500/20">ACTIVE</span>
                     )}
@@ -333,7 +333,7 @@ export default function Convert() {
                   {!trackingEnabled ? (
                     <>
                       <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-                        Enable tracking to monitor email opens and link clicks. Each email gets a unique tracking pixel and wrapped links.
+                        Aktivujte sledování pro monitorování otevření emailů a kliknutí na odkazy. Každý email získá unikátní sledovací pixel.
                       </p>
                       <Button
                         onClick={handleEnableTracking}
@@ -341,7 +341,7 @@ export default function Convert() {
                         size="sm"
                         className="w-full gap-2 bg-green-600 hover:bg-green-500 text-white"
                       >
-                        {createTracked.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Setting up...</> : <><Zap className="w-3.5 h-3.5" />Enable Tracking</>}
+                        {createTracked.isPending ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Nastavení...</> : <><Zap className="w-3.5 h-3.5" />Aktivovat sledování</>}
                       </Button>
                     </>
                   ) : (
@@ -354,8 +354,8 @@ export default function Convert() {
                         <span className="text-muted-foreground flex items-center gap-1.5"><MousePointerClick className="w-3 h-3" />Clicks</span>
                         <span className="font-mono text-foreground">{totalClicks} ({clickRate}%)</span>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => setActiveTab("tracking")} className="w-full text-xs gap-1.5 mt-1" style={{ color: stepColor }}>
-                        <BarChart2 className="w-3 h-3" />View Full Dashboard
+                        <Button variant="ghost" size="sm" onClick={() => setActiveTab("tracking")} className="w-full text-xs gap-1.5 mt-1" style={{ color: stepColor }}>
+                        <BarChart2 className="w-3 h-3" />Zobrazit celý dashboard
                       </Button>
                     </div>
                   )}
@@ -371,8 +371,8 @@ export default function Convert() {
                     <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto" style={{ background: "oklch(0.65 0.12 200 / 0.1)", border: "1px solid oklch(0.65 0.12 200 / 0.2)" }}>
                       <Mail className="w-6 h-6" style={{ color: "oklch(0.65 0.12 200 / 0.6)" }} />
                     </div>
-                    <p className="text-muted-foreground text-sm">Personalized emails will appear here</p>
-                    <p className="text-muted-foreground/50 text-xs">Load a lead list and click Generate</p>
+                    <p className="text-muted-foreground text-sm">Personalizované emaily se zobrazí zde</p>
+                    <p className="text-muted-foreground/50 text-xs">Načtěte seznam leadů a klikněte na Generovat</p>
                   </div>
                 </div>
               ) : generate.isPending ? (
@@ -380,17 +380,17 @@ export default function Convert() {
                   <div className="text-center space-y-4">
                     <div className="w-12 h-12 rounded-full border-2 animate-spin mx-auto" style={{ borderColor: "oklch(0.65 0.12 200 / 0.3)", borderTopColor: stepColor }} />
                     <div>
-                      <p className="text-foreground text-sm font-medium">Crafting personalized emails...</p>
-                      <p className="text-muted-foreground text-xs mt-1">AI is writing unique copy for each lead</p>
+                      <p className="text-foreground text-sm font-medium">Vytvářím personalizované emaily...</p>
+                      <p className="text-muted-foreground text-xs mt-1">AI píše unikátní text pro každý lead</p>
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-muted-foreground">{emails.length} emails generated</p>
+                    <p className="text-sm text-muted-foreground">{emails.length} vygenerovaných emailů</p>
                     <Button variant="ghost" size="sm" onClick={handleGenerate} className="text-muted-foreground hover:text-foreground gap-1.5 text-xs">
-                      <RefreshCw className="w-3 h-3" />Regenerate
+                      <RefreshCw className="w-3 h-3" />Znovu generovat
                     </Button>
                   </div>
 
@@ -447,17 +447,17 @@ export default function Convert() {
                             </div>
                             <div className="flex items-center gap-2 mt-4 flex-wrap">
                               <Button size="sm" variant="outline" onClick={() => copyEmail(email, i)} className="border-border text-foreground hover:bg-white/5 gap-2 text-xs">
-                                {copiedIndex === i ? <><Check className="w-3 h-3 text-green-400" />Copied!</> : <><Copy className="w-3 h-3" />Copy Plain Text</>}
+                                {copiedIndex === i ? <><Check className="w-3 h-3 text-green-400" />Zkopírováno!</> : <><Copy className="w-3 h-3" />Kopírovat text</>}
                               </Button>
                               {tracked && (
                                 <Button size="sm" variant="outline" onClick={() => copyTrackedHtml(i)} className="border-green-500/30 text-green-400 hover:bg-green-500/10 gap-2 text-xs">
-                                  {copiedHtmlIndex === i ? <><Check className="w-3 h-3" />Copied!</> : <><Activity className="w-3 h-3" />Copy Tracked HTML</>}
+                                  {copiedHtmlIndex === i ? <><Check className="w-3 h-3" />Zkopírováno!</> : <><Activity className="w-3 h-3" />Kopírovat sledovaný HTML</>}
                                 </Button>
                               )}
                               {stat && stat.opens > 0 && (
                                 <span className="text-xs text-muted-foreground flex items-center gap-1 ml-auto">
                                   <Clock className="w-3 h-3" />
-                                  Last opened {stat.lastOpenAt ? new Date(stat.lastOpenAt).toLocaleString() : "—"}
+                                  Naposledy otevřeno {stat.lastOpenAt ? new Date(stat.lastOpenAt).toLocaleString() : "—"}
                                 </span>
                               )}
                             </div>
@@ -478,19 +478,19 @@ export default function Convert() {
             {!savedCampaignId ? (
               <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 flex flex-col items-center text-center">
                 <AlertCircle className="w-8 h-8 text-muted-foreground mb-3" />
-                <p className="text-sm font-medium text-foreground mb-1">No campaign selected</p>
-                <p className="text-xs text-muted-foreground">Generate and save a campaign first, then enable tracking.</p>
+                <p className="text-sm font-medium text-foreground mb-1">Není vybrána žádná kampaň</p>
+                <p className="text-xs text-muted-foreground">Nejprve vygenerujte a uložte kampaň, pak aktivujte sledování.</p>
                 <Button size="sm" onClick={() => setActiveTab("compose")} className="mt-4 gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
-                  <Mail className="w-3.5 h-3.5" />Go to Compose
+                  <Mail className="w-3.5 h-3.5" />Přejít na Sestavit
                 </Button>
               </div>
             ) : !trackingEnabled ? (
               <div className="rounded-xl border border-dashed border-border bg-card/50 py-20 flex flex-col items-center text-center">
                 <Activity className="w-8 h-8 text-muted-foreground mb-3" />
-                <p className="text-sm font-medium text-foreground mb-1">Tracking not enabled</p>
-                <p className="text-xs text-muted-foreground mb-4">Enable tracking from the Compose tab to start monitoring opens and clicks.</p>
+                <p className="text-sm font-medium text-foreground mb-1">Sledování není aktivováno</p>
+                <p className="text-xs text-muted-foreground mb-4">Aktivujte sledování na záložce Sestavit pro monitorování otevření a kliknutí.</p>
                 <Button size="sm" onClick={() => setActiveTab("compose")} className="gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
-                  <Zap className="w-3.5 h-3.5" />Enable Tracking
+                  <Zap className="w-3.5 h-3.5" />Aktivovat sledování
                 </Button>
               </div>
             ) : (
@@ -498,10 +498,10 @@ export default function Convert() {
                 {/* Aggregate stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { label: "Emails Sent", value: totalEmails, icon: Mail, color: stepColor },
-                    { label: "Unique Opens", value: `${uniqueOpened} (${openRate}%)`, icon: Eye, color: "oklch(0.7 0.15 145)" },
-                    { label: "Unique Clicks", value: `${uniqueClicked} (${clickRate}%)`, icon: MousePointerClick, color: "oklch(0.65 0.15 260)" },
-                    { label: "Total Events", value: totalOpens + totalClicks, icon: Activity, color: "oklch(0.7 0.1 50)" },
+                    { label: "Odeslané emaily", value: totalEmails, icon: Mail, color: stepColor },
+                    { label: "Unikátní otevření", value: `${uniqueOpened} (${openRate}%)`, icon: Eye, color: "oklch(0.7 0.15 145)" },
+                    { label: "Unikátní kliknutí", value: `${uniqueClicked} (${clickRate}%)`, icon: MousePointerClick, color: "oklch(0.65 0.15 260)" },
+                    { label: "Celkem událostí", value: totalOpens + totalClicks, icon: Activity, color: "oklch(0.7 0.1 50)" },
                   ].map(stat => {
                     const Icon = stat.icon;
                     return (
@@ -521,7 +521,7 @@ export default function Convert() {
                 {/* Per-email stats table */}
                 <div className="rounded-xl border border-border bg-card overflow-hidden">
                   <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-foreground">Per-Email Performance</h3>
+                    <h3 className="text-sm font-semibold text-foreground">Výkon jednotlivých emailů</h3>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -536,12 +536,12 @@ export default function Convert() {
                       <thead>
                         <tr className="border-b border-border">
                           <th className="text-left px-5 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider w-8">#</th>
-                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Company</th>
-                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Subject</th>
-                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Opens</th>
-                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Clicks</th>
-                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Last Activity</th>
-                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Status</th>
+                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Společnost</th>
+                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Předmět</th>
+                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Otevření</th>
+                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Kliknutí</th>
+                          <th className="text-left px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Poslední aktivita</th>
+                          <th className="text-center px-3 py-3 text-[11px] font-mono text-muted-foreground uppercase tracking-wider">Stav</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -569,7 +569,7 @@ export default function Convert() {
                               </td>
                               <td className="px-3 py-3 text-center">
                                 <span className={cn("text-[10px] font-mono px-2 py-0.5 rounded-full border", hasActivity ? "bg-green-500/10 text-green-400 border-green-500/20" : "bg-secondary text-muted-foreground/50 border-border")}>
-                                  {hasActivity ? "engaged" : "waiting"}
+                                  {hasActivity ? "aktivní" : "čeká"}
                                 </span>
                               </td>
                             </tr>
@@ -583,13 +583,13 @@ export default function Convert() {
                 {/* Event log */}
                 <div className="rounded-xl border border-border bg-card overflow-hidden">
                   <div className="px-5 py-4 border-b border-border">
-                    <h3 className="text-sm font-semibold text-foreground">Live Event Log</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">Auto-refreshes every 15 seconds</p>
+                    <h3 className="text-sm font-semibold text-foreground">Livelog událostí</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">Automaticky obnovuje každých 15 sekund</p>
                   </div>
                   {!trackingEvents.data?.length ? (
                     <div className="py-10 text-center">
                       <Activity className="w-6 h-6 text-muted-foreground/30 mx-auto mb-2" />
-                      <p className="text-xs text-muted-foreground">No events yet. Events appear here as recipients open emails or click links.</p>
+                      <p className="text-xs text-muted-foreground">Zatím žádné události. Zobrazí se zde, jakmile příjemci otevřou emaily nebo kliknou na odkaz.</p>
                     </div>
                   ) : (
                     <div className="divide-y divide-border/50 max-h-[400px] overflow-y-auto">
@@ -642,13 +642,13 @@ export default function Convert() {
           <div className="mt-6 rounded-xl border p-5 flex items-center gap-4" style={{ borderColor: "oklch(0.65 0.12 200 / 0.3)", background: "oklch(0.65 0.12 200 / 0.05)" }}>
             <Save className="w-4 h-4 flex-shrink-0" style={{ color: stepColor }} />
             <div className="flex-1">
-              <Label className="text-xs text-muted-foreground mb-1 block">Save campaign as</Label>
-              <Input value={saveTitle} onChange={e => setSaveTitle(e.target.value)} className="bg-input border-border text-foreground h-8 text-sm" placeholder="Campaign title..." />
+              <Label className="text-xs text-muted-foreground mb-1 block">Uložit kampaň jako</Label>
+              <Input value={saveTitle} onChange={e => setSaveTitle(e.target.value)} className="bg-input border-border text-foreground h-8 text-sm" placeholder="Název kampaňe..." />
             </div>
             <Button onClick={handleSave} disabled={save.isPending} size="sm" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
-              {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+              {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Uložit"}
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => setShowSaveForm(false)} className="text-muted-foreground">Cancel</Button>
+            <Button variant="ghost" size="sm" onClick={() => setShowSaveForm(false)} className="text-muted-foreground">Zrušit</Button>
           </div>
         )}
       </div>

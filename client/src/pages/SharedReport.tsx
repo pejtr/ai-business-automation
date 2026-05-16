@@ -22,7 +22,7 @@ export default function SharedReport() {
     a.download = `${report.companyName.toLowerCase().replace(/\s+/g, "-")}-analysis.md`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Report downloaded");
+    toast.success("Report stažen");
   };
 
   const openPresentation = () => {
@@ -37,7 +37,7 @@ export default function SharedReport() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-10 h-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin mx-auto" />
-          <p className="text-muted-foreground text-sm">Loading report...</p>
+          <p className="text-muted-foreground text-sm">Načítám report...</p>
         </div>
       </div>
     );
@@ -50,8 +50,8 @@ export default function SharedReport() {
           <div className="w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center mx-auto">
             <FileText className="w-5 h-5 text-muted-foreground" />
           </div>
-          <h2 className="text-xl font-serif text-foreground">Report not found</h2>
-          <p className="text-muted-foreground text-sm">This report may have been deleted or the link is invalid.</p>
+          <h2 className="text-xl font-serif text-foreground">Report nenalezen</h2>
+          <p className="text-muted-foreground text-sm">Tento report mohl být smazán nebo odkaz je neplatný.</p>
         </div>
       </div>
     );
@@ -67,7 +67,7 @@ export default function SharedReport() {
           </div>
           <div>
             <p className="text-sm font-semibold text-foreground">Agency AI</p>
-            <p className="text-[10px] text-muted-foreground font-mono tracking-widest uppercase">Shared Report</p>
+            <p className="text-[10px] text-muted-foreground font-mono tracking-widest uppercase">Sdílený report</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function SharedReport() {
             className="border-border text-foreground hover:bg-white/5 gap-2"
           >
             <Download className="w-3.5 h-3.5" />
-            Download
+            Stáhnout
           </Button>
           {report.presentationHtml && (
             <Button
@@ -87,7 +87,7 @@ export default function SharedReport() {
               className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              View Presentation
+              Zobrazit prezentaci
             </Button>
           )}
         </div>
@@ -96,7 +96,7 @@ export default function SharedReport() {
       <div className="max-w-4xl mx-auto px-8 py-10">
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] font-mono tracking-wider text-muted-foreground uppercase">Brand Analysis Report</span>
+            <span className="text-[10px] font-mono tracking-wider text-muted-foreground uppercase">Report analýzy značky</span>
           </div>
           <h1 className="text-4xl font-serif text-foreground">{report.companyName}</h1>
           {report.companyUrl && (
@@ -106,7 +106,7 @@ export default function SharedReport() {
             </a>
           )}
           <p className="text-xs text-muted-foreground mt-2">
-            Generated {new Date(report.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            Vygenerováno {new Date(report.createdAt).toLocaleDateString("cs-CZ", { year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>
 
@@ -118,7 +118,7 @@ export default function SharedReport() {
 
         {report.presentationHtml && (
           <div className="mt-10 pt-8 border-t border-border">
-            <h2 className="text-xl font-serif text-foreground mb-4">Presentation Preview</h2>
+            <h2 className="text-xl font-serif text-foreground mb-4">Náhled prezentace</h2>
             <div className="rounded-xl border border-border overflow-hidden" style={{ height: "500px" }}>
               <iframe
                 srcDoc={report.presentationHtml}

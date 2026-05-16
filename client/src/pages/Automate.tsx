@@ -4,10 +4,10 @@ import { Zap, CheckCircle2, ChevronRight, ArrowRight, Clock, RefreshCw, Bell } f
 const stepColor = "oklch(0.78 0.22 145)";
 
 const PLANNED = [
-  { icon: RefreshCw, label: "Auto Lead Refresh", desc: "Automatically regenerate your lead list weekly with fresh prospects matching your criteria." },
-  { icon: Bell,      label: "Outreach Sequences", desc: "Schedule follow-up emails automatically based on open and click tracking events." },
-  { icon: Clock,     label: "Report Scheduling", desc: "Generate and deliver brand research reports to clients on a recurring schedule." },
-  { icon: Zap,       label: "Pipeline Triggers", desc: "Move leads through your pipeline automatically when they hit engagement thresholds." },
+  { icon: RefreshCw, label: "Automatické obnovení leadů", desc: "Automaticky regenerujte seznam leadů každý týden s novými zájemci odpovídajícími vašim kritériím." },
+  { icon: Bell,      label: "Outreach sekvence", desc: "Plánujte následné emaily automaticky na základě událostí sledování otevření a kliknutí." },
+  { icon: Clock,     label: "Plánování reportů", desc: "Generujte a doručujte výzkumné reporty značky klientům v pravidelných intervalech." },
+  { icon: Zap,       label: "Spouštěče pipeline", desc: "Automaticky posouvejte leady v pipeline, když dosáhnou práhů zapojeni." },
 ];
 
 export default function Automate() {
@@ -34,7 +34,7 @@ export default function Automate() {
             </span>
           </div>
           <p className="text-muted-foreground text-sm ml-12">
-            Set up recurring workflows that run your agency processes on autopilot.
+            Nastavte opakující se workflow, které pověde procesy vaší agentury na autopilotu.
           </p>
         </div>
 
@@ -53,19 +53,19 @@ export default function Automate() {
                   <Zap className="w-7 h-7" style={{ color: stepColor, filter: "drop-shadow(0 0 8px oklch(0.78 0.22 145))" }} />
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2 tracking-tight">Workflow Automation</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2 tracking-tight">Automatizace workflow</h2>
               <p className="text-muted-foreground text-sm mb-4 max-w-md mx-auto leading-relaxed">
-                Connect your Attract, Convert, and Deliver workflows into fully automated pipelines —
-                from lead discovery to personalized outreach to delivered reports.
+                Propojte workflow Attract, Convert a Deliver do plně automatizovaných pipeline —
+                od objevování leadů přes personalizovaný outreach až po doručené reporty.
               </p>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono tracking-wider" style={{ background: "oklch(0.78 0.22 145 / 0.1)", color: stepColor, border: "1px solid oklch(0.78 0.22 145 / 0.3)", boxShadow: "0 0 12px oklch(0.78 0.22 145 / 0.2)" }}>
-                Coming Soon
+                Brzy k dispozici
               </span>
             </div>
           </div>
 
           {/* Planned features */}
-          <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>Planned Automations</p>
+          <p className="text-xs font-mono tracking-wider uppercase mb-4" style={{ color: "oklch(0.40 0.02 260)" }}>Plánované automatizace</p>
           <div className="space-y-3 mb-8">
             {PLANNED.map((item) => {
               const Icon = item.icon;
@@ -90,7 +90,7 @@ export default function Automate() {
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-sm font-semibold text-foreground">{item.label}</p>
                       <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full" style={{ background: "oklch(0.78 0.22 145 / 0.1)", color: "oklch(0.78 0.22 145 / 0.7)", border: "1px solid oklch(0.78 0.22 145 / 0.2)" }}>
-                        planned
+                        plánováno
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -116,8 +116,8 @@ export default function Automate() {
               }}
             >
               <div>
-                <p className="text-sm font-semibold text-foreground">Start with Attract</p>
-                <p className="text-xs text-muted-foreground">Generate your first lead list while automation is in development</p>
+                <p className="text-sm font-semibold text-foreground">Začněte s Attract</p>
+                <p className="text-xs text-muted-foreground">Vygenerujte svůj první seznam leadů, zatímco je automatizace ve vývoji</p>
               </div>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: stepColor }} />
             </div>
