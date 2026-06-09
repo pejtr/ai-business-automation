@@ -24,6 +24,10 @@ import {
   getTrackedEmailsByCampaign,
   getTrackingStatsByCampaign,
   getTrackingEventsByCampaign,
+  getAllNicheTemplates,
+  getNicheTemplateBySlug,
+  getOrCreateIncomeCalculator,
+  updateIncomeCalculator,
 } from "./db";
 
 // ── Shared Types ──────────────────────────────────────────────────────────
@@ -653,6 +657,35 @@ Buď stručná, nápomocná a přátelská. Používej krátké odstavce. Prove�
     }),
 });
 
+// ── Niche Router ──────────────────────────────────────────────────────────────
+
+const nicheRouter = router({
+  getAll: publicProcedure.query(async () => {
+    return await getAllNicheTemplates();
+  }),
+  getBySlug: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ input }) => {
+      return await getNicheTemplateBySlug(input.slug);
+    }),
+});
+
+// ── Income Calculator Router ────────────────────────────────────────────────────
+
+const incomeRouter = router({
+  getOrCreate: protectedProcedure.query(async ({ ctx }) => {
+    return await getOrCreateIncomeCalculator(ctx.user.id);
+  }),
+  update: protectedProcedure
+    .input(z.object({
+      clientCount: z.number().min(0),
+      monthlyRetainerCzk: z.number().min(0),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      return await updateIncomeCalculator(ctx.user.id, input.clientCount, input.monthlyRetainerCzk);
+    }),
+});
+
 // ── App Router ─────────────────────────────────────────────────────────────
 
 export const appRouter = router({
@@ -670,6 +703,8 @@ export const appRouter = router({
   deliver: deliverRouter,
   tracking: trackingRouter,
   assistant: assistantRouter,
+  niche: nicheRouter,
+  income: incomeRouter,
 });
 
 export type AppRouter = typeof appRouter;

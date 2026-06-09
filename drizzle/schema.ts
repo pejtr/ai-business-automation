@@ -105,3 +105,34 @@ export const emailTrackingEvents = mysqlTable("email_tracking_events", {
 
 export type EmailTrackingEvent = typeof emailTrackingEvents.$inferSelect;
 export type InsertEmailTrackingEvent = typeof emailTrackingEvents.$inferInsert;
+
+// Niche Templates (Attract module enhancement)
+export const nicheTemplates = mysqlTable("niche_templates", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // "Zubař", "Fitness", etc.
+  slug: varchar("slug", { length: 128 }).notNull().unique(), // "dentist", "fitness", etc.
+  description: text("description").notNull(),
+  averagePrice: int("averagePrice").notNull(), // in CZK
+  recommendedSolution: varchar("recommendedSolution", { length: 512 }).notNull(), // e.g., "Appointment booking app"
+  bestOutreachPlatform: varchar("bestOutreachPlatform", { length: 128 }).notNull(), // "LinkedIn", "Email", "Walk-in", etc.
+  aiPromptContext: text("aiPromptContext").notNull(), // context for AI lead generation
+  icon: varchar("icon", { length: 64 }), // emoji or icon name
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type NicheTemplate = typeof nicheTemplates.$inferSelect;
+export type InsertNicheTemplate = typeof nicheTemplates.$inferInsert;
+
+// Income Calculator (Dashboard enhancement)
+export const incomeCalculators = mysqlTable("income_calculators", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  clientCount: int("clientCount").notNull().default(0),
+  monthlyRetainerCzk: int("monthlyRetainerCzk").notNull().default(10000), // average monthly retainer in CZK
+  totalMonthlyRevenue: int("totalMonthlyRevenue").notNull().default(0), // calculated: clientCount * monthlyRetainerCzk
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type IncomeCalculator = typeof incomeCalculators.$inferSelect;
+export type InsertIncomeCalculator = typeof incomeCalculators.$inferInsert;

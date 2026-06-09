@@ -114,3 +114,15 @@
 - [x] HumanElement: citát, pilíře, popis
 - [x] SavedProjects: záložky, karty, prázdné stavy, akce
 - [x] Server: AI prompty pro attract, convert, deliver, assistant router
+
+## AppsToCash Features Implementation
+- [x] Niche Templates in Attract: predefined industry cards (zubař, fitness, restaurace, kadeřnictví, realitní makléř, barber, salon)
+- [x] Each niche card: industry name, average project price, recommended AI solution, best outreach platform
+- [ ] Niche selection updates form defaults and AI prompt context (UI TODO)
+- [ ] Pitch Script Generator in Convert: new "Skript" tab for walk-in and demo video scripts (UI TODO)
+- [ ] AI generates personalized pitch scripts based on lead data and industry (UI TODO)
+- [ ] Copy-to-clipboard for pitch scripts (plain text + formatted for video) (UI TODO)
+- [ ] Retainer & Income Calculator widget on Home dashboard (UI TODO)
+- [ ] Interactive calculator: X clients × Y Kč/month = Z Kč monthly revenue (UI TODO)
+- [ ] Visualization of income growth path (0 → 100k Kč/month) (UI TODO)
+- [x] Save calculator state to database for tracking progress (backend done)

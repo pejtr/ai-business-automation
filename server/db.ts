@@ -13,6 +13,10 @@ import {
   InsertTrackedEmail,
   emailTrackingEvents,
   InsertEmailTrackingEvent,
+  nicheTemplates,
+  InsertNicheTemplate,
+  incomeCalculators,
+  InsertIncomeCalculator,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
@@ -223,4 +227,63 @@ export async function getTrackingStatsByCampaign(campaignId: number) {
   }
 
   return Array.from(statsMap.entries()).map(([emailIndex, stats]) => ({ emailIndex, ...stats }));
+}
+
+// ── Niche Templates ────────────────────────────────────────────────────────
+
+export async function getAllNicheTemplates() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(nicheTemplates);
+}
+
+export async function getNicheTemplateBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db
+    .select()
+    .from(nicheTemplates)
+    .where(eq(nicheTemplates.slug, slug))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+// ── Income Calculator ──────────────────────────────────────────────────────
+
+export async function getOrCreateIncomeCalculator(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const existing = await db
+    .select()
+    .from(incomeCalculators)
+    .where(eq(incomeCalculators.userId, userId))
+    .limit(1);
+  
+  if (existing.length > 0) return existing[0];
+  
+  // Create new calculator
+  const newCalc: InsertIncomeCalculator = {
+    userId,
+    clientCount: 0,
+    monthlyRetainerCzk: 10000,
+    totalMonthlyRevenue: 0,
+  };
+  
+  const result = await db.insert(incomeCalculators).values(newCalc);
+  return { ...newCalc, id: result[0] };
+}
+
+export async function updateIncomeCalculator(userId: number, clientCount: number, monthlyRetainerCzk: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const totalMonthlyRevenue = clientCount * monthlyRetainerCzk;
+  
+  await db
+    .update(incomeCalculators)
+    .set({ clientCount, monthlyRetainerCzk, totalMonthlyRevenue })
+    .where(eq(incomeCalculators.userId, userId));
+  
+  return { clientCount, monthlyRetainerCzk, totalMonthlyRevenue };
 }
