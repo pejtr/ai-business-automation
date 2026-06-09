@@ -1,7 +1,11 @@
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
 import { Magnet, Mail, FileText, Zap, Heart, ArrowRight, Sparkles, Activity } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 // ── Workflow Diagram ─────────────────────────────────────────────────────────
 
@@ -226,6 +230,23 @@ export default function Home() {
   const leadLists = trpc.attract.list.useQuery();
   const campaigns = trpc.convert.list.useQuery();
   const reports = trpc.deliver.list.useQuery();
+  
+  // Income Calculator
+  const { data: incomeCalc } = trpc.income.getOrCreate.useQuery();
+  const updateIncome = trpc.income.update.useMutation();
+  const [clientCount, setClientCount] = useState(incomeCalc?.clientCount ?? 0);
+  const [monthlyRetainer, setMonthlyRetainer] = useState(incomeCalc?.monthlyRetainerCzk ?? 10000);
+  
+  useEffect(() => {
+    if (incomeCalc) {
+      setClientCount(incomeCalc.clientCount ?? 0);
+      setMonthlyRetainer(incomeCalc.monthlyRetainerCzk ?? 10000);
+    }
+  }, [incomeCalc]);
+  
+  const handleIncomeUpdate = () => {
+    updateIncome.mutate({ clientCount, monthlyRetainerCzk: monthlyRetainer });
+  };
 
   const totalProjects =
     (leadLists.data?.length ?? 0) +
@@ -286,6 +307,55 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* ── Income Calculator ── */}
+        {incomeCalc && (
+          <div className="mb-10 p-6 rounded-2xl border" style={{ background: "oklch(0.10 0.016 260)", borderColor: "oklch(0.78 0.22 195 / 0.3)", boxShadow: "0 0 24px oklch(0.78 0.22 195 / 0.1)" }}>
+            <h2 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+              <span style={{ color: "oklch(0.78 0.22 195)" }}>✦</span>
+              Kalkulátor příjmů
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
+                  Počet klientů
+                </Label>
+                <Input
+                  type="number"
+                  value={clientCount}
+                  onChange={(e) => setClientCount(parseInt(e.target.value) || 0)}
+                  className="bg-input border-border text-foreground"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
+                  Měsíční retainer (Kč)
+                </Label>
+                <Input
+                  type="number"
+                  value={monthlyRetainer}
+                  onChange={(e) => setMonthlyRetainer(parseInt(e.target.value) || 0)}
+                  className="bg-input border-border text-foreground"
+                />
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wider font-mono mb-2 block">
+                  Měsíční příjem
+                </Label>
+                <div className="text-2xl font-bold text-foreground">
+                  {(clientCount * monthlyRetainer).toLocaleString()} Kč
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={handleIncomeUpdate}
+              className="mt-4 w-full"
+              style={{ background: "oklch(0.78 0.22 195)", color: "white" }}
+            >
+              Uložit
+            </Button>
+          </div>
+        )}
 
         {/* ── Workflow Diagram ── */}
         <div className="mb-10 mt-2">

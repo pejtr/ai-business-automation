@@ -45,6 +45,10 @@ export default function Attract() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [saveTitle, setSaveTitle] = useState("");
   const [showSaveForm, setShowSaveForm] = useState(false);
+  const [selectedNicheSlug, setSelectedNicheSlug] = useState<string | null>(null);
+
+  // Fetch niche templates
+  const { data: nicheTemplates = [] } = trpc.niche.getAll.useQuery();
 
   const generate = trpc.attract.generate.useMutation({
     onSuccess: (data) => {
@@ -144,6 +148,38 @@ export default function Attract() {
       </div>
 
       <div className="px-8 py-8 max-w-6xl">
+        {/* Niche Templates Cards */}
+        {nicheTemplates.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+              <span className="text-primary">✦</span>
+              Zvolte odvětví
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {nicheTemplates.map((template) => (
+                <button
+                  key={template.slug}
+                  onClick={() => {
+                    setNiche(template.name);
+                    setSelectedNicheSlug(template.slug);
+                  }}
+                  className={cn(
+                    "p-3 rounded-lg border transition-all text-left text-xs",
+                    selectedNicheSlug === template.slug
+                      ? "bg-primary/15 border-primary/40 shadow-lg shadow-primary/20"
+                      : "bg-card border-border hover:border-primary/30 hover:shadow-md hover:shadow-primary/10"
+                  )}
+                >
+                  <div className="text-lg mb-1">{template.icon}</div>
+                  <div className="font-semibold text-foreground">{template.name}</div>
+                  <div className="text-muted-foreground text-[10px] mt-1">{template.averagePrice.toLocaleString()} Kč</div>
+                  <div className="text-primary/70 text-[9px] mt-2 line-clamp-2">{template.recommendedSolution}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Form */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-1 space-y-5">
