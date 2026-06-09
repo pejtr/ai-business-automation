@@ -48,7 +48,7 @@ interface TrackingStat {
   lastClickAt: Date | null;
 }
 
-type MainTab = "compose" | "tracking";
+type MainTab = "compose" | "tracking" | "pitch";
 
 const stepColor = "oklch(0.65 0.12 200)";
 
@@ -58,6 +58,9 @@ export default function Convert() {
   const [senderRole, setSenderRole] = useState("");
   const [pitch, setPitch] = useState("");
   const [leadsJson, setLeadsJson] = useState("");
+  const [pitchScripts, setPitchScripts] = useState<{ company: string; walkInScript: string; videoScript: string }[]>([]);
+  const [selectedLeadForPitch, setSelectedLeadForPitch] = useState<Lead | null>(null);
+  const [copiedPitchIndex, setCopiedPitchIndex] = useState<number | null>(null);
   const [emails, setEmails] = useState<OutreachEmail[]>([]);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -242,6 +245,7 @@ export default function Convert() {
         <div className="flex items-center gap-1 mt-5 ml-12">
           {([
             { id: "compose" as MainTab, label: "Sestavit", icon: Mail },
+            { id: "pitch" as MainTab, label: "Skript", icon: Zap },
             { id: "tracking" as MainTab, label: "Sledování", icon: BarChart2, badge: savedCampaignId ? (totalOpens + totalClicks) : null },
           ]).map(tab => {
             const Icon = tab.icon;
@@ -649,6 +653,125 @@ export default function Convert() {
               {save.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Uložit"}
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setShowSaveForm(false)} className="text-muted-foreground">Zrušit</Button>
+          </div>
+        )}
+
+        {/* ── PITCH SCRIPT TAB ─────────────────────────────────────────────── */}
+        {activeTab === "pitch" && (
+          <div className="max-w-4xl">
+            {!selectedLeadForPitch ? (
+              <div>
+                <h2 className="text-lg font-semibold text-foreground mb-4">Vyberte lead pro generování skriptu</h2>
+                {emails.length === 0 ? (
+                  <div className="p-6 rounded-lg border border-border bg-card text-center">
+                    <p className="text-muted-foreground">Nejprve generujte emaily v záložce "Sestavit"</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {emails.map((email, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          const lead = JSON.parse(leadsJson)[idx];
+                          setSelectedLeadForPitch(lead);
+                        }}
+                        className="p-4 rounded-lg border border-border bg-card hover:bg-card/80 text-left transition-all"
+                      >
+                        <div className="font-semibold text-foreground">{email.company}</div>
+                        <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{email.subject}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={() => setSelectedLeadForPitch(null)}
+                  className="mb-4 text-sm text-primary hover:text-primary/80 flex items-center gap-1"
+                >
+                  ← Zpět na seznam
+                </button>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg border border-border bg-card">
+                    <h3 className="font-semibold text-foreground mb-2">{selectedLeadForPitch.company}</h3>
+                    <p className="text-sm text-muted-foreground">{selectedLeadForPitch.website}</p>
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {pitchScripts.length > 0 && pitchScripts.find(p => p.company === selectedLeadForPitch.company) ? (
+                      <>
+                        {(() => {
+                          const script = pitchScripts.find(p => p.company === selectedLeadForPitch.company)!;
+                          return (
+                            <>
+                              <div className="p-4 rounded-lg border border-border bg-card">
+                                <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                                  <span className="text-primary">🚶</span> Walk-in Skript
+                                </h4>
+                                <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{script.walkInScript}</p>
+                                <Button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(script.walkInScript);
+                                    setCopiedPitchIndex(0);
+                                    setTimeout(() => setCopiedPitchIndex(null), 2000);
+                                    toast.success("Skript zkopírován");
+                                  }}
+                                  size="sm"
+                                  className="mt-3 w-full gap-2"
+                                  variant="outline"
+                                >
+                                  {copiedPitchIndex === 0 ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                                  Kopírovat
+                                </Button>
+                              </div>
+                              <div className="p-4 rounded-lg border border-border bg-card">
+                                <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                                  <span className="text-primary">🎥</span> Video Skript
+                                </h4>
+                                <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{script.videoScript}</p>
+                                <Button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(script.videoScript);
+                                    setCopiedPitchIndex(1);
+                                    setTimeout(() => setCopiedPitchIndex(null), 2000);
+                                    toast.success("Skript zkopírován");
+                                  }}
+                                  size="sm"
+                                  className="mt-3 w-full gap-2"
+                                  variant="outline"
+                                >
+                                  {copiedPitchIndex === 1 ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                                  Kopírovat
+                                </Button>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </>
+                    ) : (
+                      <div className="lg:col-span-2 p-6 rounded-lg border border-border bg-card text-center">
+                        <p className="text-muted-foreground mb-4">Zatím nejsou dostupné skripty. Generujte je pomocí tlačítka níže.</p>
+                        <Button
+                          onClick={() => {
+                            setPitchScripts([...pitchScripts, {
+                              company: selectedLeadForPitch.company,
+                              walkInScript: `Ahoj! Jsem ${senderName}, ${senderRole}. Chtěl bych ti ukázat, jak můžeme ${pitch} pro ${selectedLeadForPitch.company}. Máš 15 minut?`,
+                              videoScript: `Ahoj, jsem ${senderName}. Viděl jsem, že se ${selectedLeadForPitch.company} zaměřuje na ${selectedLeadForPitch.recentTopics}. Myslím, že bychom mohli pomoci s ${pitch}. Pojďme si promluvit.`
+                            }]);
+                            toast.success("Skripty vygenerovány");
+                          }}
+                          className="gap-2"
+                          style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}
+                        >
+                          <Zap className="w-4 h-4" />
+                          Generovat skripty
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
