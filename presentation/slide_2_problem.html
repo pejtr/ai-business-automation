@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Výzvy moderních agentur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Left section - colored block */
+        .left-section {
+            width: 35%;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.08) 0%, rgba(176, 38, 255, 0.08) 100%);
+            border-right: 2px solid rgba(0, 217, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px;
+        }
+        
+        .left-content {
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #00d9ff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #b0b0b0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* Right section - problems list */
+        .right-section {
+            width: 65%;
+            padding-top: 80px;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+        
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .problem-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .problem-icon {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 4px;
+            background: rgba(255, 0, 110, 0.15);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            padding-top: 2px;
+        }
+        
+        .problem-text {
+            flex: 1;
+        }
+        
+        .problem-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 4px;
+        }
+        
+        .problem-desc {
+            font-size: 13px;
+            color: #909090;
+            line-height: 1.5;
+        }
+        
+        /* Accent line */
+        .accent-line {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(180deg, #00d9ff 0%, transparent 100%);
+            right: 40px;
+            top: 150px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Left section -->
+        <div class="left-section">
+            <div class="left-content">
+                <div class="section-title">Výzvy</div>
+                <div class="section-subtitle">Moderních agentur</div>
+            </div>
+        </div>
+        
+        <!-- Right section -->
+        <div class="right-section">
+            <div class="problems-list">
+                <div class="problem-item">
+                    <div class="problem-icon">⏱</div>
+                    <div class="problem-text">
+                        <div class="problem-title">Ruční generování leadů</div>
+                        <div class="problem-desc">Časově náročné, neefektivní a repetitivní procesy</div>
+                    </div>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">✉</div>
+                    <div class="problem-text">
+                        <div class="problem-title">Personalizace emailů</div>
+                        <div class="problem-desc">Ruční psaní desítek emailů bez relevance a kontextu</div>
+                    </div>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">📊</div>
+                    <div class="problem-text">
+                        <div class="problem-title">Vytváření prezentací</div>
+                        <div class="problem-desc">Dlouhé procesy, chybí automatizace a brand konzistence</div>
+                    </div>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">⚙</div>
+                    <div class="problem-text">
+                        <div class="problem-title">Chybí automatizace</div>
+                        <div class="problem-desc">Nízká efektivita, chyby a ztracený čas na rutinu</div>
+                    </div>
+                </div>
+                
+                <div class="problem-item">
+                    <div class="problem-icon">🎯</div>
+                    <div class="problem-text">
+                        <div class="problem-title">Bez strategie</div>
+                        <div class="problem-desc">Čas na rutinu místo na strategii a rozvoj vztahů</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Accent line -->
+        <div class="accent-line"></div>
+    </div>
+</body>
+</html>

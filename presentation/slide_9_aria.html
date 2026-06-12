@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aria — AI asistentka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Left section - Title and features */
+        .left-section {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            padding-left: 60px;
+            padding-right: 40px;
+            justify-content: flex-start;
+        }
+        
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 6px 12px;
+            background: rgba(0, 255, 65, 0.12);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #00ff41;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        .section-badge::before {
+            content: '◆';
+            font-size: 8px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-subtitle {
+            font-size: 13px;
+            color: #909090;
+            font-weight: 500;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+        
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 4px;
+            background: rgba(0, 255, 65, 0.15);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #00ff41;
+            padding-top: 1px;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 3px;
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: #909090;
+            line-height: 1.5;
+        }
+        
+        /* Right section - Chat mockup */
+        .right-section {
+            width: 55%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px;
+            padding-right: 60px;
+            padding-left: 40px;
+            position: relative;
+        }
+        
+        /* Chat widget mockup */
+        .chat-mockup {
+            width: 100%;
+            max-width: 320px;
+            height: 420px;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 217, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Chat header */
+        .chat-header {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.15) 0%, rgba(0, 217, 255, 0.1) 100%);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .avatar-circle {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff41, #00d9ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+        
+        .header-info {
+            flex: 1;
+        }
+        
+        .header-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        .header-status {
+            font-size: 10px;
+            color: #00ff41;
+            font-weight: 600;
+        }
+        
+        .header-close {
+            font-size: 16px;
+            color: #909090;
+            cursor: pointer;
+        }
+        
+        /* Chat messages area */
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        
+        .message.assistant .message-bubble {
+            background: rgba(0, 255, 65, 0.15);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            color: #e0e0e0;
+        }
+        
+        .message.user .message-bubble {
+            background: rgba(0, 217, 255, 0.2);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            color: #e0e0e0;
+        }
+        
+        /* Quick prompts */
+        .quick-prompts {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(0, 255, 65, 0.1);
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .prompt-chip {
+            font-size: 9px;
+            padding: 4px 8px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        /* Onboarding overlay indicator */
+        .onboarding-indicator {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.08) 0%, transparent 70%);
+        }
+        
+        /* Accent line */
+        .accent-line {
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(180deg, #00ff41 0%, transparent 100%);
+            left: 45%;
+            top: 100px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Accent line -->
+        <div class="accent-line"></div>
+        
+        <!-- Left section -->
+        <div class="left-section">
+            <div class="section-badge">AI Assistant</div>
+            
+            <h2 class="section-title">Aria</h2>
+            <p class="section-subtitle">Vaše AI asistentka dostupná na každé stránce platformy</p>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Plovoucí chat widget</div>
+                        <div class="feature-desc">Dostupný na všech stránkách aplikace s minimálním ingress</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Context-aware odpovědi</div>
+                        <div class="feature-desc">Aria zná aktuální stránku a poskytuje relevantní rady</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Conversation history</div>
+                        <div class="feature-desc">Všechny rozhovory se ukládají pro pozdější referenci</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">
+                        <div class="feature-title">8-kroková onboarding tour</div>
+                        <div class="feature-desc">Interaktivní průvodce pro nové uživatele s spotlight efekty</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Quick prompts</div>
+                        <div class="feature-desc">Předpřipravené otázky pro rychlý start</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right section -->
+        <div class="right-section">
+            <!-- Chat widget mockup -->
+            <div class="chat-mockup">
+                <!-- Header -->
+                <div class="chat-header">
+                    <div class="avatar-circle">A</div>
+                    <div class="header-info">
+                        <div class="header-title">Aria</div>
+                        <div class="header-status">● Online</div>
+                    </div>
+                    <div class="header-close">✕</div>
+                </div>
+                
+                <!-- Messages -->
+                <div class="chat-messages">
+                    <div class="message assistant">
+                        <div class="message-bubble">Ahoj! Jsem Aria, tvá AI asistentka. Jak ti mohu pomoci?</div>
+                    </div>
+                    <div class="message user">
+                        <div class="message-bubble">Jak funguje modul Attract?</div>
+                    </div>
+                    <div class="message assistant">
+                        <div class="message-bubble">Modul Attract generuje kvalitní leady pomocí AI. Vybereš odvětví a AI vytvoří seznam potenciálních klientů...</div>
+                    </div>
+                </div>
+                
+                <!-- Quick prompts -->
+                <div class="quick-prompts">
+                    <div class="prompt-chip">Jak začít?</div>
+                    <div class="prompt-chip">Attract</div>
+                    <div class="prompt-chip">Convert</div>
+                </div>
+            </div>
+            
+            <!-- Onboarding indicator -->
+            <div class="onboarding-indicator"></div>
+        </div>
+    </div>
+</body>
+</html>

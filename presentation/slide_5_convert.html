@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert — Personalizované outreach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Left section - header and main feature */
+        .left-section {
+            padding-top: 60px;
+            padding-left: 60px;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border-right: 2px solid rgba(176, 38, 255, 0.2);
+        }
+        
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 6px 12px;
+            background: rgba(176, 38, 255, 0.1);
+            border: 1px solid rgba(176, 38, 255, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #b026ff;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-subtitle {
+            font-size: 13px;
+            color: #909090;
+            font-weight: 500;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+        
+        .main-feature {
+            margin-bottom: 32px;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(176, 38, 255, 0.15);
+            border: 2px solid rgba(176, 38, 255, 0.4);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        /* Right section - Pitch Script Generator */
+        .right-section {
+            padding-top: 60px;
+            padding-left: 40px;
+            padding-right: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .right-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #b026ff;
+            margin-bottom: 24px;
+            letter-spacing: -0.3px;
+        }
+        
+        .script-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .script-option {
+            padding-top: 16px;
+            padding-left: 16px;
+            padding-right: 16px;
+            background: rgba(176, 38, 255, 0.06);
+            border-left: 3px solid rgba(176, 38, 255, 0.5);
+        }
+        
+        .script-option-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .script-option-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(176, 38, 255, 0.2);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .script-option-desc {
+            font-size: 12px;
+            color: #909090;
+            line-height: 1.5;
+        }
+        
+        /* Bottom accent */
+        .accent-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(176, 38, 255, 0.6), rgba(176, 38, 255, 0.2));
+        }
+        
+        /* Decorative element */
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(176, 38, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Decorative glow -->
+        <div class="glow"></div>
+        
+        <!-- Left section -->
+        <div class="left-section">
+            <div class="section-badge">✦ Modul 2</div>
+            <div class="section-title">Convert</div>
+            <div class="section-subtitle">Proměňte leady v kvalitní obchodní příležitosti</div>
+            
+            <div class="main-feature">
+                <div class="feature-icon">✉</div>
+                <div class="feature-title">Personalizované emaily</div>
+                <div class="feature-desc">
+                    Generujte relevantní outreach emaily pro každý lead. Každý návrh odkazuje na nedávnou aktivitu značky pro maximální relevanci a konverzi.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right section -->
+        <div class="right-section">
+            <div class="right-title">Nové: Pitch Script Generator</div>
+            
+            <div class="script-options">
+                <div class="script-option">
+                    <div class="script-option-title">
+                        <div class="script-option-icon">🚶</div>
+                        Walk-in skript
+                    </div>
+                    <div class="script-option-desc">
+                        AI vytvoří přesný skript pro osobní setkání s potenciálním klientem. Personalizován dle leadů a odvětví.
+                    </div>
+                </div>
+                
+                <div class="script-option">
+                    <div class="script-option-title">
+                        <div class="script-option-icon">🎥</div>
+                        Video demo skript
+                    </div>
+                    <div class="script-option-desc">
+                        Skript pro online video prezentaci. Optimalizován pro krátké, impaktní demonstrace řešení.
+                    </div>
+                </div>
+                
+                <div class="script-option">
+                    <div class="script-option-title">
+                        <div class="script-option-icon">📋</div>
+                        Copy-to-clipboard
+                    </div>
+                    <div class="script-option-desc">
+                        Okamžitě zkopírujte skript a použijte jej v emailu, Slacku nebo jakémkoli komunikačním kanálu.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Accent bar -->
+        <div class="accent-bar"></div>
+    </div>
+</body>
+</html>

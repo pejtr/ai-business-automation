@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-krokový framework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Header section */
+        .header {
+            padding-top: 50px;
+            padding-left: 60px;
+            padding-right: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: #909090;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Steps container */
+        .steps-container {
+            display: flex;
+            gap: 12px;
+            padding-left: 60px;
+            padding-right: 60px;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex: 1;
+        }
+        
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .step-number {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+        
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 16px;
+            border: 2px solid;
+        }
+        
+        .step-1 .step-icon {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: rgba(0, 217, 255, 0.4);
+            color: #00d9ff;
+        }
+        
+        .step-2 .step-icon {
+            background: rgba(176, 38, 255, 0.1);
+            border-color: rgba(176, 38, 255, 0.4);
+            color: #b026ff;
+        }
+        
+        .step-3 .step-icon {
+            background: rgba(255, 0, 110, 0.1);
+            border-color: rgba(255, 0, 110, 0.4);
+            color: #ff006e;
+        }
+        
+        .step-4 .step-icon {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: rgba(0, 255, 65, 0.4);
+            color: #00ff41;
+        }
+        
+        .step-5 .step-icon {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.4);
+            color: #ffa500;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+        }
+        
+        .step-desc {
+            font-size: 12px;
+            color: #909090;
+            line-height: 1.4;
+            min-height: 36px;
+        }
+        
+        /* Arrow between steps */
+        .arrow {
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 217, 255, 0.3), transparent);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .arrow-1 { left: 19%; }
+        .arrow-2 { left: 39%; }
+        .arrow-3 { left: 59%; }
+        .arrow-4 { left: 79%; }
+        
+        /* Bottom accent */
+        .accent-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d9ff, #b026ff, #ff006e, #00ff41, #ffa500);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">Agency AI — 5-krokový workflow</div>
+            <div class="header-subtitle">Kompletní framework pro automatizaci prodejních procesů</div>
+        </div>
+        
+        <!-- Steps -->
+        <div class="steps-container">
+            <div class="step step-1">
+                <div class="step-number">Krok 1</div>
+                <div class="step-icon">🧲</div>
+                <div class="step-title">Attract</div>
+                <div class="step-desc">Generování kvalitních leadů</div>
+            </div>
+            
+            <div class="step step-2">
+                <div class="step-number">Krok 2</div>
+                <div class="step-icon">✉</div>
+                <div class="step-title">Convert</div>
+                <div class="step-desc">Personalizované outreach</div>
+            </div>
+            
+            <div class="step step-3">
+                <div class="step-number">Krok 3</div>
+                <div class="step-icon">📊</div>
+                <div class="step-title">Deliver</div>
+                <div class="step-desc">Výzkum a prezentace</div>
+            </div>
+            
+            <div class="step step-4">
+                <div class="step-number">Krok 4</div>
+                <div class="step-icon">⚡</div>
+                <div class="step-title">Automate</div>
+                <div class="step-desc">Automatizace procesů</div>
+            </div>
+            
+            <div class="step step-5">
+                <div class="step-number">Krok 5</div>
+                <div class="step-icon">❤</div>
+                <div class="step-title">Human</div>
+                <div class="step-desc">Vize a péče</div>
+            </div>
+        </div>
+        
+        <!-- Accent bar -->
+        <div class="accent-bar"></div>
+    </div>
+</body>
+</html>

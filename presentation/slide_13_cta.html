@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Začněte dnes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Left section - Main CTA content */
+        .left-section {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+            padding-left: 60px;
+            padding-right: 40px;
+            justify-content: flex-start;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(0, 255, 65, 0.03) 100%);
+            border-right: 2px solid rgba(0, 217, 255, 0.15);
+        }
+        
+        .cta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 8px 16px;
+            background: rgba(0, 255, 65, 0.15);
+            border: 1px solid rgba(0, 255, 65, 0.4);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #00ff41;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .cta-badge::before {
+            content: '★';
+            font-size: 14px;
+        }
+        
+        .cta-title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+        
+        .cta-title .highlight {
+            color: #00d9ff;
+        }
+        
+        .cta-subtitle {
+            font-size: 16px;
+            color: #b0b0b0;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        /* Features list */
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border-radius: 4px;
+            background: rgba(0, 255, 65, 0.15);
+            border: 1px solid rgba(0, 255, 65, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #00ff41;
+            font-weight: 700;
+            padding-top: 1px;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 2px;
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: #909090;
+            line-height: 1.4;
+        }
+        
+        /* Free offer box */
+        .free-offer {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.12) 0%, rgba(0, 217, 255, 0.08) 100%);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .offer-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00ff41;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .offer-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        /* Right section - URL and framework showcase */
+        .right-section {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+            padding-right: 60px;
+            padding-left: 40px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        /* URL box */
+        .url-box {
+            width: 100%;
+            background: rgba(0, 217, 255, 0.08);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .url-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00d9ff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .url-text {
+            font-size: 16px;
+            font-weight: 800;
+            color: #e0e0e0;
+            font-family: 'Inter', monospace;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+        
+        /* Framework steps */
+        .framework-steps {
+            width: 100%;
+        }
+        
+        .steps-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #b026ff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .step-box {
+            background: rgba(176, 38, 255, 0.08);
+            border: 1px solid rgba(176, 38, 255, 0.2);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .step-icon {
+            font-size: 20px;
+        }
+        
+        .step-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        /* Accent elements */
+        .accent-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        
+        .accent-circle.top-right {
+            top: 40px;
+            right: 40px;
+            border-color: #00d9ff;
+        }
+        
+        .accent-circle.bottom-left {
+            bottom: 40px;
+            left: 40px;
+            border-color: #b026ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Accent circles -->
+        <div class="accent-circle top-right"></div>
+        <div class="accent-circle bottom-left"></div>
+        
+        <!-- Left section -->
+        <div class="left-section">
+            <div class="cta-badge">Začněte nyní</div>
+            
+            <h2 class="cta-title">
+                Transformujte
+                <br>
+                <span class="highlight">vaši agenturu</span>
+            </h2>
+            
+            <p class="cta-subtitle">
+                Automatizujte prodejní procesy a fokusujte se na to, co opravdu záleží — na vztazích s klienty.
+            </p>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Generování leadů</div>
+                        <div class="feature-desc">AI-powered seznam kvalitních prospektů za minuty</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Personalizované outreach</div>
+                        <div class="feature-desc">Emaily a skript generované pro každý lead</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Profesionální prezentace</div>
+                        <div class="feature-desc">Brand research a multi-slide deck za minuty</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Real-time tracking</div>
+                        <div class="feature-desc">Sledujte otevření a kliknutí v reálném čase</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="free-offer">
+                <div class="offer-label">🎁 Speciální nabídka</div>
+                <div class="offer-text">Zdarma pro první projekt</div>
+            </div>
+        </div>
+        
+        <!-- Right section -->
+        <div class="right-section">
+            <!-- URL Box -->
+            <div class="url-box">
+                <div class="url-label">Přejít na platformu</div>
+                <div class="url-text">ai-business-automation.manus.space</div>
+            </div>
+            
+            <!-- Framework steps -->
+            <div class="framework-steps">
+                <div class="steps-label">5-kroký framework</div>
+                <div class="steps-grid">
+                    <div class="step-box">
+                        <div class="step-icon">🧲</div>
+                        <div class="step-name">Attract</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-icon">✉</div>
+                        <div class="step-name">Convert</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-icon">📊</div>
+                        <div class="step-name">Deliver</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-icon">⚡</div>
+                        <div class="step-name">Automate</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-icon">❤</div>
+                        <div class="step-name">Human</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-icon">🎯</div>
+                        <div class="step-name">Výsledek</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

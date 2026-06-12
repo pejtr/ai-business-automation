@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Glow Design + Čeština</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Top section - Title and intro */
+        .top-section {
+            padding-top: 50px;
+            padding-left: 60px;
+            padding-right: 60px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            padding-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #909090;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Middle section - Design palette and localization */
+        .middle-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding-left: 60px;
+            padding-right: 60px;
+            padding-top: 30px;
+            flex: 1;
+        }
+        
+        /* Left column - Color palette */
+        .palette-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .palette-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #00d9ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .palette-subtitle {
+            font-size: 12px;
+            color: #909090;
+            margin-bottom: 16px;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .color-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 2px solid rgba(224, 224, 224, 0.1);
+            flex-shrink: 0;
+        }
+        
+        .color-cyan {
+            background: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .color-violet {
+            background: #b026ff;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.4);
+        }
+        
+        .color-pink {
+            background: #ff006e;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.4);
+        }
+        
+        .color-green {
+            background: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+        }
+        
+        .color-orange {
+            background: #ffa500;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
+        }
+        
+        .color-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .color-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        .color-code {
+            font-size: 11px;
+            color: #808080;
+            font-family: monospace;
+        }
+        
+        /* Right column - Localization */
+        .localization-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .locale-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #b026ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .locale-subtitle {
+            font-size: 12px;
+            color: #909090;
+            margin-bottom: 16px;
+        }
+        
+        .locale-items {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .locale-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            background: rgba(176, 38, 255, 0.05);
+            border-left: 3px solid rgba(176, 38, 255, 0.3);
+        }
+        
+        .locale-icon {
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .locale-text {
+            flex: 1;
+        }
+        
+        .locale-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #b0b0b0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        
+        .locale-example {
+            font-size: 13px;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        
+        /* Bottom section - Design features */
+        .bottom-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-left: 60px;
+            padding-right: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+        
+        .feature-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+        }
+        
+        .feature-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .feature-desc {
+            font-size: 11px;
+            color: #909090;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Top section -->
+        <div class="top-section">
+            <div class="section-title">Neon Glow Design + Čeština</div>
+            <div class="section-subtitle">Moderní tmavý design s neon efekty a plnou českou lokalizací</div>
+        </div>
+        
+        <!-- Middle section -->
+        <div class="middle-section">
+            <!-- Left column - Color palette -->
+            <div class="palette-column">
+                <div>
+                    <div class="palette-title">Neon Barvy</div>
+                    <div class="palette-subtitle">Vibrantní neon palette s glow efekty</div>
+                </div>
+                
+                <div class="color-grid">
+                    <div class="color-item">
+                        <div class="color-swatch color-cyan"></div>
+                        <div class="color-info">
+                            <div class="color-name">Cyan</div>
+                            <div class="color-code">#00d9ff</div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-item">
+                        <div class="color-swatch color-violet"></div>
+                        <div class="color-info">
+                            <div class="color-name">Violet</div>
+                            <div class="color-code">#b026ff</div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-item">
+                        <div class="color-swatch color-pink"></div>
+                        <div class="color-info">
+                            <div class="color-name">Pink</div>
+                            <div class="color-code">#ff006e</div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-item">
+                        <div class="color-swatch color-green"></div>
+                        <div class="color-info">
+                            <div class="color-name">Green</div>
+                            <div class="color-code">#00ff41</div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-item">
+                        <div class="color-swatch color-orange"></div>
+                        <div class="color-info">
+                            <div class="color-name">Orange</div>
+                            <div class="color-code">#ffa500</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column - Localization -->
+            <div class="localization-column">
+                <div>
+                    <div class="locale-title">Česká Lokalizace</div>
+                    <div class="locale-subtitle">Plná podpora češtiny na všech stránkách</div>
+                </div>
+                
+                <div class="locale-items">
+                    <div class="locale-item">
+                        <div class="locale-icon">🎯</div>
+                        <div class="locale-text">
+                            <div class="locale-label">UI Text</div>
+                            <div class="locale-example">Všechny prvky v češtině</div>
+                        </div>
+                    </div>
+                    
+                    <div class="locale-item">
+                        <div class="locale-icon">🤖</div>
+                        <div class="locale-text">
+                            <div class="locale-label">AI Prompty</div>
+                            <div class="locale-example">Česká instrukce pro LLM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="locale-item">
+                        <div class="locale-icon">📱</div>
+                        <div class="locale-text">
+                            <div class="locale-label">Onboarding</div>
+                            <div class="locale-example">8-kroková česká příručka</div>
+                        </div>
+                    </div>
+                    
+                    <div class="locale-item">
+                        <div class="locale-icon">⚙</div>
+                        <div class="locale-text">
+                            <div class="locale-label">Chyby & Notifikace</div>
+                            <div class="locale-example">Všechny zprávy v češtině</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom section - Design features -->
+        <div class="bottom-section">
+            <div class="feature-box">
+                <div class="feature-icon">🌙</div>
+                <div class="feature-name">Dark Mode</div>
+                <div class="feature-desc">Moderní tmavý design s neon akcenty</div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">✨</div>
+                <div class="feature-name">Glow Effects</div>
+                <div class="feature-desc">Neon glow a blur efekty</div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">📱</div>
+                <div class="feature-name">Responsive</div>
+                <div class="feature-desc">Mobile, tablet, desktop</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tracking — Sledování v reálném čase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Header */
+        .header {
+            padding-top: 50px;
+            padding-left: 60px;
+            padding-right: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: #909090;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Main content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding-left: 60px;
+            padding-right: 60px;
+            flex: 1;
+        }
+        
+        /* Feature card */
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* reduced from 16px to shrink vertical height */
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid;
+        }
+        
+        .card-1 .card-icon {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: rgba(0, 217, 255, 0.4);
+            color: #00d9ff;
+        }
+        
+        .card-2 .card-icon {
+            background: rgba(176, 38, 255, 0.1);
+            border-color: rgba(176, 38, 255, 0.4);
+            color: #b026ff;
+        }
+        
+        .card-3 .card-icon {
+            background: rgba(255, 0, 110, 0.1);
+            border-color: rgba(255, 0, 110, 0.4);
+            color: #ff006e;
+        }
+        
+        .card-4 .card-icon {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: rgba(0, 255, 65, 0.4);
+            color: #00ff41;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        .card-desc {
+            font-size: 13px;
+            color: #909090;
+            line-height: 1.6;
+        }
+        
+        /* Stats display */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        
+        .stat-item {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 217, 255, 0.05);
+            border-left: 3px solid #00d9ff;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #909090;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #00d9ff;
+        }
+        
+        /* Bottom section - Live log preview */
+        .live-log-section {
+            padding-left: 60px;
+            padding-right: 60px;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+        
+        .log-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .log-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .log-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 12px;
+            color: #909090;
+        }
+        
+        .log-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff41;
+        }
+        
+        .log-text {
+            flex: 1;
+        }
+        
+        .log-time {
+            font-size: 11px;
+            color: #606060;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">Email Tracking</div>
+            <div class="header-subtitle">Sledování v reálném čase — vidíte každou interakci</div>
+        </div>
+        
+        <!-- Content grid -->
+        <div class="content-grid">
+            <!-- Card 1: Open tracking -->
+            <div class="feature-card card-1">
+                <div class="card-icon">👁</div>
+                <div class="card-title">Sledování otevření</div>
+                <div class="card-desc">1x1 pixel tracking — zjistěte přesně, kdo váš email otevřel a kdy</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">Otevření</div>
+                        <div class="stat-value">47</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Míra</div>
+                        <div class="stat-value">68%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 2: Click tracking -->
+            <div class="feature-card card-2">
+                <div class="card-icon">🔗</div>
+                <div class="card-title">Sledování kliknutí</div>
+                <div class="card-desc">Redirect tracking — vidíte, na jaký odkaz kliknul každý lead</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">Kliknutí</div>
+                        <div class="stat-value">23</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Míra</div>
+                        <div class="stat-value">49%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 3: Per-email stats -->
+            <div class="feature-card card-3">
+                <div class="card-icon">📈</div>
+                <div class="card-title">Statistiky per-email</div>
+                <div class="card-desc">Detailní přehled pro každý email — počet otevření, kliknutí, časy</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">Emaily</div>
+                        <div class="stat-value">12</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Sledované</div>
+                        <div class="stat-value">100%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 4: Live event log -->
+            <div class="feature-card card-4">
+                <div class="card-icon">📋</div>
+                <div class="card-title">Live event log</div>
+                <div class="card-desc">Vidíte každou interakci v reálném čase — otevření, kliknutí, časy</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">Události</div>
+                        <div class="stat-value">70</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Dnes</div>
+                        <div class="stat-value">15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live log preview -->
+        <div class="live-log-section">
+            <div class="log-title">▸ Poslední aktivity</div>
+            <div class="log-items">
+                <div class="log-item">
+                    <div class="log-dot"></div>
+                    <div class="log-text">John Doe otevřel email — "Nový projekt"</div>
+                    <div class="log-time">2 min</div>
+                </div>
+                <div class="log-item">
+                    <div class="log-dot"></div>
+                    <div class="log-text">Jane Smith kliknula na "Více informací"</div>
+                    <div class="log-time">5 min</div>
+                </div>
+                <div class="log-item">
+                    <div class="log-dot"></div>
+                    <div class="log-text">Mike Johnson otevřel email — "Nabídka"</div>
+                    <div class="log-time">8 min</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -285,9 +285,9 @@ export default function Home() {
             <span className="text-foreground/90">Automatizovaně.</span>
           </h1>
 
+          <h2 className="text-lg font-semibold text-foreground/80 mb-3">Kompletní 5-krokový framework pro moderní agentury</h2>
           <p className="text-muted-foreground text-base max-w-xl leading-relaxed">
-            Kompletní 5-krokový framework pro moderní agentury. Generujte leady, tvořte outreach,
-            zkoumejte značky a dodávejte profesionální prezentace — vše popohaněno AI.
+            Generujte leady, tvořte outreach, zkoumejte značky a dodávejte profesionální prezentace — vše popohaněno AI.
           </p>
 
           {/* Quick stats */}

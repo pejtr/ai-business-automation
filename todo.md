@@ -15,6 +15,7 @@
 - [x] Čeština — Celá platforma v češtině
 - [x] Email Tracking — Open/click tracking s pixel a redirect
 - [x] AI Pitch Scripts — LLM generování walk-in a video skriptů
+- [x] Agency AI Presentation — 14-slide neon glow prezentace (Attract, Convert, Deliver, Aria, Tech Stack, Roadmap, CTA)
 
 ### Technical
 - [x] Database schema (Drizzle ORM)
@@ -119,3 +120,9 @@
 ---
 
 **Poslední update**: 2026-06-12 | **Status**: Production-ready s budoucími funkcemi
+
+## 🎬 Prezentace
+- [x] 14-slide Agency AI Presentation — Neon glow design, česká lokalizace
+- [x] SEO fixes na Home stránce — Meta keywords, H2 heading, description
+- [x] VIDEO_SCRIPT.md — Scénář pro video prezentaci
+- [x] PRESENTATION_CONTENT.md — Obsah pro slide generátor

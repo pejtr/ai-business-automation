@@ -1,0 +1,166 @@
+{
+  "project_info": {
+    "title": "Agency AI — Titulní stránka",
+    "created": 1781279812.791,
+    "last_updated": 1781280161.956,
+    "total_slides": 14
+  },
+  "slides": [
+    {
+      "id": "slide_1_title",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "slide_2_problem",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "slide_3_solution",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "slide_4_attract",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "slide_5_convert",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "slide_6_tracking",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "slide_7_deliver",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "slide_8_calculator",
+      "state": "edited",
+      "pageNum": 8
+    },
+    {
+      "id": "slide_9_aria",
+      "state": "edited",
+      "pageNum": 9
+    },
+    {
+      "id": "slide_10_design",
+      "state": "edited",
+      "pageNum": 10
+    },
+    {
+      "id": "slide_11_tech",
+      "state": "edited",
+      "pageNum": 11
+    },
+    {
+      "id": "slide_12_roadmap",
+      "state": "edited",
+      "pageNum": 12
+    },
+    {
+      "id": "slide_13_cta",
+      "state": "edited",
+      "pageNum": 13
+    },
+    {
+      "id": "slide_14_thanks",
+      "state": "edited",
+      "pageNum": 14
+    }
+  ],
+  "outline": [
+    {
+      "id": "slide_1_title",
+      "title": "Agency AI — Titulní stránka",
+      "summary": "Představení platformy Agency AI s neon designem a 5-krokovým frameworkem pro moderní agentury.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_2_problem",
+      "title": "Výzvy moderních agentur",
+      "summary": "Identifikace problémů: ruční procesy, časová náročnost, chybějící automatizace a nízká efektivita.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_3_solution",
+      "title": "5-kroký framework",
+      "summary": "Představení Agency AI řešení: Attract, Convert, Deliver, Automate, Human Element.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_4_attract",
+      "title": "Attract — Generování leadů",
+      "summary": "Modul pro AI-powered generování kvalitních leadů s 7 niche templates a CSV exportem.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_5_convert",
+      "title": "Convert — Personalizované outreach",
+      "summary": "Generování personalizovaných emailů a nového Pitch Script Generatoru pro walk-in a video skript.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_6_tracking",
+      "title": "Email Tracking — Sledování v reálném čase",
+      "summary": "Real-time sledování otevření emailů a kliknutí s detailními statistikami a live event logem.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_7_deliver",
+      "title": "Deliver — Brand research a prezentace",
+      "summary": "Automatické generování brand research reportů a multi-slide prezentací s klientským brandingem.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_8_calculator",
+      "title": "Income Calculator — Výpočet příjmů",
+      "summary": "Interaktivní widget pro výpočet měsíčního příjmu na základě počtu klientů a retaineru.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_9_aria",
+      "title": "Aria — AI asistentka",
+      "summary": "Plovoucí chat widget s context-aware odpověďmi a 8-krokovým onboardingem pro nové uživatele.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_10_design",
+      "title": "Neon Glow Design + Čeština",
+      "summary": "Moderní tmavý design s neon efekty, plná česká lokalizace a responsive layout.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_11_tech",
+      "title": "Technický stack",
+      "summary": "React 19, Tailwind CSS 4, Express 4, tRPC 11, MySQL/TiDB, Drizzle ORM, 35+ Vitest testů, 0 TS errors.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_12_roadmap",
+      "title": "Budoucí funkce — Roadmap",
+      "summary": "Prioritizované funkce: real-time notifikace, A/B testování emailů, export reportů, agency profil.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_13_cta",
+      "title": "Začněte dnes",
+      "summary": "Call-to-action s URL platformy, klíčovými funkcemi a nabídkou zdarma pro první projekt.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "slide_14_thanks",
+      "title": "Děkuji za pozornost",
+      "summary": "Závěrečná slide s kontaktem a webem platformy.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

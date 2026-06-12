@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deliver — Brand research a prezentace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Left column - Title and description */
+        .left-column {
+            padding-top: 80px;
+            padding-left: 60px;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .module-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 6px 12px;
+            background: rgba(255, 0, 110, 0.15);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ff006e;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .module-badge::before {
+            content: '●';
+            font-size: 8px;
+        }
+        
+        .module-title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+        
+        .module-title .highlight {
+            color: #ff006e;
+        }
+        
+        .module-desc {
+            font-size: 14px;
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        
+        /* Features list */
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 2px solid #ff006e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #ff006e;
+            font-weight: 700;
+            padding-top: 1px;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 2px;
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: #909090;
+            line-height: 1.4;
+        }
+        
+        /* Right column - Visual representation */
+        .right-column {
+            padding-top: 60px;
+            padding-right: 60px;
+            padding-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Mockup container */
+        .mockup-container {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        /* Report mockup */
+        .report-mockup {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(176, 38, 255, 0.08) 100%);
+            border: 1px solid rgba(255, 0, 110, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .mockup-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ff006e;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .mockup-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #ff006e, #b026ff);
+            opacity: 0.6;
+        }
+        
+        .mockup-line {
+            height: 4px;
+            background: rgba(224, 224, 224, 0.1);
+        }
+        
+        .mockup-line.long {
+            width: 100%;
+        }
+        
+        .mockup-line.short {
+            width: 70%;
+        }
+        
+        .mockup-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        /* Presentation slides mockup */
+        .slides-mockup {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        
+        .slide-card {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.08) 0%, rgba(255, 0, 110, 0.08) 100%);
+            border: 1px solid rgba(255, 0, 110, 0.15);
+            aspect-ratio: 3/4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .slide-card:nth-child(1) {
+            height: 120px;
+            opacity: 0.7;
+        }
+        
+        .slide-card:nth-child(2) {
+            height: 140px;
+            opacity: 0.85;
+        }
+        
+        .slide-card:nth-child(3) {
+            height: 160px;
+            opacity: 1;
+        }
+        
+        /* Accent elements */
+        .accent-corner {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid;
+            opacity: 0.15;
+        }
+        
+        .accent-corner.top-right {
+            top: 20px;
+            right: 20px;
+            border-color: #ff006e;
+        }
+        
+        .accent-corner.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-color: #b026ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Left column -->
+        <div class="left-column">
+            <div class="module-badge">Krok 3</div>
+            
+            <h2 class="module-title">
+                Deliver
+                <br>
+                <span class="highlight">Brand Research</span>
+                <br>
+                & Prezentace
+            </h2>
+            
+            <p class="module-desc">
+                Automatické generování hloubkových brand research reportů a profesionálních multi-slide prezentací s klientským brandingem.
+            </p>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Brand Research Report</div>
+                        <div class="feature-desc">Hloubkový výzkum značky s analýzou konkurence</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Multi-Slide Prezentace</div>
+                        <div class="feature-desc">Automaticky generované prezentace s AI</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Klientské Branding</div>
+                        <div class="feature-desc">Barvy, typografie a design klienta</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Sdílitelné Linky</div>
+                        <div class="feature-desc">Bezpečné sdílení reportů s klienty</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right column -->
+        <div class="right-column">
+            <div class="mockup-container">
+                <!-- Report mockup -->
+                <div class="report-mockup">
+                    <div class="mockup-title">Brand Research Report</div>
+                    <div class="mockup-bar"></div>
+                    <div class="mockup-lines">
+                        <div class="mockup-line long"></div>
+                        <div class="mockup-line long"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                    <div style="height: 1px; background: rgba(255, 0, 110, 0.1);"></div>
+                    <div class="mockup-lines">
+                        <div class="mockup-line long"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                </div>
+                
+                <!-- Presentation slides mockup -->
+                <div style="padding-top: 20px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #ff006e; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px;">Prezentace</div>
+                    <div class="slides-mockup">
+                        <div class="slide-card">📊</div>
+                        <div class="slide-card">📈</div>
+                        <div class="slide-card">🎯</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Accent corners -->
+        <div class="accent-corner top-right"></div>
+        <div class="accent-corner bottom-left"></div>
+    </div>
+</body>
+</html>

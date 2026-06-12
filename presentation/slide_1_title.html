@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency AI — Titulní stránka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Ambient glows */
+        .glow-1 {
+            position: absolute;
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        
+        .glow-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(176, 38, 255, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -100px;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        
+        /* Geometric accent shapes */
+        .accent-line {
+            position: absolute;
+            background: linear-gradient(90deg, #00d9ff, #b026ff, #ff006e);
+            opacity: 0.3;
+        }
+        
+        .line-1 {
+            width: 300px;
+            height: 2px;
+            top: 150px;
+            left: -50px;
+            transform: rotate(-15deg);
+        }
+        
+        .line-2 {
+            width: 200px;
+            height: 2px;
+            bottom: 200px;
+            right: -30px;
+            transform: rotate(25deg);
+        }
+        
+        /* Content wrapper */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 60px 40px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            margin-bottom: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #00d9ff;
+            text-transform: uppercase;
+        }
+        
+        .badge::before {
+            content: '✦';
+            font-size: 14px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: #e0e0e0;
+            letter-spacing: -1px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00d9ff 0%, #b026ff 50%, #ff006e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #00d9ff 0%, #b026ff 100%);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .cta-button:hover {
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.6), 0 0 20px rgba(176, 38, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Decorative circles */
+        .circle {
+            position: absolute;
+            border: 2px solid;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            top: 80px;
+            right: 100px;
+            border-color: #00d9ff;
+        }
+        
+        .circle-2 {
+            width: 100px;
+            height: 100px;
+            bottom: 120px;
+            left: 80px;
+            border-color: #b026ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Ambient glows -->
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        
+        <!-- Accent lines -->
+        <div class="accent-line line-1"></div>
+        <div class="accent-line line-2"></div>
+        
+        <!-- Decorative circles -->
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        
+        <!-- Main content -->
+        <div class="content">
+            <div class="badge">AI-Powered Agency Workflow</div>
+            
+            <h1>
+                Agency AI
+                <br>
+                <span class="gradient-text">Automatizace prodejů a marketingu</span>
+            </h1>
+            
+            <p class="subtitle">
+                Kompletní 5-krokový framework pro moderní agentury.<br>
+                Od prospectu k prezentaci, automatizovaně.
+            </p>
+            
+            <button class="cta-button">Začít nyní</button>
+        </div>
+    </div>
+</body>
+</html>

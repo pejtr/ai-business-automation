@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budoucí funkce — Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Header */
+        .header {
+            padding-top: 50px;
+            padding-left: 60px;
+            padding-right: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .header-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #e0e0e0;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: #909090;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Priority sections container */
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-left: 60px;
+            padding-right: 60px;
+            flex: 1;
+        }
+        
+        /* Priority section */
+        .priority-section {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .priority-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 80px;
+        }
+        
+        .priority-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            border: 2px solid;
+        }
+        
+        .priority-high .priority-badge {
+            background: rgba(255, 0, 110, 0.15);
+            border-color: rgba(255, 0, 110, 0.5);
+            color: #ff006e;
+        }
+        
+        .priority-medium .priority-badge {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: rgba(0, 217, 255, 0.3);
+            color: #00d9ff;
+        }
+        
+        .priority-low .priority-badge {
+            background: rgba(176, 38, 255, 0.08);
+            border-color: rgba(176, 38, 255, 0.2);
+            color: #b026ff;
+        }
+        
+        .priority-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .priority-high .priority-label {
+            color: #ff006e;
+        }
+        
+        .priority-medium .priority-label {
+            color: #00d9ff;
+        }
+        
+        .priority-low .priority-label {
+            color: #b026ff;
+        }
+        
+        /* Features list for each priority */
+        .features-list {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .feature-card {
+            padding: 12px;
+            border-left: 3px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .priority-high .feature-card {
+            background: rgba(255, 0, 110, 0.08);
+            border-left-color: rgba(255, 0, 110, 0.5);
+        }
+        
+        .priority-medium .feature-card {
+            background: rgba(0, 217, 255, 0.05);
+            border-left-color: rgba(0, 217, 255, 0.3);
+        }
+        
+        .priority-low .feature-card {
+            background: rgba(176, 38, 255, 0.04);
+            border-left-color: rgba(176, 38, 255, 0.2);
+        }
+        
+        .feature-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+        
+        .feature-desc {
+            font-size: 11px;
+            color: #909090;
+            line-height: 1.4;
+        }
+        
+        /* Accent line */
+        .accent-line {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 2px;
+            height: 300px;
+            background: linear-gradient(180deg, #00ff41 0%, transparent 100%);
+            opacity: 0.3;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">Budoucí funkce</div>
+            <div class="header-subtitle">Prioritizovaný roadmap — co přichází dál</div>
+        </div>
+        
+        <!-- Roadmap container -->
+        <div class="roadmap-container">
+            <!-- HIGH Priority -->
+            <div class="priority-section priority-high">
+                <div class="priority-indicator">
+                    <div class="priority-badge">🔴</div>
+                    <div class="priority-label">HIGH</div>
+                </div>
+                <div class="features-list">
+                    <div class="feature-card">
+                        <div class="feature-name">Real-time Notifikace</div>
+                        <div class="feature-desc">Push notifikace vlastníkovi při otevření emailu a kliknutí</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">A/B Testování</div>
+                        <div class="feature-desc">Generovat 2 varianty subject line a body copy pro testy</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MEDIUM Priority -->
+            <div class="priority-section priority-medium">
+                <div class="priority-indicator">
+                    <div class="priority-badge">🟡</div>
+                    <div class="priority-label">MEDIUM</div>
+                </div>
+                <div class="features-list">
+                    <div class="feature-card">
+                        <div class="feature-name">Export Tracking Reportů</div>
+                        <div class="feature-desc">Export statistik jako CSV a PDF s grafy</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Agency Profile</div>
+                        <div class="feature-desc">Vlastní profil s logem, kontaktem a brandingem</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Email Šablony</div>
+                        <div class="feature-desc">Knihovna šablon tónu (formální, neformální, agresivní)</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Dashboard Statistiky</div>
+                        <div class="feature-desc">Live metriky a trend grafy na Home</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- LOW Priority -->
+            <div class="priority-section priority-low">
+                <div class="priority-indicator">
+                    <div class="priority-badge">🟢</div>
+                    <div class="priority-label">LOW</div>
+                </div>
+                <div class="features-list">
+                    <div class="feature-card">
+                        <div class="feature-name">Slack Integrace</div>
+                        <div class="feature-desc">Notifikace přímo do Slack kanálu</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Google Sheets Export</div>
+                        <div class="feature-desc">Přímý export dat do Google Sheets</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Vícejazyčnost</div>
+                        <div class="feature-desc">Přepínač jazyka (EN/CS) a lokalizace</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-name">Pokročilé Analytiky</div>
+                        <div class="feature-desc">Funnel analysis, cohort analysis, predictive scoring</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Accent line -->
+        <div class="accent-line"></div>
+    </div>
+</body>
+</html>
