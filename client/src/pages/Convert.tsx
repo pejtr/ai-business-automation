@@ -61,6 +61,8 @@ export default function Convert() {
   const [pitchScripts, setPitchScripts] = useState<{ company: string; walkInScript: string; videoScript: string }[]>([]);
   const [selectedLeadForPitch, setSelectedLeadForPitch] = useState<Lead | null>(null);
   const [copiedPitchIndex, setCopiedPitchIndex] = useState<number | null>(null);
+  const [generatingPitch, setGeneratingPitch] = useState(false);
+  const [pitchError, setPitchError] = useState<string | null>(null);
   const [emails, setEmails] = useState<OutreachEmail[]>([]);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -69,9 +71,22 @@ export default function Convert() {
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [savedCampaignId, setSavedCampaignId] = useState<number | null>(null);
   const [trackingEnabled, setTrackingEnabled] = useState(false);
+  const [selectedNiche, setSelectedNiche] = useState<string | null>(null);
 
   const savedLists = trpc.attract.list.useQuery();
   const utils = trpc.useUtils();
+
+  const generatePitchScriptsMutation = trpc.convert.generatePitchScripts.useMutation({
+    onSuccess: (data) => {
+      setPitchScripts(data.scripts);
+      setPitchError(null);
+      toast.success(`Vygenerovány skripty pro ${data.scripts.length} leadů`);
+    },
+    onError: (err) => {
+      setPitchError(`Chyba: ${err.message}`);
+      toast.error(`Generování skriptů selhalo: ${err.message}`);
+    },
+  });
 
   const generate = trpc.convert.generate.useMutation({
     onSuccess: (data) => {
@@ -233,7 +248,8 @@ export default function Convert() {
               <Button variant="outline" size="sm" onClick={exportAllEmails} className="border-border text-foreground hover:bg-white/5 gap-2">
                 Exportovat vše
               </Button>
-              <Button size="sm" onClick={() => setShowSaveForm(!showSaveForm)} className="gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
+              <Button size="sm" onClick={() => setShowSaveForm(!showSaveForm)} disabled={generatePitchScriptsMutation.isPending}
+                          className="w-full gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
                 <Save className="w-3.5 h-3.5" />
                 Uložit kampaň
               </Button>
@@ -493,7 +509,8 @@ export default function Convert() {
                 <Activity className="w-8 h-8 text-muted-foreground mb-3" />
                 <p className="text-sm font-medium text-foreground mb-1">Sledování není aktivováno</p>
                 <p className="text-xs text-muted-foreground mb-4">Aktivujte sledování na záložce Sestavit pro monitorování otevření a kliknutí.</p>
-                <Button size="sm" onClick={() => setActiveTab("compose")} className="gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
+                <Button size="sm" onClick={() => setActiveTab("compose")} disabled={generatePitchScriptsMutation.isPending}
+                          className="w-full gap-2" style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}>
                   <Zap className="w-3.5 h-3.5" />Aktivovat sledování
                 </Button>
               </div>
@@ -753,18 +770,42 @@ export default function Convert() {
                         <p className="text-muted-foreground mb-4">Zatím nejsou dostupné skripty. Generujte je pomocí tlačítka níže.</p>
                         <Button
                           onClick={() => {
-                            setPitchScripts([...pitchScripts, {
-                              company: selectedLeadForPitch.company,
-                              walkInScript: `Ahoj! Jsem ${senderName}, ${senderRole}. Chtěl bych ti ukázat, jak můžeme ${pitch} pro ${selectedLeadForPitch.company}. Máš 15 minut?`,
-                              videoScript: `Ahoj, jsem ${senderName}. Viděl jsem, že se ${selectedLeadForPitch.company} zaměřuje na ${selectedLeadForPitch.recentTopics}. Myslím, že bychom mohli pomoci s ${pitch}. Pojďme si promluvit.`
-                            }]);
-                            toast.success("Skripty vygenerovány");
+                            if (!senderName || !senderRole || !pitch) {
+                              toast.error("Vyplňte všechna pole: jméno, pozici a cíl oslovení");
+                              return;
+                            }
+                            try {
+                              const leads = JSON.parse(leadsJson) as Lead[];
+                              if (leads.length === 0) {
+                                toast.error("Nejsou žádné leady k vygenerování skriptů");
+                                return;
+                              }
+                              generatePitchScriptsMutation.mutate({
+                                leads,
+                                senderName,
+                                senderRole,
+                                pitch,
+                                niche: selectedNiche || undefined,
+                              });
+                            } catch {
+                              toast.error("Chyba při parsování lead dat");
+                            }
                           }}
-                          className="gap-2"
+                          disabled={generatePitchScriptsMutation.isPending}
+                          className="w-full gap-2"
                           style={{ background: stepColor, color: "oklch(0.1 0.005 260)" }}
                         >
-                          <Zap className="w-4 h-4" />
-                          Generovat skripty
+{generatePitchScriptsMutation.isPending ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Generuji skripty...
+                            </>
+                          ) : (
+                            <>
+                              <Zap className="w-4 h-4" />
+                              Generovat skripty pomocí AI
+                            </>
+                          )}
                         </Button>
                       </div>
                     )}

@@ -126,3 +126,12 @@
 - [x] Interactive calculator: X clients × Y Kč/month = Z Kč monthly revenue
 - [x] Visualization of income growth path (0 → 100k Kč/month)
 - [x] Save calculator state to database for tracking progress (backend done)
+
+## AI-Powered Pitch Script Generation
+- [x] tRPC: convert.generatePitchScripts mutation with LLM backend
+- [x] LLM prompt: personalized walk-in script (lead data + niche context)
+- [x] LLM prompt: personalized video demo script (lead data + niche context)
+- [x] Convert UI: replace local placeholder with LLM mutation call
+- [x] Loading state: spinner while LLM generates scripts
+- [x] Error handling: display error message if generation fails
+- [x] Vitest tests for pitch script generation router

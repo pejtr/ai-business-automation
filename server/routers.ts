@@ -279,6 +279,176 @@ Vrať POUZE platný JSON:
       await deleteOutreachCampaign(input.id);
       return { success: true };
     }),
+
+  generatePitchScripts: protectedProcedure
+    .input(z.object({
+      leads: z.array(LeadSchema),
+      senderName: z.string().min(1),
+      senderRole: z.string().min(1),
+      pitch: z.string().min(1),
+      niche: z.string().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const nicheContext = input.niche
+        ? `Odvětví: ${input.niche}. Toto je klíčový kontext pro personalizaci skriptu. `
+        : "";
+
+      const leadsText = input.leads
+        .map(
+          (l, i) =>
+            `${i + 1}. ${l.company} | Web: ${l.website} | Nedávná témata: ${l.recentTopics}`
+        )
+        .join("\n");
+
+      const walkInPrompt = `Jsi expert na prodejní komunikaci a obchodní strategie. Vytvoř vysoce personalizované walk-in skripty pro prodejce, které se objeví v dveřích bez přípravy.
+
+${nicheContext}Odesílatel: ${input.senderName} — ${input.senderRole}
+Cíl: ${input.pitch}
+
+Leady:
+${leadsText}
+
+Pro každý lead vytvoř přirozený, autentický walk-in skript (2-3 věty), který:
+- Začíná se přirozenou větou (ne "Ahoj, jsem...")
+- Odkazuje na jejich konkrétní nedávná témata
+- Vysvětluje, jak můžete pomoci
+- Končí jasnou, nízko-frikční výzvou
+- Zní jako skutečná osoba, ne jako skript
+
+Vrať POUZE platný JSON:
+{
+  "scripts": [
+    {
+      "company": "Název společnosti",
+      "walkInScript": "Skript pro walk-in"
+    }
+  ]
+}`;
+
+      const videoPrompt = `Jsi expert na video demo skripty a prodejní komunikaci. Vytvoř vysoce personalizované video demo skripty (30-45 sekund).
+
+${nicheContext}Odesílatel: ${input.senderName} — ${input.senderRole}
+Cíl: ${input.pitch}
+
+Leady:
+${leadsText}
+
+Pro každý lead vytvoř přirozený video skript, který:
+- Začíná se přirozeným oslovením
+- Odkazuje na jejich konkrétní nedávná témata/kampaně
+- Vysvětluje konkrétní výhodu vašeho řešení
+- Končí výzvou k akci ("Pojďme si promluvit", "Chceš vidět demo?", atd.)
+- Je přirozený a konverzační, ne formální
+
+Vrať POUZE platný JSON:
+{
+  "scripts": [
+    {
+      "company": "Název společnosti",
+      "videoScript": "Skript pro video demo"
+    }
+  ]
+}`;
+
+      const walkInResponse = await invokeLLM({
+        messages: [
+          {
+            role: "system",
+            content: "Jsi expert na prodejní komunikaci. Vrať pouze platný JSON s walk-in skripty.",
+          },
+          { role: "user", content: walkInPrompt },
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "walk_in_scripts",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                scripts: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      company: { type: "string" },
+                      walkInScript: { type: "string" },
+                    },
+                    required: ["company", "walkInScript"],
+                    additionalProperties: false,
+                  },
+                },
+              },
+              required: ["scripts"],
+              additionalProperties: false,
+            },
+          },
+        },
+      });
+
+      const videoResponse = await invokeLLM({
+        messages: [
+          {
+            role: "system",
+            content: "Jsi expert na video demo skripty. Vrať pouze platný JSON s video skripty.",
+          },
+          { role: "user", content: videoPrompt },
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "video_scripts",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                scripts: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      company: { type: "string" },
+                      videoScript: { type: "string" },
+                    },
+                    required: ["company", "videoScript"],
+                    additionalProperties: false,
+                  },
+                },
+              },
+              required: ["scripts"],
+              additionalProperties: false,
+            },
+          },
+        },
+      });
+
+      const walkInContent =
+        typeof walkInResponse.choices[0]?.message?.content === "string"
+          ? walkInResponse.choices[0].message.content
+          : "{}";
+      const videoContent =
+        typeof videoResponse.choices[0]?.message?.content === "string"
+          ? videoResponse.choices[0].message.content
+          : "{}";
+
+      const walkInData = JSON.parse(walkInContent) as {
+        scripts: { company: string; walkInScript: string }[];
+      };
+      const videoData = JSON.parse(videoContent) as {
+        scripts: { company: string; videoScript: string }[];
+      };
+
+      const combined = walkInData.scripts.map((walk) => {
+        const video = videoData.scripts.find((v) => v.company === walk.company);
+        return {
+          company: walk.company,
+          walkInScript: walk.walkInScript,
+          videoScript: video?.videoScript ?? "",
+        };
+      });
+
+      return { scripts: combined };
+    }),
 });
 
 // ── Deliver Router ────────────────────────────────────────────────────────
