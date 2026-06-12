@@ -28,14 +28,41 @@
 
 ## 📋 TODO — Budoucí funkce
 
-### 1. Notifikace v reálném čase (Priority: HIGH)
+### 1. AI-powered Pitch Scripts (Priority: HIGH)
+- [ ] Implementovat tRPC proceduru `generatePitchScript` s LLM voláním
+- [ ] Přijmout lead data (jméno, firma, odvětví, recent news)
+- [ ] Generovat personalizované walk-in skript (3-5 vět)
+- [ ] Generovat personalizované video demo skript (5-10 vět)
+- [ ] Uložit vygenerované skripty do DB (pitch_scripts tabulka)
+- [ ] Frontend UI pro zobrazení a kopírování skriptů
+- [ ] Vitest tests pro pitch script router
+- [ ] Integrovat do Convert modulu
+
+### 2. Income Growth Visualization (Priority: HIGH)
+- [ ] Přidat progress bar do Income Calculatoru
+- [ ] Milestone track: 0 → 10k → 25k → 50k → 100k Kč/měsíc
+- [ ] Motivační texty pro každý milestone
+- [ ] Vizuální animace při dosažení milníku
+- [ ] Uložit milestone progress do DB
+- [ ] Vitest tests pro visualization
+
+### 3. Niche-specific AI Prompts (Priority: HIGH)
+- [ ] Rozšířit Attract generátor s niche context
+- [ ] Při výběru niche šablony automaticky přizpůsobit AI prompt
+- [ ] Přidat niche-specific keywords a tone guidance
+- [ ] Příklady: Tech (technical jargon), Real Estate (location focus), Fitness (health benefits)
+- [ ] Testovat relevanci generovaných leadů
+- [ ] Vitest tests pro niche-specific prompts
+- [ ] Dokumentace niche templates v README
+
+### 4. Notifikace v reálném čase (Priority: HIGH)
 - [ ] Push notifikace vlastníkovi při otevření emailu
 - [ ] Push notifikace při kliknutí na odkaz
 - [ ] Email notifikace s denním shrnutím
 - [ ] In-app notification center
 - [ ] Vitest tests pro notification router
 
-### 2. A/B testování emailů (Priority: HIGH)
+### 5. A/B testování emailů (Priority: HIGH)
 - [ ] Generovat 2 varianty subject line (LLM)
 - [ ] Generovat 2 varianty body copy (formální vs neformální)
 - [ ] Sledovat open/click rate pro obě varianty
@@ -43,7 +70,7 @@
 - [ ] Doporučit vítěznou variantu
 - [ ] Vitest tests pro A/B router
 
-### 3. Exportní report sledování (Priority: MEDIUM)
+### 6. Exportní report sledování (Priority: MEDIUM)
 - [ ] Export tracking statistik jako CSV
 - [ ] Export jako PDF s grafy (Chart.js)
 - [ ] Vizualizace open rate a click rate
@@ -51,46 +78,46 @@
 - [ ] Exportní report pro klienty
 - [ ] Vitest tests pro report router
 
-### 4. Vlastní profil agentury (Priority: MEDIUM)
+### 7. Vlastní profil agentury (Priority: MEDIUM)
 - [ ] Stránka Settings s názvem, logem, kontaktem
 - [ ] Automatické doplnění do emailů a prezentací
 - [ ] Branding odesílatele (podpis, barvy)
 - [ ] DB schema pro agency profile
 - [ ] Vitest tests
 
-### 5. Šablony emailů (Priority: MEDIUM)
+### 8. Šablony emailů (Priority: MEDIUM)
 - [ ] Knihovna šablon tónu (formální, neformální, agresivní)
 - [ ] Uložení vlastních šablon do DB
 - [ ] Výběr šablony před generováním
 - [ ] Přizpůsobení AI promptu
 - [ ] Vitest tests
 
-### 6. Dashboard statistiky (Priority: LOW)
+### 9. Dashboard statistiky (Priority: LOW)
 - [ ] Live metriky (celkový počet leadů, avg open rate, počet reportů)
 - [ ] Neonové stat karty na Home
 - [ ] Trend grafy (weekly/monthly)
 - [ ] Top performing niches
 - [ ] Vitest tests
 
-### 7. Integrace s externími nástroji (Priority: LOW)
+### 10. Integrace s externími nástroji (Priority: LOW)
 - [ ] Slack notifikace
 - [ ] Google Sheets export
 - [ ] Zapier/Make.com webhook
 - [ ] CRM sync (HubSpot, Pipedrive)
 
-### 8. Pokročilá personalizace (Priority: LOW)
+### 11. Pokročilá personalizace (Priority: LOW)
 - [ ] Dynamický obsah v emailech (jméno, firma, recent news)
 - [ ] Personalizované video demo skript
 - [ ] Sentiment analysis pro optimalizaci tónu
 - [ ] Lead scoring na základě profilu
 
-### 9. Vícejazyčnost (Priority: LOW)
+### 12. Vícejazyčnost (Priority: LOW)
 - [ ] Přepínač jazyka (EN/CS)
 - [ ] Překlad onboarding textu
 - [ ] Překlad AI promptů
 - [ ] Lokalizace měny a formátů
 
-### 10. Pokročilé analytiky (Priority: LOW)
+### 13. Pokročilé analytiky (Priority: LOW)
 - [ ] Funnel analysis (leads → emails → opens → clicks)
 - [ ] Cohort analysis (skupiny dle niche)
 - [ ] Predictive analytics (scoring)
