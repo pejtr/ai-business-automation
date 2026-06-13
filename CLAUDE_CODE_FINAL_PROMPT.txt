@@ -1,0 +1,523 @@
+================================================================================
+🚀 CLAUDE CODE — FINAL IMPLEMENTATION PROMPT
+================================================================================
+
+Jste vývojář na projektu Agency AI. Vaším úkolem je implementovat 3 HIGH priority 
+features. Vše je připraveno. Začněte zde.
+
+================================================================================
+📌 PROJEKT INFO
+================================================================================
+
+Název: Agency AI — AI Business Automation Platform
+URL: https://ai-business-automation.manus.space
+GitHub: https://github.com/pejtr/ai-business-automation
+Stack: React 19 + Express 4 + tRPC 11 + MySQL + Drizzle ORM
+Jazyk: Česky (všechny UI texty a AI prompty)
+
+================================================================================
+🎯 VAŠE ÚKOL
+================================================================================
+
+Implementujte 3 HIGH priority features:
+
+1. AI-powered Pitch Scripts
+   - tRPC procedura pro generování personalizovaných skriptů přes LLM
+   - Dva typy: walk-in (3-5 vět) a video demo (5-10 vět)
+   - Personalizace na základě lead data a odvětví
+   - DB tabulka pitch_scripts
+   - React komponenta PitchScriptGenerator
+   - Integrace do Convert modulu
+   - Vitest testy
+
+2. Income Growth Visualization
+   - Progress bar s milestone tracking
+   - 5 milníků: 0 → 10k → 25k → 50k → 100k Kč/měsíc
+   - Motivační texty pro každý milestone
+   - React komponenta MilestoneTrack
+   - Integrace do IncomeCalculator
+   - Vitest testy
+
+3. Niche-specific AI Prompts
+   - Niche context mapping (8 odvětví: tech, real-estate, fitness, atd.)
+   - tRPC procedura pro generování leadů s niche kontextem
+   - React komponenty: NicheSelector, NicheContextPreview
+   - Integrace do Attract modulu
+   - Vitest testy
+
+================================================================================
+⚡ QUICK START
+================================================================================
+
+1. Clone projekt
+   git clone https://github.com/pejtr/ai-business-automation.git
+   cd ai-business-automation
+
+2. Čti dokumentaci
+   cat CLAUDE_CODE_START.md
+   cat CLAUDE_CODE_HANDOFF.md
+
+3. Instaluj dependencies
+   pnpm install
+
+4. Spusť dev server
+   pnpm dev
+   # Server poběží na http://localhost:3000
+
+5. Začni implementovat
+   - Sleduj workflow v CLAUDE_CODE_HANDOFF.md
+   - Implementuj Feature 1 → Feature 2 → Feature 3
+   - Piš testy pro každou feature
+   - Commituj na GitHub
+
+================================================================================
+📂 KLÍČOVÉ SOUBORY
+================================================================================
+
+Backend:
+  server/routers.ts          - Přidej tRPC procedures
+  server/db.ts              - Přidej DB helpers
+  drizzle/schema.ts         - Přidej DB tables
+
+Frontend:
+  client/src/pages/         - Moduly (Attract, Convert, atd.)
+  client/src/components/    - Reusable komponenty
+  client/src/constants/     - Konstanty (milestones, niches)
+
+Tests:
+  server/*.test.ts          - Backend testy (Vitest)
+  client/src/**/*.test.ts   - Frontend testy (Vitest)
+
+Dokumentace:
+  CLAUDE_CODE_START.md      - Quick start guide
+  CLAUDE_CODE_HANDOFF.md    - Detailní instrukce (1300+ řádků)
+  CLAUDE_CODE_PROMPT.md     - Specifikace features
+  todo.md                   - Task tracking
+
+================================================================================
+🎯 FEATURE 1: AI-powered Pitch Scripts
+================================================================================
+
+BACKEND:
+
+1. DB Schema (drizzle/schema.ts)
+   export const pitchScripts = sqliteTable('pitch_scripts', {
+     id: text('id').primaryKey(),
+     leadId: text('lead_id').notNull().references(() => leads.id),
+     scriptType: text('script_type').notNull(), // 'walk-in' | 'video-demo'
+     walkInScript: text('walk_in_script'),
+     videoDemoScript: text('video_demo_script'),
+     generatedAt: integer('generated_at', { mode: 'timestamp' }).notNull(),
+     tokensUsed: integer('tokens_used'),
+     createdAt: integer('created_at', { mode: 'timestamp' }).defaultNow(),
+   });
+
+2. Migration
+   pnpm drizzle-kit generate
+   # Aplikuj vygenerovaný SQL v Manus UI (Database panel)
+
+3. DB Helpers (server/db.ts)
+   export async function savePitchScript(data: {
+     leadId: string;
+     scriptType: 'walk-in' | 'video-demo';
+     walkInScript?: string;
+     videoDemoScript?: string;
+     tokensUsed: number;
+   }) {
+     return db.insert(pitchScripts).values({
+       id: crypto.randomUUID(),
+       leadId: data.leadId,
+       scriptType: data.scriptType,
+       walkInScript: data.walkInScript,
+       videoDemoScript: data.videoDemoScript,
+       tokensUsed: data.tokensUsed,
+       generatedAt: new Date(),
+     });
+   }
+
+   export async function getPitchScriptsByLead(leadId: string) {
+     return db.query.pitchScripts.findMany({
+       where: eq(pitchScripts.leadId, leadId),
+       orderBy: [desc(pitchScripts.generatedAt)],
+     });
+   }
+
+4. tRPC Procedure (server/routers.ts - convert router)
+   generatePitchScript: protectedProcedure
+     .input(z.object({
+       leadId: z.string(),
+       leadName: z.string(),
+       leadCompany: z.string(),
+       leadIndustry: z.string(),
+       leadRecentNews: z.string().optional(),
+       scriptType: z.enum(['walk-in', 'video-demo']),
+     }))
+     .mutation(async ({ input, ctx }) => {
+       // Příprava LLM promptu
+       const scriptTypeText = input.scriptType === 'walk-in' 
+         ? 'Walk-in skript: 3-5 vět, přátelský tón, přímý kontakt'
+         : 'Video demo skript: 5-10 vět, profesionální, zaměř se na benefits';
+
+       const prompt = `Jsi expert na sales outreach. Vygeneruj personalizovaný ${input.scriptType} skript.
+
+Lead info:
+- Jméno: ${input.leadName}
+- Firma: ${input.leadCompany}
+- Odvětví: ${input.leadIndustry}
+${input.leadRecentNews ? `- Poslední zprávy: ${input.leadRecentNews}` : ''}
+
+Požadavky:
+- ${scriptTypeText}
+- Personalizuj na konkrétní firmu a odvětví
+- Zahrň specifické pain points pro ${input.leadIndustry}
+- Česky
+
+Vygeneruj pouze skript, bez dalšího textu.`;
+
+       // Zavolej LLM
+       const response = await invokeLLM({
+         messages: [
+           { role: 'system', content: 'Jsi expert na sales outreach.' },
+           { role: 'user', content: prompt },
+         ],
+       });
+
+       const scriptContent = response.choices[0].message.content;
+       const tokensUsed = response.usage?.total_tokens || 0;
+
+       // Ulož do DB
+       await savePitchScript({
+         leadId: input.leadId,
+         scriptType: input.scriptType,
+         walkInScript: input.scriptType === 'walk-in' ? scriptContent : undefined,
+         videoDemoScript: input.scriptType === 'video-demo' ? scriptContent : undefined,
+         tokensUsed,
+       });
+
+       return {
+         scriptId: crypto.randomUUID(),
+         leadId: input.leadId,
+         scriptType: input.scriptType,
+         content: scriptContent,
+         generatedAt: new Date(),
+         tokensUsed,
+       };
+     }),
+
+   getPitchScripts: protectedProcedure
+     .input(z.object({ leadId: z.string() }))
+     .query(async ({ input }) => {
+       return getPitchScriptsByLead(input.leadId);
+     }),
+
+5. Vitest Tests (server/routers/convert.generatePitchScript.test.ts)
+   describe('convert.generatePitchScript', () => {
+     it('should generate walk-in script with LLM', async () => {
+       // Test LLM call
+     });
+     
+     it('should generate video demo script', async () => {
+       // Test video demo
+     });
+     
+     it('should save script to database', async () => {
+       // Test DB save
+     });
+     
+     it('should include industry-specific content', async () => {
+       // Test personalization
+     });
+     
+     it('should track token usage', async () => {
+       // Test token tracking
+     });
+   });
+
+FRONTEND:
+
+1. React Komponenta (client/src/components/PitchScriptGenerator.tsx)
+   - Vstup: leadId, leadName, leadCompany, leadIndustry
+   - Tlačítka: "Generovat Walk-in" + "Generovat Video Demo"
+   - Loading state: Spinner během generování
+   - Výstup: Zobrazení skriptu
+   - Akce: Kopírovat do schránky
+   - Design: Neon glow (cyan/violet), Tailwind
+
+2. Integrace do Convert modulu (client/src/pages/Convert.tsx)
+   - Přidej nový tab "Pitch Scripts"
+   - Zobraz PitchScriptGenerator pro vybraný lead
+
+3. Frontend Tests (client/src/components/PitchScriptGenerator.test.ts)
+   - Test render tlačítek
+   - Test lead info display
+   - Test copy to clipboard
+   - Test loading state
+
+================================================================================
+📊 FEATURE 2: Income Growth Visualization
+================================================================================
+
+FRONTEND:
+
+1. Constants (client/src/constants/milestones.ts)
+   export const INCOME_MILESTONES = [
+     { target: 0, label: 'Start', emoji: '🚀', motivation: 'Začínáme!' },
+     { target: 10000, label: '10k Kč/měsíc', emoji: '📈', motivation: 'První milestone!' },
+     { target: 25000, label: '25k Kč/měsíc', emoji: '⭐', motivation: 'Čtvrtina cesty!' },
+     { target: 50000, label: '50k Kč/měsíc', emoji: '💪', motivation: 'Polovina!' },
+     { target: 100000, label: '100k Kč/měsíc', emoji: '🏆', motivation: 'Dosáhli jste cíle!' },
+   ];
+
+2. React Komponenta (client/src/components/MilestoneTrack.tsx)
+   - Progress bar (0-100%)
+   - Milestone icons (🚀 📈 ⭐ 💪 🏆)
+   - Current position (zvýrazněný milestone)
+   - Motivation text
+   - Remaining amount
+   - Design: Neon glow gradient (cyan → violet)
+
+3. Integrace do IncomeCalculator (client/src/components/IncomeCalculator.tsx)
+   - Přidej MilestoneTrack komponentu
+   - Předej currentIncome z kalkulátoru
+
+4. Frontend Tests (client/src/components/MilestoneTrack.test.ts)
+   - Test progress percentage
+   - Test milestone highlighting
+   - Test motivation text
+   - Test remaining amount calculation
+
+================================================================================
+🎯 FEATURE 3: Niche-specific AI Prompts
+================================================================================
+
+BACKEND:
+
+1. Constants (server/constants/niches.ts)
+   export const NICHE_CONTEXTS = {
+     tech: {
+       keywords: ['AI', 'cloud', 'automation', 'SaaS', 'DevOps', 'API'],
+       tone: 'technical, data-driven',
+       painPoints: ['scaling', 'technical debt', 'team hiring'],
+       toneGuidance: 'Use technical jargon, focus on ROI',
+     },
+     realEstate: {
+       keywords: ['property', 'investment', 'location', 'market'],
+       tone: 'professional, location-focused',
+       painPoints: ['lead generation', 'property valuation'],
+       toneGuidance: 'Emphasize location benefits, market trends',
+     },
+     fitness: {
+       keywords: ['health', 'wellness', 'training', 'nutrition'],
+       tone: 'motivational, health-focused',
+       painPoints: ['member retention', 'class scheduling'],
+       toneGuidance: 'Use motivational language, focus on transformation',
+     },
+     // ... dalších 5 niche
+   };
+
+2. tRPC Procedure (server/routers.ts - attract router)
+   generateLeadsWithNichContext: protectedProcedure
+     .input(z.object({
+       niche: z.enum(['tech', 'realEstate', 'fitness', ...]),
+       targetRole: z.string().optional(),
+       targetCompanySize: z.enum(['startup', 'SME', 'enterprise']).optional(),
+       targetLocation: z.string().optional(),
+       customKeywords: z.array(z.string()).optional(),
+     }))
+     .mutation(async ({ input, ctx }) => {
+       const nichContext = NICHE_CONTEXTS[input.niche];
+       
+       // Příprava LLM promptu s niche kontextem
+       const prompt = `Jsi expert na lead generation pro ${input.niche}.
+       
+Niche Context:
+- Keywords: ${nichContext.keywords.join(', ')}
+- Tone: ${nichContext.tone}
+- Pain points: ${nichContext.painPoints.join(', ')}
+- Guidance: ${nichContext.toneGuidance}
+
+Vygeneruj 50 leadů pro ${input.niche}.
+Vrať JSON array s: name, company, email, position, relevanceScore.`;
+
+       // Zavolej LLM
+       const response = await invokeLLM({
+         messages: [
+           { role: 'system', content: 'Jsi expert na lead generation. Vrací pouze JSON.' },
+           { role: 'user', content: prompt },
+         ],
+       });
+
+       // Parse a ulož leads
+       const leads = JSON.parse(response.choices[0].message.content);
+       const leadIds: string[] = [];
+       
+       for (const lead of leads) {
+         const result = await db.insert(leads).values({
+           id: crypto.randomUUID(),
+           name: lead.name,
+           company: lead.company,
+           email: lead.email,
+           position: lead.position,
+           niche: input.niche,
+           relevanceScore: lead.relevanceScore,
+           createdAt: new Date(),
+         });
+         leadIds.push(result[0].id);
+       }
+
+       return { leadIds, niche: input.niche, count: leads.length };
+     }),
+
+3. Vitest Tests (server/routers/attract.generateLeadsWithNichContext.test.ts)
+   - Test tech leads generation
+   - Test real-estate leads
+   - Test fitness leads
+   - Test target role filter
+   - Test company size filter
+   - Test custom keywords
+
+FRONTEND:
+
+1. Komponenta (client/src/components/NicheSelector.tsx)
+   - Dropdown/Grid s niche opcemi
+   - Zvýraznění vybrané niche
+
+2. Komponenta (client/src/components/NicheContextPreview.tsx)
+   - Zobrazení keywords, tone, pain points
+   - Design: Neon glow (violet/cyan)
+
+3. Integrace do Attract (client/src/pages/Attract.tsx)
+   - Přidej NicheSelector
+   - Přidej NicheContextPreview
+   - Přidej filtry (role, company size, location)
+   - Tlačítko: "Generovat Leady s Niche Kontextem"
+
+4. Frontend Tests
+   - Test niche selection
+   - Test context preview
+   - Test filter application
+
+================================================================================
+🔄 IMPLEMENTAČNÍ WORKFLOW
+================================================================================
+
+FEATURE 1: AI-powered Pitch Scripts
+  1. Přidej DB schema (drizzle/schema.ts)
+  2. Spusť migraci (pnpm drizzle-kit generate)
+  3. Aplikuj SQL v Manus UI
+  4. Přidej DB helpers (server/db.ts)
+  5. Přidej tRPC proceduru (server/routers.ts)
+  6. Napište backend testy
+  7. Vytvoř React komponentu (PitchScriptGenerator.tsx)
+  8. Integruj do Convert modulu
+  9. Napište frontend testy
+  10. Commit: git commit -m "feat: Add AI-powered Pitch Scripts"
+
+FEATURE 2: Income Growth Visualization
+  1. Vytvoř constants (client/src/constants/milestones.ts)
+  2. Vytvoř React komponentu (MilestoneTrack.tsx)
+  3. Integruj do IncomeCalculator
+  4. Napište testy
+  5. Commit: git commit -m "feat: Add Income Growth Visualization"
+
+FEATURE 3: Niche-specific AI Prompts
+  1. Vytvoř constants (server/constants/niches.ts)
+  2. Přidej tRPC proceduru (server/routers.ts)
+  3. Napište backend testy
+  4. Vytvoř React komponenty (NicheSelector, NicheContextPreview)
+  5. Integruj do Attract modulu
+  6. Napište frontend testy
+  7. Commit: git commit -m "feat: Add Niche-specific AI Prompts"
+
+FINALIZACE:
+  1. pnpm test — všechny testy musí projít
+  2. pnpm tsc --noEmit — bez TypeScript chyb
+  3. git push user_github main
+  4. Vytvoř checkpoint v Manus UI
+
+================================================================================
+🧪 TESTING
+================================================================================
+
+Spusť testy:
+  pnpm test
+
+Spusť konkrétní test:
+  pnpm test server/routers/convert.generatePitchScript.test.ts
+
+Watch mode:
+  pnpm test --watch
+
+TypeScript check:
+  pnpm tsc --noEmit
+
+Coverage:
+  pnpm test --coverage
+
+================================================================================
+📝 DŮLEŽITÉ POZNÁMKY
+================================================================================
+
+✅ MUSÍTE:
+  - Napsat Vitest testy pro každou feature (min. 5 per feature)
+  - Všechny UI texty v ČEŠTINĚ
+  - Všechny AI prompty v ČEŠTINĚ
+  - Používat existující design system (neon glow colors)
+  - Commitovat na main branch
+  - Pushovat na GitHub (user_github remote)
+
+❌ NESMÍTE:
+  - Měnit existující kód (jen přidávat)
+  - Zapomínat na testy
+  - Používat hardcoded hodnoty
+  - Ignorovat TypeScript chyby
+  - Commitovat bez testů
+
+================================================================================
+🔗 UŽITEČNÉ LINKY
+================================================================================
+
+tRPC: https://trpc.io/docs
+Drizzle: https://orm.drizzle.team
+React: https://react.dev
+Tailwind: https://tailwindcss.com
+Vitest: https://vitest.dev
+shadcn/ui: https://ui.shadcn.com
+
+================================================================================
+🚀 ZAČNĚTE ZDE
+================================================================================
+
+1. Clone projekt
+   git clone https://github.com/pejtr/ai-business-automation.git
+   cd ai-business-automation
+
+2. Instaluj
+   pnpm install
+
+3. Spusť dev server
+   pnpm dev
+
+4. Čti dokumentaci
+   cat CLAUDE_CODE_HANDOFF.md
+
+5. Implementuj Feature 1
+   - Backend (DB schema + helpers + tRPC)
+   - Frontend (React komponenta)
+   - Testy
+   - Commit
+
+6. Opakuj pro Feature 2 a 3
+
+7. Push a Checkpoint
+   git push user_github main
+   # Vytvoř checkpoint v Manus UI
+
+================================================================================
+✅ HOTOVO!
+
+Máte vše, co potřebujete. Začněte s implementací!
+
+Poslední update: 2026-06-12
+Status: Ready for Implementation
+================================================================================
